@@ -31,7 +31,6 @@
     }
   },
   "dependencies": {
-    "@theia/api-samples": "latest",
     "@theia/callhierarchy": "latest",
     "@theia/console": "latest",
     "@theia/core": "latest",
