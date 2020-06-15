@@ -1,0 +1,56 @@
+electronDist: node_modules/electron/dist
+productName: Theia
+appId: theia
+
+asar: false
+directories:
+  buildResources: resources
+files:
+  - node_modules
+  - src-gen
+  - lib
+  - scripts
+  - package.json
+
+win:
+  target:
+    - nsis
+mac:
+  target:
+    - dmg
+  darkModeSupport: true
+linux:
+  target:
+    - deb
+    - AppImage
+  category: Development
+  icon: resources/icons
+
+appImage:
+  artifactName: ${productName}-${version}.${ext}
+nsis:
+  menuCategory: true
+  oneClick: false
+  perMachine: true
+  installerHeaderIcon: resources/icon.ico
+  installerIcon: resources/icon.ico
+  uninstallerIcon: resources/icon.ico
+  installerSidebar: resources/installerSidebar.bmp
+  uninstallerSidebar: resources/installerSidebar.bmp
+  allowToChangeInstallationDirectory: true
+  runAfterFinish: false
+  artifactName: ${productName}-Installer-${version}.${ext}
+dmg:
+  icon: resources/icon.icns
+  iconSize: 128
+  contents:
+    - x: 380
+      y: 240
+      type: link
+      path: /Applications
+    - x: 122
+      y: 240
+      type: file
+
+publish:
+  provider: github
