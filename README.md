@@ -6,11 +6,12 @@
 </div>
 
 <div id="badges" align="center">
-  [![Build Status](https://travis-ci.com/eclipse-theia/theia-example.svg?branch=master)](https://travis-ci.com/eclipse-theia/theia-example)
 
-  Eclipse Theia is an extensible platform to develop full-fledged multi-language Cloud & Desktop IDE-like products with state-of-the-art web  technologies.
+Eclipse Theia is an extensible platform to develop full-fledged multi-language Cloud & Desktop IDE-like products with state-of-the-art web  technologies.
 
 </div>
+
+[![Build Status](https://travis-ci.com/eclipse-theia/theia-example.svg?branch=master)](https://travis-ci.com/eclipse-theia/theia-example)
 
 [Main Theia Repository](https://github.com/eclipse-theia/theia)
 
