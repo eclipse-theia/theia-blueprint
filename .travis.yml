@@ -12,6 +12,9 @@ addons:
   apt:
     update: true
     packages: libxkbfile-dev
+    sources:
+    - ubuntu-toolchain-r-test
+    chrome: stable
 
 os:
 - linux
