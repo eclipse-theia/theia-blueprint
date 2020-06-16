@@ -1,5 +1,5 @@
 {
-  "name": "@theia/theia-example",
+  "name": "theia-example",
   "productName": "Theia Electron Example Application",
   "version": "1.2.0",
   "private": true,
