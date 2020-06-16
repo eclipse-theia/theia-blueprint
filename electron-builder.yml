@@ -1,5 +1,5 @@
 electronDist: node_modules/electron/dist
-productName: Theia
+productName: theia
 appId: theia
 
 asar: false
