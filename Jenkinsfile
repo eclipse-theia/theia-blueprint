@@ -22,6 +22,7 @@ spec:
   - name: node
     image: node:10.17.0-buster-slim
 """
+                        }
                     }
                     steps {
                         timeout(time: "${env.BUILD_TIMEOUT}") {
