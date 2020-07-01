@@ -12,14 +12,25 @@ pipeline {
             parallel {
                 stage('Create Linux Installer') {
                     agent {
-                        dockerfile true
+                        kubernetes {
+                            label 'node-pod'
+                            yaml """
+apiVersion: v1
+kind: Pod
+spec:
+  containers:
+  - name: node
+    image: node:10.17.0-buster-slim
+"""
                     }
                     steps {
                         timeout(time: "${env.BUILD_TIMEOUT}") {
-                            sh "printenv"
-                            sh "yarn cache clean"
-                            sh "yarn --frozen-lockfile --force"
-                            sh "yarn package"
+                            container('node') {
+                                sh "printenv"
+                                sh "yarn cache clean"
+                                sh "yarn --frozen-lockfile --force"
+                                sh "yarn package"
+                            }
                         }
                     }
                 }
