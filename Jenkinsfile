@@ -12,7 +12,7 @@ pipeline {
             parallel {
                 stage('Create Linux Installer') {
                     agent {
-                        label 'linux'
+                        dockerfile true
                     }
                     steps {
                         timeout(time: "${env.BUILD_TIMEOUT}") {
