@@ -37,7 +37,7 @@ spec:
                 }
                 stage('Create Mac Installer') {
                     agent {
-                        label 'mac'
+                        label 'macos'
                     }
                     steps {
                         timeout(time: "${env.BUILD_TIMEOUT}") {
