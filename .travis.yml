@@ -11,10 +11,9 @@ node_js: "10"
 addons:
   apt:
     update: true
-    packages: libxkbfile-dev
     sources:
     - ubuntu-toolchain-r-test
-    chrome: stable
+    packages: libxkbfile-dev
 
 os:
 - linux
