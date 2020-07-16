@@ -20,7 +20,16 @@ kind: Pod
 spec:
   containers:
   - name: node
-    image: node:10.17.0-buster-slim
+    image: node:10.17.0-buster
+    command:
+    - cat
+    tty: true
+    volumeMounts:
+    - name: yarn-cache
+      mountPath: /.cache
+  volumes:
+  - name: yarn-cache
+    emptyDir: {}
 """
                         }
                     }
