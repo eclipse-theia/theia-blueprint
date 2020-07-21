@@ -31,12 +31,6 @@ spec:
       requests:
         memory: "4Gi"
         cpu: "2"
-    volumeMounts:
-    - name: yarn-cache
-      mountPath: /.cache
-  volumes:
-  - name: yarn-cache
-    emptyDir: {}
 """
                         }
                     }
