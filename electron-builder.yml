@@ -51,6 +51,3 @@ dmg:
     - x: 122
       y: 240
       type: file
-
-publish:
-  provider: github
