@@ -75,7 +75,7 @@ spec:
                     steps {
                         timeout(time: "${env.BUILD_TIMEOUT}") {
                             bat "set"
-                            bat "yarn add --global --production windows-build-tools --vs2015"
+                            bat "yarn global add windows-build-tools --vs2015"
                             bat "yarn cache clean"
                             bat "yarn --frozen-lockfile --force"
                             bat "yarn package"
