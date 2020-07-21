@@ -20,7 +20,23 @@ kind: Pod
 spec:
   containers:
   - name: node
-    image: node:10.17.0-buster-slim
+    image: node:10.17.0-buster
+    command:
+    - cat
+    tty: true
+    resources:
+      limits:
+        memory: "2Gi"
+        cpu: "1"
+      requests:
+        memory: "2Gi"
+        cpu: "1"
+    volumeMounts:
+    - name: yarn-cache
+      mountPath: /.cache
+  volumes:
+  - name: yarn-cache
+    emptyDir: {}
 """
                         }
                     }
@@ -55,6 +71,7 @@ spec:
                     steps {
                         timeout(time: "${env.BUILD_TIMEOUT}") {
                             bat "set"
+                            bat "yarn install --global --production windows-build-tools --vs2015"
                             bat "yarn cache clean"
                             bat "yarn --frozen-lockfile --force"
                             bat "yarn package"
