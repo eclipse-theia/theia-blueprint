@@ -20,7 +20,7 @@ kind: Pod
 spec:
   containers:
   - name: node
-    image: node:10.17.0-buster
+    image: thegecko/theia-dev
     command:
     - cat
     tty: true
