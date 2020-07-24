@@ -36,10 +36,14 @@ spec:
       mountPath: /.cache
     - name: npm-cache
       mountPath: /.npm
+    - name: electron-cache
+      mountPath: /.electron-gyp
   volumes:
   - name: yarn-cache
     emptyDir: {}
   - name: npm-cache
+    emptyDir: {}
+  - name: electron-cache
     emptyDir: {}
 """
                         }
