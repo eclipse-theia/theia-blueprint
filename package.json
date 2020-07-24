@@ -74,6 +74,9 @@
     "@theia/cli": "latest",
     "electron-builder": "^22.4.1"
   },
+  "resolutions": {
+    "drivelist": "https://github.com/lelivrescolaire#c9e42b6d852c991394ec061f05e07f5a0a4978d3"
+  },
   "scripts": {
     "prepare": "yarn build",
     "lint": "theiaext lint",
@@ -83,7 +86,7 @@
     "start": "theia start --plugins=local-dir:../../plugins",
     "start:debug": "yarn start --log-level=debug",
     "test": "electron-mocha --timeout 60000 \"./lib/test/**/*.espec.js\"",
-    "package": "env DEBUG=electron-builder electron-builder --publish never",
+    "package": "electron-builder --publish never",
     "package:preview": "electron-builder --dir"
   }
 }
