@@ -75,7 +75,7 @@
     "electron-builder": "^22.4.1"
   },
   "resolutions": {
-    "drivelist": "https://github.com/lelivrescolaire#c9e42b6d852c991394ec061f05e07f5a0a4978d3"
+    "drivelist": "https://github.com/lelivrescolaire/drivelist#v9.0.15"
   },
   "scripts": {
     "prepare": "yarn build",
