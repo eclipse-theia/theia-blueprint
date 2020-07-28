@@ -36,11 +36,18 @@ spec:
       mountPath: /.cache
     - name: electron-cache
       mountPath: /.electron-gyp
+  - name: jnlp
+    volumeMounts:
+    - name: volume-known-hosts
+      mountPath: /home/jenkins/.ssh
   volumes:
   - name: yarn-cache
     emptyDir: {}
   - name: electron-cache
     emptyDir: {}
+  - name: volume-known-hosts
+    configMap:
+      name: known-hosts
 """
                         }
                     }
@@ -51,6 +58,15 @@ spec:
                                 sh "yarn cache clean"
                                 sh "yarn --frozen-lockfile --force"
                                 sh "yarn package"
+                            }
+                        }
+                        container('jnlp') {
+                            sshagent(['projects-storage.eclipse.org-bot-ssh']) {
+                                sh '''
+                                    ssh genie.theia@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/theia/snapshots/linux
+                                    ssh genie.theia@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/theia/snapshots/linux
+                                    scp -r installers/* genie.theia@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/theia/snapshots/linux
+                                '''
                             }
                         }
                     }
@@ -66,6 +82,13 @@ spec:
                             sh "yarn --frozen-lockfile --force"
                             sh "yarn package"
                         }
+                        sshagent(['projects-storage.eclipse.org-bot-ssh']) {
+                            sh '''
+                                ssh genie.theia@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/theia/snapshots/macos
+                                ssh genie.theia@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/theia/snapshots/macos
+                                scp -r installers/* genie.theia@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/theia/snapshots/macos
+                            '''
+                        }
                     }
                 }
                 stage('Create Windows Installer') {
@@ -78,6 +101,13 @@ spec:
                             bat "yarn cache clean"
                             bat "yarn --frozen-lockfile --force"
                             bat "yarn package"
+                        }
+                        sshagent(['projects-storage.eclipse.org-bot-ssh']) {
+                            bat '''
+                                ssh genie.theia@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/theia/snapshots/windows
+                                ssh genie.theia@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/theia/snapshots/windows
+                                scp -r installers\\* genie.theia@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/theia/snapshots/windows
+                            '''
                         }
                     }
                 }
