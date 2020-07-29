@@ -82,14 +82,12 @@ spec:
                             sh "yarn --frozen-lockfile --force"
                             sh "yarn package"
                         }
-                        container('jnlp') {
-                            sshagent(['projects-storage.eclipse.org-bot-ssh']) {
-                                sh '''
-                                    ssh genie.theia@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/theia/snapshots/macos
-                                    ssh genie.theia@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/theia/snapshots/macos
-                                    scp -r dist/theia* genie.theia@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/theia/snapshots/macos
-                                '''
-                            }
+                        sshagent(['projects-storage.eclipse.org-bot-ssh']) {
+                            sh '''
+                                ssh genie.theia@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/theia/snapshots/macos
+                                ssh genie.theia@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/theia/snapshots/macos
+                                scp -r dist/theia* genie.theia@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/theia/snapshots/macos
+                            '''
                         }
                     }
                 }
@@ -104,14 +102,12 @@ spec:
                             bat "yarn --frozen-lockfile --force"
                             bat "yarn package"
                         }
-                        container('jnlp') {
-                            sshagent(['projects-storage.eclipse.org-bot-ssh']) {
-                                sh '''
-                                    ssh genie.theia@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/theia/snapshots/windows
-                                    ssh genie.theia@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/theia/snapshots/windows
-                                    scp -r dist/theia* genie.theia@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/theia/snapshots/windows
-                                '''
-                            }
+                        sshagent(['projects-storage.eclipse.org-bot-ssh']) {
+                            bat '''
+                                ssh genie.theia@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/theia/snapshots/windows
+                                ssh genie.theia@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/theia/snapshots/windows
+                                scp -r dist\\theia* genie.theia@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/theia/snapshots/windows
+                            '''
                         }
                     }
                 }
