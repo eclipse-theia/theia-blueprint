@@ -102,9 +102,9 @@ spec:
                             bat "yarn --frozen-lockfile --force"
                             bat "yarn package"
                         }
+                        bat "find dist -name *.exe -maxdepth 0 -exec curl -o dist/signed.{} -F file=@{} http://build.eclipse.org:31338/winsign.php ;"
                         sshagent(['projects-storage.eclipse.org-bot-ssh']) {
                             bat '''
-                                find dist -name *.exe -maxdepth 0 -exec curl -o signed.{} -F file=@{} http://build.eclipse.org:31338/winsign.php ;
                                 ssh genie.theia@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/theia/snapshots/windows
                                 ssh genie.theia@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/theia/snapshots/windows
                                 scp -r dist/theia* genie.theia@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/theia/snapshots/windows
