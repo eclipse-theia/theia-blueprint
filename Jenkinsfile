@@ -82,6 +82,9 @@ spec:
                             sh "yarn --frozen-lockfile --force"
                             sh "yarn package"
                         }
+                        timeout(time: "${env.BUILD_TIMEOUT}") {
+                            sh "curl -o dist/signed-theia-1.2.0.dmg -F file=@dist/theia-1.2.0.dmg http://build.eclipse.org:31338/macsign.php"
+                        }
                         sshagent(['projects-storage.eclipse.org-bot-ssh']) {
                             sh '''
                                 ssh genie.theia@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/theia/snapshots/macos
@@ -102,7 +105,9 @@ spec:
                             bat "yarn --frozen-lockfile --force"
                             bat "yarn package"
                         }
-                        bat "find dist -name *.exe -maxdepth 1 -exec curl -o dist/signed.{} -F file=@dist/{} http://build.eclipse.org:31338/winsign.php ;"
+                        timeout(time: "${env.BUILD_TIMEOUT}") {
+                            bat "curl -o dist/signed-theia-Installer-1.2.0.exe -F file=@dist/theia-Installer-1.2.0.exe http://build.eclipse.org:31338/winsign.php"
+                        }
                         sshagent(['projects-storage.eclipse.org-bot-ssh']) {
                             bat '''
                                 ssh genie.theia@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/theia/snapshots/windows
