@@ -108,44 +108,50 @@ spec:
             }
             parallel {
                 stage('Upload Linux Installer') {
-                    container('jnlp') {
-                        unstash linux
-                        sshagent(['projects-storage.eclipse.org-bot-ssh']) {
-                            sh '''
-                                ssh genie.theia@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/theia/snapshots/linux
-                                ssh genie.theia@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/theia/snapshots/linux
-                                scp -r dist/* genie.theia@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/theia/snapshots/linux
-                            '''
+                    steps {
+                        container('jnlp') {
+                            unstash linux
+                            sshagent(['projects-storage.eclipse.org-bot-ssh']) {
+                                sh '''
+                                    ssh genie.theia@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/theia/snapshots/linux
+                                    ssh genie.theia@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/theia/snapshots/linux
+                                    scp -r dist/* genie.theia@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/theia/snapshots/linux
+                                '''
+                            }
                         }
                     }
                 }
                 stage('Sign and Upload Mac Installer') {
-                    container('jnlp') {
-                        unstash mac
-                        timeout(time: "${env.BUILD_TIMEOUT}") {
-                            sh "curl -o dist/signed-theia-1.2.0.dmg -F file=@dist/theia-1.2.0.dmg http://build.eclipse.org:31338/macsign.php"
-                        }
-                        sshagent(['projects-storage.eclipse.org-bot-ssh']) {
-                            sh '''
-                                ssh genie.theia@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/theia/snapshots/macos
-                                ssh genie.theia@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/theia/snapshots/macos
-                                scp -r dist/* genie.theia@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/theia/snapshots/macos
-                            '''
+                    steps {
+                        container('jnlp') {
+                            unstash mac
+                            timeout(time: "${env.BUILD_TIMEOUT}") {
+                                sh "curl -o dist/signed-theia-1.2.0.dmg -F file=@dist/theia-1.2.0.dmg http://build.eclipse.org:31338/macsign.php"
+                            }
+                            sshagent(['projects-storage.eclipse.org-bot-ssh']) {
+                                sh '''
+                                    ssh genie.theia@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/theia/snapshots/macos
+                                    ssh genie.theia@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/theia/snapshots/macos
+                                    scp -r dist/* genie.theia@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/theia/snapshots/macos
+                                '''
+                            }
                         }
                     }
                 }
                 stage('Sign and Upload Windows Installer') {
-                    container('jnlp') {
-                        unstash win
-                        timeout(time: "${env.BUILD_TIMEOUT}") {
-                            sh "curl -o dist/signed-theia-Installer-1.2.0.exe -F file=@dist/theia-Installer-1.2.0.exe http://build.eclipse.org:31338/winsign.php"
-                        }
-                        sshagent(['projects-storage.eclipse.org-bot-ssh']) {
-                            sh '''
-                                ssh genie.theia@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/theia/snapshots/windows
-                                ssh genie.theia@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/theia/snapshots/windows
-                                scp -r dist/* genie.theia@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/theia/snapshots/windows
-                            '''
+                    steps {
+                        container('jnlp') {
+                            unstash win
+                            timeout(time: "${env.BUILD_TIMEOUT}") {
+                                sh "curl -o dist/signed-theia-Installer-1.2.0.exe -F file=@dist/theia-Installer-1.2.0.exe http://build.eclipse.org:31338/winsign.php"
+                            }
+                            sshagent(['projects-storage.eclipse.org-bot-ssh']) {
+                                sh '''
+                                    ssh genie.theia@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/theia/snapshots/windows
+                                    ssh genie.theia@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/theia/snapshots/windows
+                                    scp -r dist/* genie.theia@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/theia/snapshots/windows
+                                '''
+                            }
                         }
                     }
                 }
