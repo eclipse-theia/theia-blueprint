@@ -106,7 +106,7 @@ spec:
 """
                 }
             }
-            parallel {
+            stages {
                 stage('Upload Linux Installer') {
                     steps {
                         container('jnlp') {
