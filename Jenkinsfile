@@ -89,7 +89,7 @@ spec:
         stage('Sign and Upload') {
             agent {
                 kubernetes {
-                    label 'jnlp-pod'
+                    label 'upload-pod'
                     yaml """
 apiVersion: v1
 kind: Pod
