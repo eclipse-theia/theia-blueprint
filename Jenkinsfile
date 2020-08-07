@@ -47,6 +47,7 @@ spec:
                     steps {
                         timeout(time: "${env.BUILD_TIMEOUT}") {
                             container('node') {
+                                checkout scm
                                 sh "printenv"
                                 sh "yarn cache clean"
                                 sh "yarn --frozen-lockfile --force"
@@ -62,6 +63,7 @@ spec:
                     }
                     steps {
                         timeout(time: "${env.BUILD_TIMEOUT}") {
+                            checkout scm
                             sh "printenv"
                             sh "yarn cache clean"
                             sh "yarn --frozen-lockfile --force"
@@ -76,6 +78,7 @@ spec:
                     }
                     steps {
                         timeout(time: "${env.BUILD_TIMEOUT}") {
+                            checkout scm
                             bat "set"
                             bat "yarn cache clean"
                             bat "yarn --frozen-lockfile --force"
@@ -91,7 +94,7 @@ spec:
                 stage('Upload Linux Installer') {
                     agent any
                     steps {
-                        unstash linux
+                        unstash 'linux'
                         sshagent(['projects-storage.eclipse.org-bot-ssh']) {
                             sh '''
                                 ssh genie.theia@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/theia/snapshots/linux
@@ -104,10 +107,8 @@ spec:
                 stage('Sign and Upload Mac Installer') {
                     agent any
                     steps {
-                        unstash mac
-                        timeout(time: "${env.BUILD_TIMEOUT}") {
-                            sh "curl -o dist/signed-theia-1.2.0.dmg -F file=@dist/theia-1.2.0.dmg http://build.eclipse.org:31338/macsign.php"
-                        }
+                        unstash 'mac'
+                        sh "curl -o dist/signed-theia-1.2.0.dmg -F file=@dist/theia-1.2.0.dmg http://build.eclipse.org:31338/macsign.php"
                         sshagent(['projects-storage.eclipse.org-bot-ssh']) {
                             sh '''
                                 ssh genie.theia@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/theia/snapshots/macos
@@ -120,10 +121,8 @@ spec:
                 stage('Sign and Upload Windows Installer') {
                     agent any
                     steps {
-                        unstash win
-                        timeout(time: "${env.BUILD_TIMEOUT}") {
-                            sh "curl -o dist/signed-theia-Installer-1.2.0.exe -F file=@dist/theia-Installer-1.2.0.exe http://build.eclipse.org:31338/winsign.php"
-                        }
+                        unstash 'win'
+                        sh "curl -o dist/signed-theia-Installer-1.2.0.exe -F file=@dist/theia-Installer-1.2.0.exe http://build.eclipse.org:31338/winsign.php"
                         sshagent(['projects-storage.eclipse.org-bot-ssh']) {
                             sh '''
                                 ssh genie.theia@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/theia/snapshots/windows
