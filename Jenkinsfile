@@ -86,10 +86,9 @@ spec:
             }
         }
         stage('Sign and Upload') {
-            node {
-                parallel {
+            parallel {
+                node {
                     stage('Upload Linux') {
-                        agent any
                         steps {
                             unstash 'linux'
                             script {
@@ -98,7 +97,6 @@ spec:
                         }
                     }
                     stage('Sign and Upload Mac') {
-                        agent any
                         steps {
                             unstash 'mac'
                             script {
@@ -108,7 +106,6 @@ spec:
                         }
                     }
                     stage('Sign and Upload Windows') {
-                        agent any
                         steps {
                             unstash 'win'
                             script {
