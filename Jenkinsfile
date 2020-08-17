@@ -3,20 +3,21 @@
  */
 
 pipeline {
-    agent none
-    environment {
-        def packageJSON = readJSON file: "package.json"
-        PACKAGE_VERSION = "${packageJSON.version}"
-        BUILD_TIMEOUT = 180
-    }
-    stages {
-        stage('Build') {
-            parallel {
-                stage('Create Linux Installer') {
-                    agent {
-                        kubernetes {
-                            label 'node-pod'
-                            yaml """
+    node {
+        agent none
+        environment {
+            def packageJSON = readJSON file: "package.json"
+            PACKAGE_VERSION = "${packageJSON.version}"
+            BUILD_TIMEOUT = 180
+        }
+        stages {
+            stage('Build') {
+                parallel {
+                    stage('Create Linux Installer') {
+                        agent {
+                            kubernetes {
+                                label 'node-pod'
+                                yaml """
 apiVersion: v1
 kind: Pod
 spec:
@@ -44,51 +45,51 @@ spec:
   - name: electron-cache
     emptyDir: {}
 """
+                            }
+                        }
+                        steps {
+                            timeout(time: "${env.BUILD_TIMEOUT}") {
+                                container('node') {
+                                    script {
+                                        buildInstaller()
+                                    }
+                                }
+                            }
+                            stash includes: 'dist/theia*', name: 'linux'
                         }
                     }
-                    steps {
-                        timeout(time: "${env.BUILD_TIMEOUT}") {
-                            container('node') {
+                    stage('Create Mac Installer') {
+                        agent {
+                            label 'macos'
+                        }
+                        steps {
+                            timeout(time: "${env.BUILD_TIMEOUT}") {
                                 script {
                                     buildInstaller()
                                 }
                             }
+                            stash includes: 'dist/theia*', name: 'mac'
                         }
-                        stash includes: 'dist/theia*', name: 'linux'
                     }
-                }
-                stage('Create Mac Installer') {
-                    agent {
-                        label 'macos'
-                    }
-                    steps {
-                        timeout(time: "${env.BUILD_TIMEOUT}") {
-                            script {
-                                buildInstaller()
+                    stage('Create Windows Installer') {
+                        agent {
+                            label 'windows'
+                        }
+                        steps {
+                            timeout(time: "${env.BUILD_TIMEOUT}") {
+                                script {
+                                    buildInstaller()
+                                }
                             }
+                            stash includes: 'dist/theia*', name: 'win'
                         }
-                        stash includes: 'dist/theia*', name: 'mac'
-                    }
-                }
-                stage('Create Windows Installer') {
-                    agent {
-                        label 'windows'
-                    }
-                    steps {
-                        timeout(time: "${env.BUILD_TIMEOUT}") {
-                            script {
-                                buildInstaller()
-                            }
-                        }
-                        stash includes: 'dist/theia*', name: 'win'
                     }
                 }
             }
-        }
-        stage('Sign and Upload') {
-            parallel {
-                node {
+            stage('Sign and Upload') {
+                parallel {
                     stage('Upload Linux') {
+                        agent any
                         steps {
                             unstash 'linux'
                             script {
@@ -97,6 +98,7 @@ spec:
                         }
                     }
                     stage('Sign and Upload Mac') {
+                        agent any
                         steps {
                             unstash 'mac'
                             script {
@@ -106,6 +108,7 @@ spec:
                         }
                     }
                     stage('Sign and Upload Windows') {
+                        agent any
                         steps {
                             unstash 'win'
                             script {
