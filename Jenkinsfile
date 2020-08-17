@@ -86,33 +86,35 @@ spec:
             }
         }
         stage('Sign and Upload') {
-            parallel {
-                stage('Upload Linux') {
-                    agent any
-                    steps {
-                        unstash 'linux'
-                        script {
-                            uploadInstaller('linux')
+            node {
+                parallel {
+                    stage('Upload Linux') {
+                        agent any
+                        steps {
+                            unstash 'linux'
+                            script {
+                                uploadInstaller('linux')
+                            }
                         }
                     }
-                }
-                stage('Sign and Upload Mac') {
-                    agent any
-                    steps {
-                        unstash 'mac'
-                        script {
-                            signInstaller('dmg', 'macsign')
-                            uploadInstaller('macos')
+                    stage('Sign and Upload Mac') {
+                        agent any
+                        steps {
+                            unstash 'mac'
+                            script {
+                                signInstaller('dmg', 'macsign')
+                                uploadInstaller('macos')
+                            }
                         }
                     }
-                }
-                stage('Sign and Upload Windows') {
-                    agent any
-                    steps {
-                        unstash 'win'
-                        script {
-                            signInstaller('exe', 'winsign')
-                            uploadInstaller('windows')
+                    stage('Sign and Upload Windows') {
+                        agent any
+                        steps {
+                            unstash 'win'
+                            script {
+                                signInstaller('exe', 'winsign')
+                                uploadInstaller('windows')
+                            }
                         }
                     }
                 }
