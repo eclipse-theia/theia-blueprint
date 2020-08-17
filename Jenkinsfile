@@ -3,7 +3,7 @@
  */
 
 pipeline {
-    agent none
+    agent any
     environment {
         def packageJSON = readJSON file: "package.json"
         PACKAGE_VERSION = "${packageJSON.version}"
@@ -101,10 +101,7 @@ spec:
                     steps {
                         unstash 'mac'
                         script {
-                            List installers = findFiles(glob: "dist/*.dmg")
-                            if (installers.size() > 0) {
-                                sh "curl -o dist/signed-${installers[0].name} -F file=@${installers[0].path} http://build.eclipse.org:31338/macsign.php"
-                            }
+                            signInstaller('dmg', 'macsign')
                             uploadInstaller('macos')
                         }
                     }
@@ -114,10 +111,7 @@ spec:
                     steps {
                         unstash 'win'
                         script {
-                            List installers = findFiles(glob: "dist/*.exe")
-                            if (installers.size() > 0) {
-                                sh "curl -o dist/signed-${installers[0].name} -F file=@${installers[0].path} http://build.eclipse.org:31338/winsign.php"
-                            }
+                            signInstaller('exe', 'winsign')
                             uploadInstaller('windows')
                         }
                     }
@@ -133,6 +127,13 @@ def buildInstaller() {
     sh "yarn cache clean"
     sh "yarn --frozen-lockfile --force"
     sh "yarn package"
+}
+
+def signInstaller(String ext, String url) {
+    List installers = findFiles(glob: "dist/*.${ext}")
+    if (installers.size() > 0) {
+        sh "curl -o dist/signed-${installers[0].name} -F file=@${installers[0].path} http://build.eclipse.org:31338/${url}.php"
+    }
 }
 
 def uploadInstaller(String platform) {
