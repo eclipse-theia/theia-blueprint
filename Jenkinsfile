@@ -15,13 +15,12 @@ pipeline {
                 stage('Create Linux Installer') {
                     agent {
                         kubernetes {
-                            label 'node-pod'
                             yaml """
 apiVersion: v1
 kind: Pod
 spec:
   containers:
-  - name: node
+  - name: theia-dev
     image: thegecko/theia-dev
     command:
     - cat
@@ -48,7 +47,7 @@ spec:
                     }
                     steps {
                         timeout(time: "${env.BUILD_TIMEOUT}") {
-                            container('node') {
+                            container('theia-dev') {
                                 script {
                                     buildInstaller()
                                 }
