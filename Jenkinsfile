@@ -141,7 +141,7 @@ def notarizeInstaller() {
         String uuid = json.uuid
 
         while(json.notarizationStatus.status == 'IN_PROGRESS') {
-            sleep(10000)
+            sleep(10)
             response = new URL("${service}/${uuid}/status").text
             json = jsonSlurper.parseText(response)
         }
