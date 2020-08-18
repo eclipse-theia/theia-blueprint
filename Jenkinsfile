@@ -4,10 +4,12 @@
 
 pipeline {
     agent any
+    options {
+        timeout(time: 3, unit: 'HOURS') 
+    }
     environment {
         def packageJSON = readJSON file: "package.json"
         PACKAGE_VERSION = "${packageJSON.version}"
-        BUILD_TIMEOUT = 180
     }
     stages {
         stage('Build') {
@@ -28,10 +30,10 @@ spec:
     resources:
       limits:
         memory: "4Gi"
-        cpu: "2"
+        cpu: "1"
       requests:
         memory: "4Gi"
-        cpu: "2"
+        cpu: "1"
     volumeMounts:
     - name: yarn-cache
       mountPath: /.cache
@@ -46,11 +48,9 @@ spec:
                         }
                     }
                     steps {
-                        timeout(time: "${env.BUILD_TIMEOUT}") {
-                            container('theia-dev') {
-                                script {
-                                    buildInstaller()
-                                }
+                        container('theia-dev') {
+                            script {
+                                buildInstaller()
                             }
                         }
                         stash includes: 'dist/theia*', name: 'linux'
@@ -61,10 +61,8 @@ spec:
                         label 'macos'
                     }
                     steps {
-                        timeout(time: "${env.BUILD_TIMEOUT}") {
-                            script {
-                                buildInstaller()
-                            }
+                        script {
+                            buildInstaller()
                         }
                         stash includes: 'dist/theia*', name: 'mac'
                     }
@@ -74,10 +72,8 @@ spec:
                         label 'windows'
                     }
                     steps {
-                        timeout(time: "${env.BUILD_TIMEOUT}") {
-                            script {
-                                buildInstaller()
-                            }
+                        script {
+                            buildInstaller()
                         }
                         stash includes: 'dist/theia*', name: 'win'
                     }
