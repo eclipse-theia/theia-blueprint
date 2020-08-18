@@ -1,6 +1,7 @@
 /**
  * This Jenkinsfile builds Theia across the major OS platforms
  */
+import groovy.json.JsonSlurper
 
 pipeline {
     agent none
