@@ -93,6 +93,7 @@ spec:
                         unstash 'mac'
                         script {
                             signInstaller('dmg', 'macsign')
+                            notarizeInstaller()
                             uploadInstaller('macos')
                         }
                     }
@@ -124,6 +125,31 @@ def signInstaller(String ext, String url) {
     List installers = findFiles(glob: "dist/*.${ext}")
     if (installers.size() > 0) {
         sh "curl -o dist/signed-${installers[0].name} -F file=@${installers[0].path} http://build.eclipse.org:31338/${url}.php"
+    }
+}
+
+def notarizeInstaller() {
+    String service = 'http://172.30.206.146:8383/macos-notarization-service'
+    List installers = findFiles(glob: "dist/signed-*.dmg")
+
+    if (installers.size() > 0) {
+        String response = sh(script: "$(curl -s -X POST -F file=@${installers[0].path} -F 'options={'primaryBundleId': 'app-bundle', 'staple': true};type=application/json' ${service}/notarize)", returnStdout: true)
+        
+        def jsonSlurper = new JsonSlurper()
+        def json = jsonSlurper.parseText(response)
+        String uuid = json.uuid
+
+        while(json.status == 'IN_PROGRESS') {
+            sleep(10000)
+            response = new URL("${service}/${uuid}/status").text
+            json = jsonSlurper.parseText(response)
+        }
+
+        if (json.status != 'COMPLETE') {
+            error("Failed to notarize ${installers[0].name}")
+        }
+
+        sh "curl -o dist/notarized-${installers[0].name} ${service}/${uuid}/download"
     }
 }
 
