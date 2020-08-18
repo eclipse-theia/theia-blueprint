@@ -3,13 +3,9 @@
  */
 
 pipeline {
-    agent any
+    agent none
     options {
         timeout(time: 3, unit: 'HOURS') 
-    }
-    environment {
-        def packageJSON = readJSON file: "package.json"
-        PACKAGE_VERSION = "${packageJSON.version}"
     }
     stages {
         stage('Build') {
@@ -30,10 +26,10 @@ spec:
     resources:
       limits:
         memory: "4Gi"
-        cpu: "1"
+        cpu: "2"
       requests:
         memory: "4Gi"
-        cpu: "1"
+        cpu: "2"
     volumeMounts:
     - name: yarn-cache
       mountPath: /.cache
@@ -53,7 +49,7 @@ spec:
                                 buildInstaller()
                             }
                         }
-                        stash includes: 'dist/theia*', name: 'linux'
+                        stash name: 'linux'
                     }
                 }
                 stage('Create Mac Installer') {
@@ -64,7 +60,7 @@ spec:
                         script {
                             buildInstaller()
                         }
-                        stash includes: 'dist/theia*', name: 'mac'
+                        stash name: 'mac'
                     }
                 }
                 stage('Create Windows Installer') {
@@ -75,7 +71,7 @@ spec:
                         script {
                             buildInstaller()
                         }
-                        stash includes: 'dist/theia*', name: 'win'
+                        stash name: 'win'
                     }
                 }
             }
@@ -132,9 +128,11 @@ def signInstaller(String ext, String url) {
 }
 
 def uploadInstaller(String platform) {
+    def packageJSON = readJSON file: "package.json"
+    String version = "${packageJSON.version}"
     sshagent(['projects-storage.eclipse.org-bot-ssh']) {
-        sh "ssh genie.theia@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/theia/${env.PACKAGE_VERSION}/${platform}"
-        sh "ssh genie.theia@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/theia/${env.PACKAGE_VERSION}/${platform}"
-        sh "scp -r dist/* genie.theia@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/theia/${env.PACKAGE_VERSION}/${platform}"
+        sh "ssh genie.theia@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/theia/${version}/${platform}"
+        sh "ssh genie.theia@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/theia/${version}/${platform}"
+        sh "scp -r dist/* genie.theia@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/theia/${version}/${platform}"
     }
 }
