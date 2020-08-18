@@ -133,6 +133,6 @@ def uploadInstaller(String platform) {
     sshagent(['projects-storage.eclipse.org-bot-ssh']) {
         sh "ssh genie.theia@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/theia/${version}/${platform}"
         sh "ssh genie.theia@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/theia/${version}/${platform}"
-        sh "scp -r dist/* genie.theia@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/theia/${version}/${platform}"
+        sh "scp -r dist/*theia* genie.theia@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/theia/${version}/${platform}"
     }
 }
