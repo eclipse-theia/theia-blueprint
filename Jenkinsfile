@@ -134,20 +134,20 @@ def notarizeInstaller() {
     List installers = findFiles(glob: "dist/signed-*.dmg")
 
     if (installers.size() > 0) {
-        String response = sh(script: "curl -X POST -F file=@${installers[0].path} -F \'options={\"primaryBundleId\": \"app-bundle\", \"staple\": true};type=application/json\' ${service}/notarize", returnStdout: true)
+        String response = sh(script: "curl -X POST -F file=@${installers[0].path} -F \'options={\"primaryBundleId\": \"theia\", \"staple\": true};type=application/json\' ${service}/notarize", returnStdout: true)
 
         def jsonSlurper = new JsonSlurper()
         def json = jsonSlurper.parseText(response)
         String uuid = json.uuid
 
         while(json.notarizationStatus.status == 'IN_PROGRESS') {
-            sleep(10)
+            sleep(30)
             response = sh(script: "curl ${service}/${uuid}/status", returnStdout: true)
             json = jsonSlurper.parseText(response)
         }
 
         if (json.notarizationStatus.status != 'COMPLETE') {
-            error("Failed to notarize ${installers[0].name}")
+            error("Failed to notarize ${installers[0].name}: ${response}")
         }
 
         sh "curl -o dist/notarized-${installers[0].name} ${service}/${uuid}/download"
