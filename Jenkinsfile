@@ -93,7 +93,6 @@ spec:
                     steps {
                         unstash 'mac'
                         script {
-                            signInstaller('dmg', 'macsign')
                             notarizeInstaller()
                             uploadInstaller('macos')
                         }
@@ -104,7 +103,6 @@ spec:
                     steps {
                         unstash 'win'
                         script {
-                            signInstaller('exe', 'winsign')
                             uploadInstaller('windows')
                         }
                     }
@@ -120,13 +118,6 @@ def buildInstaller() {
     sh "yarn cache clean"
     sh "yarn --frozen-lockfile --force"
     sh "yarn package"
-}
-
-def signInstaller(String ext, String url) {
-    List installers = findFiles(glob: "dist/*.${ext}")
-    if (installers.size() > 0) {
-        sh "curl -o dist/signed-${installers[0].name} -F file=@${installers[0].path} http://build.eclipse.org:31338/${url}.php"
-    }
 }
 
 def notarizeInstaller() {

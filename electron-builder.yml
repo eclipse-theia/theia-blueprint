@@ -51,3 +51,6 @@ dmg:
     - x: 122
       y: 240
       type: file
+
+afterPack: ./scripts/after-pack.js
+afterAllArtifactBuild: ./scripts/after-build.js
