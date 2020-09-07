@@ -8,9 +8,9 @@ exports.default = async function (context) {
         return;
     }
 
-    const appPath = `${context.packager.appInfo.productFilename}.app`;
-    const entitlements = path.resolve('..', 'entitlements.plist');
     const command = path.join(__dirname, 'sign.sh');
+    const appPath = `${context.packager.appInfo.productFilename}.app`;
+    const entitlements = path.resolve(__dirname, '..', 'entitlements.plist');
 
     child_process.execFileSync(command, [
         appPath,

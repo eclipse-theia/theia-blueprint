@@ -10,9 +10,9 @@ exports.default = async function (buildResult) {
         return;
     }
 
-    const entitlements = path.resolve('..', 'entitlements.plist');
-    const output = path.join(path.dirname(appPath), `signed-${path.basename(appPath)}`);
     const command = path.join(__dirname, 'sign.sh');
+    const entitlements = path.resolve(__dirname, '..', 'entitlements.plist');
+    const output = path.join(path.dirname(appPath), `signed-${path.basename(appPath)}`);
 
     child_process.execFileSync(command, [
         appPath,
