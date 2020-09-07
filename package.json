@@ -1,8 +1,8 @@
 {
+  "private": true,
   "name": "theia-example",
   "productName": "Theia Electron Example Application",
   "version": "1.5.0",
-  "private": true,
   "main": "src-gen/frontend/electron-main.js",
   "license": "EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0",
   "author": "Rob Moran <github@thegecko.org>",
@@ -31,6 +31,7 @@
     }
   },
   "dependencies": {
+    "@theia/api-samples": "^1.5.0",
     "@theia/callhierarchy": "^1.5.0",
     "@theia/console": "^1.5.0",
     "@theia/core": "^1.5.0",
@@ -42,9 +43,7 @@
     "@theia/filesystem": "^1.5.0",
     "@theia/getting-started": "^1.5.0",
     "@theia/git": "^1.5.0",
-    "@theia/json": "^1.5.0",
     "@theia/keymaps": "^1.5.0",
-    "@theia/languages": "^1.5.0",
     "@theia/markers": "^1.5.0",
     "@theia/messages": "^1.5.0",
     "@theia/metrics": "^1.5.0",
@@ -78,7 +77,8 @@
     "prepare": "yarn build",
     "lint": "theiaext lint",
     "clean": "theia clean",
-    "build": "theia rebuild:electron && theia build",
+    "build": "theia rebuild:electron && theiaext compile && yarn bundle",
+    "bundle": "theia build",
     "watch": "concurrently -n compile,bundle \"theiaext watch --preserveWatchOutput\" \"theia build --watch --mode development\"",
     "start": "theia start --plugins=local-dir:../../plugins",
     "start:debug": "yarn start --log-level=debug",
