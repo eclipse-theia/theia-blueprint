@@ -14,6 +14,12 @@ exports.default = async function (buildResult) {
     const entitlements = path.resolve(__dirname, '..', 'entitlements.plist');
     const output = path.join(path.dirname(appPath), `signed-${path.basename(appPath)}`);
 
+    console.log(command);
+    console.log(appPath);
+    console.log(entitlements);
+    console.log(output);
+    console.log(buildResult.outDir);
+
     child_process.execFileSync(command, [
         appPath,
         entitlements,
