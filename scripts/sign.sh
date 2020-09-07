@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/sh -x
 
 INPUT=$1
 ENTITLEMENTS=$2

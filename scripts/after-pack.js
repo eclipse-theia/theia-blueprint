@@ -12,11 +12,6 @@ exports.default = async function (context) {
     const appPath = `${context.packager.appInfo.productFilename}.app`;
     const entitlements = path.resolve(__dirname, '..', 'entitlements.plist');
 
-    console.log(command);
-    console.log(appPath);
-    console.log(entitlements);
-    console.log(context.appOutDir);
-
     child_process.execFileSync(command, [
         appPath,
         entitlements
