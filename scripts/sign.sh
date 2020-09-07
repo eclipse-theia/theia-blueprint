@@ -27,10 +27,10 @@ else
 fi
 
 if [ "$ENTITLEMENTS" != "" ]; then
-    ENTITLEMENTS="-F entitlements=@entitlements"
-
     # copy entitlements to storage server
     scp $ENTITLEMENTS genie.theia@projects-storage.eclipse.org:./entitlements
+
+    ENTITLEMENTS="-F entitlements=@entitlements"
 fi
 
 # sign over ssh
