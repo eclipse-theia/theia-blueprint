@@ -53,4 +53,3 @@ dmg:
       type: file
 
 afterPack: ./scripts/after-pack.js
-afterAllArtifactBuild: ./scripts/after-build.js

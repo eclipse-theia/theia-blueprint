@@ -9,7 +9,7 @@ pipeline {
         timeout(time: 3, unit: 'HOURS') 
     }
     stages {
-        stage('Build and Sign') {
+        stage('Build') {
             parallel {
                 stage('Create Linux Installer') {
                     agent {
@@ -77,7 +77,7 @@ spec:
                 }
             }
         }
-        stage('Notarize and Upload') {
+        stage('Sign and Upload') {
             parallel {
                 stage('Upload Linux') {
                     agent any
@@ -88,21 +88,23 @@ spec:
                         }
                     }
                 }
-                stage('Notarize and Upload Mac') {
+                stage('Sign, Notarize and Upload Mac') {
                     agent any
                     steps {
                         unstash 'mac'
                         script {
+                            signInstaller('dmg', 'macsign')
                             notarizeInstaller()
                             uploadInstaller('macos')
                         }
                     }
                 }
-                stage('Upload Windows') {
+                stage('Sign and Upload Windows') {
                     agent any
                     steps {
                         unstash 'win'
                         script {
+                            signInstaller('exe', 'winsign')
                             uploadInstaller('windows')
                         }
                     }
@@ -119,6 +121,13 @@ def buildInstaller() {
     sh "yarn --frozen-lockfile --force"
     sshagent(['projects-storage.eclipse.org-bot-ssh']) {
         sh "yarn package"
+    }
+}
+
+def signInstaller(String ext, String url) {
+    List installers = findFiles(glob: "dist/*.${ext}")
+    if (installers.size() > 0) {
+        sh "curl -o dist/signed-${installers[0].name} -F file=@${installers[0].path} http://build.eclipse.org:31338/${url}.php"
     }
 }
 
