@@ -1,5 +1,3 @@
-#!/bin/sh -x
-
 INPUT=$1
 ENTITLEMENTS=$2
 OUTPUT=$3

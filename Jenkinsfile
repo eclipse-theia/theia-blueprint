@@ -88,7 +88,7 @@ spec:
                         }
                     }
                 }
-                stage('Sign and Upload Mac') {
+                stage('Notarize and Upload Mac') {
                     agent any
                     steps {
                         unstash 'mac'
@@ -98,7 +98,7 @@ spec:
                         }
                     }
                 }
-                stage('Sign and Upload Windows') {
+                stage('Upload Windows') {
                     agent any
                     steps {
                         unstash 'win'
