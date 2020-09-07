@@ -9,7 +9,7 @@ pipeline {
         timeout(time: 3, unit: 'HOURS') 
     }
     stages {
-        stage('Build') {
+        stage('Build and Sign') {
             parallel {
                 stage('Create Linux Installer') {
                     agent {
@@ -77,7 +77,7 @@ spec:
                 }
             }
         }
-        stage('Sign and Upload') {
+        stage('Notarize and Upload') {
             parallel {
                 stage('Upload Linux') {
                     agent any
@@ -117,7 +117,9 @@ def buildInstaller() {
     sh "printenv"
     sh "yarn cache clean"
     sh "yarn --frozen-lockfile --force"
-    sh "yarn package"
+    sshagent(['projects-storage.eclipse.org-bot-ssh']) {
+        sh "yarn package"
+    }
 }
 
 def notarizeInstaller() {

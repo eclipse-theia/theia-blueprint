@@ -18,14 +18,34 @@ case "$TYPE" in
 esac
 
 if [ "$TYPE" == "app" ]; then
+    # zip app
     chmod -R a-st $INPUT
     zip -r -q unsigned.zip $INPUT
     rm -rf $INPUT
 
-    curl -o signed.zip -F file=@unsigned.zip $ENTITLEMENTS http://build.eclipse.org:31338/$ENDPOINT.php
+    # copy zip to storage server
+    scp unsigned.zip genie.theia@projects-storage.eclipse.org:./unsigned
 
+    # sign app
+    ssh -q genie.theia@projects-storage.eclipse.org <<ENDSSH
+        curl -o signed -F file=@unsigned $ENTITLEMENTS http://build.eclipse.org:31338/$ENDPOINT.php
+ENDSSH
+
+    # copy signed app back from server
+    scp genie.theia@projects-storage.eclipse.org:./signed ./signed.zip
+
+    # unzip app
     unzip -qq signed.zip
     rm -f unsigned.zip signed.zip
 else
-    curl -o $OUTPUT -F file=@$INPUT $ENTITLEMENTS http://build.eclipse.org:31338/$ENDPOINT.php
+    # copy file to storage server
+    scp $INPUT genie.theia@projects-storage.eclipse.org:./unsigned
+
+    # sign file
+    ssh -q genie.theia@projects-storage.eclipse.org <<ENDSSH
+        curl -o signed -F file=@unsigned $ENTITLEMENTS http://build.eclipse.org:31338/$ENDPOINT.php
+ENDSSH
+
+    # copy signed file back from server
+    scp genie.theia@projects-storage.eclipse.org:./signed ./$OUTPUT
 fi
