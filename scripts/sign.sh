@@ -28,7 +28,7 @@ if [ "$TYPE" == "app" ]; then
 
     # sign app
     ssh -q genie.theia@projects-storage.eclipse.org <<ENDSSH
-        curl -o signed -F file=@unsigned $ENTITLEMENTS http://build.eclipse.org:31338/$ENDPOINT.php
+        curl -o signed -X POST -F file=@unsigned $ENTITLEMENTS http://build.eclipse.org:31338/$ENDPOINT.php
 ENDSSH
 
     # copy signed app back from server
@@ -43,7 +43,7 @@ else
 
     # sign file
     ssh -q genie.theia@projects-storage.eclipse.org <<ENDSSH
-        curl -o signed -F file=@unsigned $ENTITLEMENTS http://build.eclipse.org:31338/$ENDPOINT.php
+        curl -o signed -X POST -F file=@unsigned $ENTITLEMENTS http://build.eclipse.org:31338/$ENDPOINT.php
 ENDSSH
 
     # copy signed file back from server
