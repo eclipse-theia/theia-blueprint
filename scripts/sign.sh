@@ -4,10 +4,6 @@ INPUT=$1
 ENTITLEMENTS=$2
 OUTPUT=$3
 
-if [ "$ENTITLEMENTS" != "" ]; then
-    ENTITLEMENTS="-F entitlements=@$ENTITLEMENTS"
-fi
-
 TYPE=${INPUT##*.}
 case "$TYPE" in
     "exe") ENDPOINT="winsign" ;;
@@ -25,10 +21,22 @@ if [ "$TYPE" == "app" ]; then
 
     # copy zip to storage server
     scp unsigned.zip genie.theia@projects-storage.eclipse.org:./unsigned
+else
+    # copy file to storage server
+    scp $INPUT genie.theia@projects-storage.eclipse.org:./unsigned
+fi
 
-    # sign over ssh
-    ssh -q genie.theia@projects-storage.eclipse.org curl -o signed -F file=@unsigned $ENTITLEMENTS http://build.eclipse.org:31338/$ENDPOINT.php
+if [ "$ENTITLEMENTS" != "" ]; then
+    ENTITLEMENTS="-F entitlements=@entitlements"
 
+    # copy entitlements to storage server
+    scp $ENTITLEMENTS genie.theia@projects-storage.eclipse.org:./entitlements
+fi
+
+# sign over ssh
+ssh -q genie.theia@projects-storage.eclipse.org curl -o signed -F file=@unsigned $ENTITLEMENTS http://build.eclipse.org:31338/$ENDPOINT.php
+
+if [ "$TYPE" == "app" ]; then
     # copy signed app back from server
     scp genie.theia@projects-storage.eclipse.org:./signed ./signed.zip
 
@@ -36,12 +44,6 @@ if [ "$TYPE" == "app" ]; then
     unzip -qq signed.zip
     rm -f unsigned.zip signed.zip
 else
-    # copy file to storage server
-    scp $INPUT genie.theia@projects-storage.eclipse.org:./unsigned
-
-    # sign over ssh
-    ssh -q genie.theia@projects-storage.eclipse.org curl -o signed -F file=@unsigned $ENTITLEMENTS http://build.eclipse.org:31338/$ENDPOINT.php
-
     # copy signed file back from server
     scp genie.theia@projects-storage.eclipse.org:./signed ./$OUTPUT
 fi
