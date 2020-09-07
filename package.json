@@ -76,7 +76,7 @@
     "prepare": "yarn build",
     "lint": "theiaext lint",
     "clean": "theia clean",
-    "build": "theia rebuild:electron && theiaext compile && yarn bundle",
+    "build": "theia rebuild:electron && yarn bundle",
     "bundle": "theia build",
     "watch": "concurrently -n compile,bundle \"theiaext watch --preserveWatchOutput\" \"theia build --watch --mode development\"",
     "start": "theia start --plugins=local-dir:../../plugins",
