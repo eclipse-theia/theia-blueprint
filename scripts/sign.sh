@@ -26,10 +26,8 @@ if [ "$TYPE" == "app" ]; then
     # copy zip to storage server
     scp unsigned.zip genie.theia@projects-storage.eclipse.org:./unsigned
 
-    # sign app
-    ssh -q genie.theia@projects-storage.eclipse.org <<ENDSSH
-        curl -o signed -X POST -F file=@unsigned $ENTITLEMENTS http://build.eclipse.org:31338/$ENDPOINT.php
-ENDSSH
+    # sign over ssh
+    ssh -q genie.theia@projects-storage.eclipse.org curl -o signed -F file=@unsigned $ENTITLEMENTS http://build.eclipse.org:31338/$ENDPOINT.php
 
     # copy signed app back from server
     scp genie.theia@projects-storage.eclipse.org:./signed ./signed.zip
@@ -41,10 +39,8 @@ else
     # copy file to storage server
     scp $INPUT genie.theia@projects-storage.eclipse.org:./unsigned
 
-    # sign file
-    ssh -q genie.theia@projects-storage.eclipse.org <<ENDSSH
-        curl -o signed -X POST -F file=@unsigned $ENTITLEMENTS http://build.eclipse.org:31338/$ENDPOINT.php
-ENDSSH
+    # sign over ssh
+    ssh -q genie.theia@projects-storage.eclipse.org curl -o signed -F file=@unsigned $ENTITLEMENTS http://build.eclipse.org:31338/$ENDPOINT.php
 
     # copy signed file back from server
     scp genie.theia@projects-storage.eclipse.org:./signed ./$OUTPUT
