@@ -45,5 +45,5 @@ if [ "$TYPE" == "app" ]; then
     rm -f unsigned.zip signed.zip
 else
     # copy signed file back from server
-    scp genie.theia@projects-storage.eclipse.org:./signed ./$OUTPUT
+    scp genie.theia@projects-storage.eclipse.org:./signed $OUTPUT
 fi
