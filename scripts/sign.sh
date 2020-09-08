@@ -20,8 +20,8 @@ ssh -q genie.theia@projects-storage.eclipse.org curl -o signed.zip -F file=@unsi
 # copy signed app back from server
 scp genie.theia@projects-storage.eclipse.org:./signed.zip ./signed.zip
 
-actualSize=$(wc -c signed.zip | cut -f 1 -d ' ')
-if [ $actualSize -lt 40000000 ]; then
+actualSize=$(stat -c%s signed.zip)
+if [[ $actualSize -lt 40000000 ]]; then
     echo "signed.zip is just $actualSize bytes large!"
     echo ""
     cat signed.zip
