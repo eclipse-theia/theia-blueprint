@@ -9,16 +9,16 @@ zip -r -q unsigned.zip $INPUT
 rm -rf $INPUT
 
 # copy zip to storage server
-scp unsigned.zip genie.theia@projects-storage.eclipse.org:./unsigned.zip
+scp unsigned.zip genie.theia@projects-storage.eclipse.org:./
 
 # copy entitlements to storage server
-scp $ENTITLEMENTS genie.theia@projects-storage.eclipse.org:./entitlements.plist
+scp $ENTITLEMENTS genie.theia@projects-storage.eclipse.org:./
 
 # sign over ssh
 ssh -q genie.theia@projects-storage.eclipse.org curl -o signed.zip -F file=@unsigned.zip -F entitlements=@entitlements.plist http://build.eclipse.org:31338/macsign.php
 
 # copy signed app back from server
-scp genie.theia@projects-storage.eclipse.org:./signed.zip ./signed.zip
+scp genie.theia@projects-storage.eclipse.org:./signed.zip ./
 
 # unzip app
 unzip -qq signed.zip
