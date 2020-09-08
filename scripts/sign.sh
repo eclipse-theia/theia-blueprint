@@ -9,16 +9,25 @@ zip -r -q unsigned.zip $INPUT
 rm -rf $INPUT
 
 # copy zip to storage server
-scp unsigned.zip genie.theia@projects-storage.eclipse.org:./
+scp unsigned.zip genie.theia@projects-storage.eclipse.org:./unsigned.zip
 
 # copy entitlements to storage server
-scp $ENTITLEMENTS genie.theia@projects-storage.eclipse.org:./
+scp $ENTITLEMENTS genie.theia@projects-storage.eclipse.org:./entitlements.plist
 
 # sign over ssh
 ssh -q genie.theia@projects-storage.eclipse.org curl -o signed.zip -F file=@unsigned.zip -F entitlements=@entitlements.plist http://build.eclipse.org:31338/macsign.php
 
 # copy signed app back from server
-scp genie.theia@projects-storage.eclipse.org:./signed.zip ./
+scp genie.theia@projects-storage.eclipse.org:./signed.zip ./signed.zip
+
+actualSize=$(wc -c signed.zip | cut -f 1 -d ' ')
+if [ $actualSize -lt 40000000 ]; then
+    echo "signed.zip is just $actualSize bytes large!"
+    echo ""
+    cat signed.zip
+    echo ""
+    exit 1
+fi
 
 # unzip app
 unzip -qq signed.zip
