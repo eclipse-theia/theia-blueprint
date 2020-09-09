@@ -1,5 +1,7 @@
 #!/bin/bash -x
 
+set -x
+
 INPUT=$1
 ENTITLEMENTS=$2
 
@@ -24,7 +26,6 @@ scp genie.theia@projects-storage.eclipse.org:./signed.zip ./signed.zip
 
 cat signed.zip
 stat -c%s signed.zip
-exit 1
 
 # unzip app
 unzip -qq signed.zip
