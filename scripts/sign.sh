@@ -16,11 +16,14 @@ scp $ENTITLEMENTS genie.theia@projects-storage.eclipse.org:./entitlements.plist
 
 # sign over ssh
 ssh -q genie.theia@projects-storage.eclipse.org curl -o signed.zip -F file=@unsigned.zip -F entitlements=@entitlements.plist http://build.eclipse.org:31338/macsign.php
+ssh -q genie.theia@projects-storage.eclipse.org cat signed.zip
+ssh -q genie.theia@projects-storage.eclipse.org stat -c%s signed.zip
 
 # copy signed app back from server
 scp genie.theia@projects-storage.eclipse.org:./signed.zip ./signed.zip
 
 cat signed.zip
+stat -c%s signed.zip
 exit 1
 
 # unzip app
