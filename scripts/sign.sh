@@ -5,7 +5,7 @@ ENTITLEMENTS=$2
 
 # zip app
 chmod -R a-st $INPUT
-zip -r -q unsigned.zip $INPUT
+zip -r -q --symlinks unsigned.zip $INPUT
 rm -rf $INPUT
 
 # copy zip to storage server
@@ -26,8 +26,8 @@ actualSize=$(stat -f%z signed.zip)
 # file is too small, it's likely an error so show it
 if [ $actualSize -lt 40000000 ]; then
     echo "signed.zip is just $actualSize bytes large!"
-    echo ""
-    cat signed.zip
+    output=$(cat signed.zip)
+    echo "$output"
 fi
 
 # unzip app
