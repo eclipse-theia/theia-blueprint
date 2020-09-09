@@ -15,7 +15,8 @@
     "url": "git+https://github.com/eclipse-theia/theia-example.git"
   },
   "engines": {
-    "node": ">=10.2.0"
+    "yarn": "1.0.x || >=1.2.1",
+    "node": ">=12.14.1 <13"
   },
   "theia": {
     "target": "electron",
@@ -70,7 +71,7 @@
   },
   "devDependencies": {
     "@theia/cli": "^1.5.0",
-    "electron-builder": "^22.8.0"
+    "electron-builder": "20.44.4"
   },
   "scripts": {
     "prepare": "yarn build",
