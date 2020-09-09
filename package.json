@@ -82,7 +82,7 @@
     "start": "theia start --plugins=local-dir:../../plugins",
     "start:debug": "yarn start --log-level=debug",
     "test": "electron-mocha --timeout 60000 \"./lib/test/**/*.espec.js\"",
-    "package": "electron-builder -c.mac.identity=null --publish never",
+    "package": "ELECTRON_BUILDER_ALLOW_UNRESOLVED_DEPENDENCIES=true electron-builder -c.mac.identity=null --publish never",
     "package:preview": "electron-builder --dir"
   }
 }
