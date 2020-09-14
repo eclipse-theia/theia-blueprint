@@ -5,7 +5,8 @@ ENTITLEMENTS=$2
 
 # zip app
 chmod -R a-st $INPUT
-zip -r -q --symlinks unsigned.zip $INPUT
+zip -r -v --symlinks unsigned.zip $INPUT
+unzip -Z unsigned.zip
 rm -rf $INPUT
 
 # copy zip to storage server
