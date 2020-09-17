@@ -119,6 +119,7 @@ def buildInstaller() {
     sh "printenv"
     sh "yarn cache clean"
     sh "yarn --frozen-lockfile --force"
+    sh "rm -rf ./dist"
     sshagent(['projects-storage.eclipse.org-bot-ssh']) {
         sh "yarn package"
     }
@@ -126,17 +127,18 @@ def buildInstaller() {
 
 def signInstaller(String ext, String url) {
     List installers = findFiles(glob: "dist/*.${ext}")
+
     if (installers.size() == 1) {
         sh "curl -o dist/signed-${installers[0].name} -F file=@${installers[0].path} http://build.eclipse.org:31338/${url}.php"
         sh "rm ${installers[0].path}"
     } else {
-        error("Error during signing: installer not found or multiple installers exist")
+        error("Error during signing: installer not found or multiple installers exist: ${installers.size()}")
     }
 }
 
 def notarizeInstaller() {
     String service = 'http://172.30.206.146:8383/macos-notarization-service'
-    List installers = findFiles(glob: "dist/signed-*.dmg")
+    List installers = findFiles(glob: "dist/*.dmg")
 
     if (installers.size() == 1) {
         String response = sh(script: "curl -X POST -F file=@${installers[0].path} -F \'options={\"primaryBundleId\": \"theia\", \"staple\": true};type=application/json\' ${service}/notarize", returnStdout: true)
@@ -158,7 +160,7 @@ def notarizeInstaller() {
         sh "curl -o dist/notarized-${installers[0].name} ${service}/${uuid}/download"
         sh "rm ${installers[0].path}"
     } else {
-        error("Error during notarization: installer not found or multiple installers exist")
+        error("Error during notarization: installer not found or multiple installers exist: ${installers.size()}")
     }
 }
 
@@ -168,6 +170,6 @@ def uploadInstaller(String platform) {
     sshagent(['projects-storage.eclipse.org-bot-ssh']) {
         sh "ssh genie.theia@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/theia/${version}/${platform}"
         sh "ssh genie.theia@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/theia/${version}/${platform}"
-        sh "scp -r dist/*theia*${version}* genie.theia@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/theia/${version}/${platform}"
+        sh "scp -r dist/* genie.theia@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/theia/${version}/${platform}"
     }
 }
