@@ -70,7 +70,8 @@
   },
   "devDependencies": {
     "@theia/cli": "^1.5.0",
-    "electron-builder": "^22.8.0"
+    "electron-builder": "^22.8.0",
+    "rimraf": "^2.7.1"
   },
   "scripts": {
     "prepare": "yarn build",
