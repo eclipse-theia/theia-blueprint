@@ -126,8 +126,11 @@ def buildInstaller() {
 
 def signInstaller(String ext, String url) {
     List installers = findFiles(glob: "dist/*.${ext}")
-    if (installers.size() > 0) {
+    if (installers.size() == 1) {
         sh "curl -o dist/signed-${installers[0].name} -F file=@${installers[0].path} http://build.eclipse.org:31338/${url}.php"
+        sh "rm ${installers[0].path}"
+    } else {
+        error("Error during signing: installer not found or multiple installers exist")
     }
 }
 
@@ -135,7 +138,7 @@ def notarizeInstaller() {
     String service = 'http://172.30.206.146:8383/macos-notarization-service'
     List installers = findFiles(glob: "dist/signed-*.dmg")
 
-    if (installers.size() > 0) {
+    if (installers.size() == 1) {
         String response = sh(script: "curl -X POST -F file=@${installers[0].path} -F \'options={\"primaryBundleId\": \"theia\", \"staple\": true};type=application/json\' ${service}/notarize", returnStdout: true)
 
         def jsonSlurper = new JsonSlurper()
@@ -153,6 +156,9 @@ def notarizeInstaller() {
         }
 
         sh "curl -o dist/notarized-${installers[0].name} ${service}/${uuid}/download"
+        sh "rm ${installers[0].path}"
+    } else {
+        error("Error during notarization: installer not found or multiple installers exist")
     }
 }
 

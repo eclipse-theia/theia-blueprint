@@ -8,6 +8,9 @@ chmod -R a-st $INPUT
 zip -r -q --symlinks unsigned.zip $INPUT
 rm -rf $INPUT
 
+# ensure storage server is clean
+ssh -q genie.theia@projects-storage.eclipse.org rm -f unsigned.zip signed.zip entitlements.plist
+
 # copy zip to storage server
 scp unsigned.zip genie.theia@projects-storage.eclipse.org:./unsigned.zip
 
