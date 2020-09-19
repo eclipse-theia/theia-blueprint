@@ -8,33 +8,33 @@ NEEDS_UNZIP=false
 if [ -d "$INPUT" ]; then
     NEEDS_UNZIP=true
 
-    chmod -R a-st $INPUT
-    zip -r -q --symlinks unsigned.zip $INPUT
-    rm -rf $INPUT
+    chmod -R a-st "$INPUT"
+    zip -r -q --symlinks unsigned.zip "$INPUT"
+    rm -rf "$INPUT"
     INPUT=unsigned.zip
 fi
 
 # copy file to storage server
-scp $INPUT genie.theia@projects-storage.eclipse.org:./
-rm -f $INPUT
+scp "$INPUT" genie.theia@projects-storage.eclipse.org:./
+rm -f "$INPUT"
 
 # copy entitlements to storage server
-scp $ENTITLEMENTS genie.theia@projects-storage.eclipse.org:./entitlements.plist
+scp "$ENTITLEMENTS" genie.theia@projects-storage.eclipse.org:./entitlements.plist
 
 # name to use on server
 REMOTE_NAME=${INPUT##*/}
 
 # sign over ssh
-ssh -q genie.theia@projects-storage.eclipse.org curl -o signed-$REMOTE_NAME -F file=@$REMOTE_NAME -F entitlements=@entitlements.plist http://build.eclipse.org:31338/macsign.php
+ssh -q genie.theia@projects-storage.eclipse.org curl -o "signed-$REMOTE_NAME" -F file=@"$REMOTE_NAME" -F entitlements=@entitlements.plist http://build.eclipse.org:31338/macsign.php
 
 # copy signed file back from server
-scp genie.theia@projects-storage.eclipse.org:./signed-$REMOTE_NAME $INPUT
+scp genie.theia@projects-storage.eclipse.org:"./signed-$REMOTE_NAME" "$INPUT"
 
 # ensure storage server is clean
-ssh -q genie.theia@projects-storage.eclipse.org rm -f $REMOTE_NAME signed-$REMOTE_NAME entitlements.plist
+ssh -q genie.theia@projects-storage.eclipse.org rm -f "$REMOTE_NAME" "signed-$REMOTE_NAME" entitlements.plist
 
 # if unzip needed
 if [ "$NEEDS_UNZIP" = true ]; then
-    unzip -qq $INPUT
-    rm -f $INPUT
+    unzip -qq "$INPUT"
+    rm -f "$INPUT"
 fi
