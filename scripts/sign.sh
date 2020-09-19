@@ -42,5 +42,5 @@ fi
 # echo contents if it's not executable
 if [[ ! -x "$INPUT" ]]; then
     output=$(cat $INPUT)
-    echo "$output"
+#    echo "$output"
 fi
