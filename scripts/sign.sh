@@ -38,9 +38,3 @@ if [ "$NEEDS_UNZIP" = true ]; then
     unzip -qq $INPUT
     rm -f $INPUT
 fi
-
-# echo contents if it's not executable
-if [[ ! -x "$INPUT" ]]; then
-    output=$(cat $INPUT)
-#    echo "$output"
-fi
