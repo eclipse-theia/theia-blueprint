@@ -14,15 +14,15 @@ if [ -d "$INPUT" ]; then
     INPUT=unsigned.zip
 fi
 
-# name to use on server
-REMOTE_NAME=${INPUT##*/}
-
 # copy file to storage server
-scp $INPUT genie.theia@projects-storage.eclipse.org:./$REMOTE_NAME
+scp $INPUT genie.theia@projects-storage.eclipse.org:./
 rm -f $INPUT
 
 # copy entitlements to storage server
 scp $ENTITLEMENTS genie.theia@projects-storage.eclipse.org:./entitlements.plist
+
+# name to use on server
+REMOTE_NAME=${INPUT##*/}
 
 # sign over ssh
 ssh -q genie.theia@projects-storage.eclipse.org curl -o signed-$REMOTE_NAME -F file=@$REMOTE_NAME -F entitlements=@entitlements.plist http://build.eclipse.org:31338/macsign.php
