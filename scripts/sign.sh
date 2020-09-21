@@ -36,5 +36,12 @@ ssh -q genie.theia@projects-storage.eclipse.org rm -f \"${REMOTE_NAME}\" \"signe
 # if unzip needed
 if [ "$NEEDS_UNZIP" = true ]; then
     unzip -qq "${INPUT}"
+
+    if [ $? -ne 0 ]; then
+        # echo contents if unzip failed
+        output=$(cat $INPUT)	
+        echo "$output"	
+    fi
+
     rm -f "${INPUT}"
 fi

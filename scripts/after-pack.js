@@ -10,8 +10,21 @@ const DELETE_PATHS = [
     'Contents/Resources/app/node_modules/unzip-stream/testData*'
 ];
 
-exports.default = async function (context) {
+const signCommand = path.join(__dirname, 'sign.sh');
+const entitlements = path.resolve(__dirname, '..', 'entitlements.plist');
 
+const signFile = (file, cwd) => {
+    console.log(`Signing ${file}...`);
+
+    child_process.execFileSync(signCommand, [
+        file,
+        entitlements
+    ], {
+        cwd
+    });
+};
+
+exports.default = async function (context) {
     const appName = `${context.packager.appInfo.productFilename}.app`;
     const appPath = path.resolve(context.appOutDir, appName);
 
@@ -34,26 +47,9 @@ exports.default = async function (context) {
         return bDepth - aDepth
     });
 
-    const command = path.join(__dirname, 'sign.sh');
-    const entitlements = path.resolve(__dirname, '..', 'entitlements.plist');
-
     // Sign binaries
-    childPaths.forEach(file => {
-        console.log(`Signing ${file}...`);
-        child_process.execFileSync(command, [
-            file,
-            entitlements
-        ], {
-            cwd: context.appOutDir
-        });
-    });
+    childPaths.forEach(file => signFile(file, context.appOutDir));
 
     // Sign final app
-    console.log(`Signing ${appName}...`);
-    child_process.execFileSync(command, [
-        appName,
-        entitlements
-    ], {
-        cwd: context.appOutDir
-    });
+    signFile(appName, context.appOutDir);
 }
