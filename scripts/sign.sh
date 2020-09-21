@@ -24,13 +24,13 @@ scp "${ENTITLEMENTS}" genie.theia@projects-storage.eclipse.org:./entitlements.pl
 REMOTE_NAME=${INPUT##*/}
 
 # sign over ssh
-ssh -q genie.theia@projects-storage.eclipse.org curl -o \"signed-${REMOTE_NAME}\" -F file=@\"${REMOTE_NAME}\" -F entitlements=@entitlements.plist http://build.eclipse.org:31338/macsign.php
+ssh -q genie.theia@projects-storage.eclipse.org curl -o \""signed-${REMOTE_NAME}"\" -F file=@\""${REMOTE_NAME}"\" -F entitlements=@entitlements.plist http://build.eclipse.org:31338/macsign.php
 
 # copy signed file back from server
-scp genie.theia@projects-storage.eclipse.org:\"./signed-${REMOTE_NAME}\" "${INPUT}"
+scp genie.theia@projects-storage.eclipse.org:\""./signed-${REMOTE_NAME}"\" "${INPUT}"
 
 # ensure storage server is clean
-ssh -q genie.theia@projects-storage.eclipse.org rm -f \"${REMOTE_NAME}\" \"signed-${REMOTE_NAME}\" entitlements.plist
+ssh -q genie.theia@projects-storage.eclipse.org rm -f \""${REMOTE_NAME}"\" \""signed-${REMOTE_NAME}"\" entitlements.plist
 
 # if unzip needed
 if [ "$NEEDS_UNZIP" = true ]; then
