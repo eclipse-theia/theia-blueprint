@@ -8,7 +8,6 @@ NEEDS_UNZIP=false
 if [ -d "${INPUT}" ]; then
     NEEDS_UNZIP=true
 
-    chmod -R a-st "${INPUT}"
     zip -r -q --symlinks unsigned.zip "${INPUT}"
     rm -rf "${INPUT}"
     INPUT=unsigned.zip
