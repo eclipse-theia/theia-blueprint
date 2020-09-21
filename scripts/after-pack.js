@@ -1,4 +1,3 @@
-const fs = require('fs');
 const path = require('path');
 const util = require('util');
 const child_process = require('child_process');
@@ -14,13 +13,6 @@ const signCommand = path.join(__dirname, 'sign.sh');
 const entitlements = path.resolve(__dirname, '..', 'entitlements.plist');
 
 const signFile = file => {
-    const stat = fs.lstatSync(file);
-
-    if (stat.isDirectory()) {
-        console.log(`Skipping directory ${file}...`);
-        return;
-    }
-
     console.log(`Signing ${file}...`);
     child_process.execFileSync(signCommand, [
         path.basename(file),
@@ -31,11 +23,9 @@ const signFile = file => {
 };
 
 exports.default = async function(context) {
-    const appName = `${context.packager.appInfo.productFilename}.app`;
-
     // Remove anything we don't want in the final package
     for (const deletePath of DELETE_PATHS) {
-        const resolvedPath = path.resolve(context.appOutDir, appName, deletePath);
+        const resolvedPath = path.resolve(context.appOutDir, `${context.packager.appInfo.productFilename}.app`, deletePath);
         console.log(`Deleting ${resolvedPath}...`);
         await asynfRimraf(resolvedPath);
     }
@@ -58,12 +48,4 @@ exports.default = async function(context) {
 
     // Sign binaries
     childPaths.forEach(file => signFile(file, context.appOutDir));
-
-    // Sign final app
-    child_process.execFileSync(signCommand, [	
-        appName,	
-        entitlements	
-    ], {	
-        cwd: context.appOutDir	
-    });
 }
