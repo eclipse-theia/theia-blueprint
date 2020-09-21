@@ -1,4 +1,4 @@
-const fs = require('fs').promises;
+const fs = require('fs');
 const path = require('path');
 const util = require('util');
 const child_process = require('child_process');
@@ -14,7 +14,7 @@ const signCommand = path.join(__dirname, 'sign.sh');
 const entitlements = path.resolve(__dirname, '..', 'entitlements.plist');
 
 const signFile = file => {
-    const stat = await fs.lstat(file);
+    const stat = fs.lstatSync(file);
 
     if (stat.isDirectory()) {
         console.log(`Skipping directory ${file}...`);
