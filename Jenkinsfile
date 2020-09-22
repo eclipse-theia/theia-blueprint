@@ -117,7 +117,6 @@ spec:
 def buildInstaller() {
     checkout scm
     sh "printenv"
-    sh "yarn clean"
     sh "yarn cache clean"
     sh "yarn --frozen-lockfile --force"
     sh "rm -rf ./dist"
