@@ -1,8 +1,9 @@
+appId: org.theia-ide
+productName: Theia
+copyright: Copyright © 2020 Eclipse Foundation, Inc
 electronDist: node_modules/electron/dist
-productName: theia
-appId: theia
-
 asar: false
+
 directories:
   buildResources: resources
 files:
