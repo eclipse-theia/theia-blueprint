@@ -1,3 +1,4 @@
+const fs = require('fs');
 const path = require('path');
 const util = require('util');
 const child_process = require('child_process');
@@ -13,6 +14,9 @@ const signCommand = path.join(__dirname, 'sign.sh');
 const entitlements = path.resolve(__dirname, '..', 'entitlements.plist');
 
 const signFile = file => {
+    const stat = fs.lstatSync(file);
+    const mode = stat.isFile() ? stat.mode : undefined;
+
     console.log(`Signing ${file}...`);
     child_process.execFileSync(signCommand, [
         path.basename(file),
@@ -20,6 +24,11 @@ const signFile = file => {
     ], {
         cwd: path.dirname(file)
     });
+
+    if (mode) {
+        console.log(`Setting attributes of ${file}...`);
+        fs.chmodSync(file, mode);
+    }
 };
 
 exports.default = async function(context) {
