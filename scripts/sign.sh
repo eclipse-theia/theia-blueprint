@@ -14,11 +14,11 @@ if [ -d "${INPUT}" ]; then
 fi
 
 # copy file to storage server
-scp "${INPUT}" genie.theia@projects-storage.eclipse.org:./
+scp -p "${INPUT}" genie.theia@projects-storage.eclipse.org:./
 rm -f "${INPUT}"
 
 # copy entitlements to storage server
-scp "${ENTITLEMENTS}" genie.theia@projects-storage.eclipse.org:./entitlements.plist
+scp -p "${ENTITLEMENTS}" genie.theia@projects-storage.eclipse.org:./entitlements.plist
 
 # name to use on server
 REMOTE_NAME=${INPUT##*/}
@@ -27,7 +27,7 @@ REMOTE_NAME=${INPUT##*/}
 ssh -q genie.theia@projects-storage.eclipse.org curl -o "\"signed-${REMOTE_NAME}\"" -F file=@"\"${REMOTE_NAME}\"" -F entitlements=@entitlements.plist http://build.eclipse.org:31338/macsign.php
 
 # copy signed file back from server
-scp genie.theia@projects-storage.eclipse.org:"\"./signed-${REMOTE_NAME}\"" "${INPUT}"
+scp -p genie.theia@projects-storage.eclipse.org:"\"./signed-${REMOTE_NAME}\"" "${INPUT}"
 
 # ensure storage server is clean
 ssh -q genie.theia@projects-storage.eclipse.org rm -f "\"${REMOTE_NAME}\"" "\"signed-${REMOTE_NAME}\"" entitlements.plist
