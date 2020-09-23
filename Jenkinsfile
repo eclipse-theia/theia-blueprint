@@ -141,7 +141,7 @@ def notarizeInstaller(String ext) {
     List installers = findFiles(glob: "dist/*.${ext}")
 
     if (installers.size() == 1) {
-        String response = sh(script: "curl -X POST -F file=@${installers[0].path} -F \'options={\"primaryBundleId\": \"theia\", \"staple\": true};type=application/json\' ${service}/notarize", returnStdout: true)
+        String response = sh(script: "curl -X POST -F file=@${installers[0].path} -F \'options={\"primaryBundleId\": \"eclipse.theia\", \"staple\": true};type=application/json\' ${service}/notarize", returnStdout: true)
 
         def jsonSlurper = new JsonSlurper()
         def json = jsonSlurper.parseText(response)
