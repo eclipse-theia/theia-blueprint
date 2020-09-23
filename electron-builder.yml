@@ -26,6 +26,7 @@ mac:
 linux:
   icon: resources/icons
   category: Development
+  vendor: Eclipse Foundation, Inc
   target:
     - deb
     - AppImage
