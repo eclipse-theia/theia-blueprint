@@ -14,24 +14,22 @@ files:
   - package.json
 
 win:
+  icon: resources/icon.ico
   target:
     - nsis
 mac:
   icon: resources/icon.icns
+  category: public.app-category.developer-tools
   darkModeSupport: true
-  gatekeeperAssess: false
   target:
     - pkg
-    - dmg
 linux:
+  icon: resources/icons
+  category: Development
   target:
     - deb
     - AppImage
-  category: Development
-  icon: resources/icons
 
-appImage:
-  artifactName: ${productName}-${version}.${ext}
 nsis:
   menuCategory: true
   oneClick: false
@@ -43,19 +41,9 @@ nsis:
   uninstallerSidebar: resources/installerSidebar.bmp
   allowToChangeInstallationDirectory: true
   runAfterFinish: false
-  artifactName: ${productName}-Installer-${version}.${ext}
+  artifactName: ${productName}-${version}.${ext}
   license: LICENSE
 pkg:
   license: LICENSE
-dmg:
-  iconSize: 128
-  contents:	
-    - x: 380	
-      y: 240	
-      type: link	
-      path: /Applications	
-    - x: 122	
-      y: 240	
-      type: file
 
 afterPack: ./scripts/after-pack.js
