@@ -93,7 +93,7 @@ spec:
                     steps {
                         unstash 'mac'
                         script {
-                            signInstaller('dmg', 'macsign')
+                            signInstaller('pkg', 'macsign')
                             notarizeInstaller()
                             uploadInstaller('macos')
                         }
@@ -138,7 +138,7 @@ def signInstaller(String ext, String url) {
 
 def notarizeInstaller() {
     String service = 'http://172.30.206.146:8383/macos-notarization-service'
-    List installers = findFiles(glob: "dist/*.dmg")
+    List installers = findFiles(glob: "dist/*.pkg")
 
     if (installers.size() == 1) {
         String response = sh(script: "curl -X POST -F file=@${installers[0].path} -F \'options={\"primaryBundleId\": \"theia\", \"staple\": true};type=application/json\' ${service}/notarize", returnStdout: true)
