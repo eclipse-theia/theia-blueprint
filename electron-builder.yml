@@ -19,8 +19,10 @@ win:
 mac:
   icon: resources/icon.icns
   darkModeSupport: true
+  gatekeeperAssess: false
   target:
     - pkg
+    - dmg
 linux:
   target:
     - deb
@@ -45,5 +47,15 @@ nsis:
   license: LICENSE
 pkg:
   license: LICENSE
+dmg:
+  iconSize: 128
+  contents:	
+    - x: 380	
+      y: 240	
+      type: link	
+      path: /Applications	
+    - x: 122	
+      y: 240	
+      type: file
 
 afterPack: ./scripts/after-pack.js
