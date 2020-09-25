@@ -3,6 +3,8 @@
 INPUT=$1
 APP_ID=$2
 NEEDS_UNZIP=false
+UUID_REGEX='"uuid"\s*:\s*"([^"]+)'
+STATUS_REGEX='"status"\s*:\s*"([^"]+)'
 
 # if folder, zip it
 if [ -d "${INPUT}" ]; then
@@ -22,14 +24,18 @@ REMOTE_NAME=${INPUT##*/}
 
 # notarize over ssh
 RESPONSE=$(ssh -q genie.theia@projects-storage.eclipse.org curl -X POST -F file=@"\"${REMOTE_NAME}\"" -F "'options={\"primaryBundleId\": \"${APP_ID}\", \"staple\": true};type=application/json'" http://172.30.206.146:8383/macos-notarization-service/notarize)
-UUID=$(echo $RESPONSE | grep -Po '"uuid"\s*:\s*"\K[^"]+')
-STATUS=$(echo $RESPONSE | grep -Po '"status"\s*:\s*"\K[^"]+')
+[[ $RESPONSE =~ $UUID_REGEX ]]
+UUID=${BASH_REMATCH[1]}
+[[ $RESPONSE =~ $STATUS_REGEX ]]
+STATUS=${BASH_REMATCH[1]}
+
 echo "  Progress: $RESPONSE"
 
 while [[ $STATUS == 'IN_PROGRESS' ]]; do
     sleep 1m
     RESPONSE=$(ssh -q genie.theia@projects-storage.eclipse.org curl -s http://172.30.206.146:8383/macos-notarization-service/$UUID/status)
-    STATUS=$(echo $RESPONSE | grep -Po '"status"\s*:\s*"\K[^"]+')
+    [[ $RESPONSE =~ $STATUS_REGEX ]]
+    STATUS=${BASH_REMATCH[1]}
     echo "  Progress: $RESPONSE"
 done
 
