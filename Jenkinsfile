@@ -64,17 +64,6 @@ spec:
                         stash name: 'mac'
                     }
                 }
-                stage('Create Windows Installer') {
-                    agent {
-                        label 'windows'
-                    }
-                    steps {
-                        script {
-                            buildInstaller()
-                        }
-                        stash name: 'win'
-                    }
-                }
             }
         }
         stage('Sign and Upload') {
