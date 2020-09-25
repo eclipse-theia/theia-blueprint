@@ -23,7 +23,7 @@ rm -f "${INPUT}"
 REMOTE_NAME=${INPUT##*/}
 
 # notarize over ssh
-RESPONSE=$(ssh -q genie.theia@projects-storage.eclipse.org curl -X POST -F file=@"\"${REMOTE_NAME}\"" -F "'options={\"primaryBundleId\": \"${APP_ID}\", \"staple\": false};type=application/json'" http://172.30.206.146:8383/macos-notarization-service/notarize)
+RESPONSE=$(ssh -q genie.theia@projects-storage.eclipse.org curl -X POST -F file=@"\"${REMOTE_NAME}\"" -F "'options={\"primaryBundleId\": \"${APP_ID}\", \"staple\": true};type=application/json'" http://172.30.206.146:8383/macos-notarization-service/notarize)
 [[ $RESPONSE =~ $UUID_REGEX ]]
 UUID=${BASH_REMATCH[1]}
 [[ $RESPONSE =~ $STATUS_REGEX ]]
