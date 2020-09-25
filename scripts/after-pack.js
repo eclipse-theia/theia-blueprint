@@ -11,6 +11,7 @@ const DELETE_PATHS = [
 ];
 
 const signCommand = path.join(__dirname, 'sign.sh');
+const notarizeCommand = path.join(__dirname, 'notarize.sh');
 const entitlements = path.resolve(__dirname, '..', 'entitlements.plist');
 
 const signFile = file => {
@@ -32,9 +33,11 @@ const signFile = file => {
 };
 
 exports.default = async function(context) {
+    const appPath = path.resolve(context.appOutDir, `${context.packager.appInfo.productFilename}.app`);
+
     // Remove anything we don't want in the final package
     for (const deletePath of DELETE_PATHS) {
-        const resolvedPath = path.resolve(context.appOutDir, `${context.packager.appInfo.productFilename}.app`, deletePath);
+        const resolvedPath = path.resolve(appPath, deletePath);
         console.log(`Deleting ${resolvedPath}...`);
         await asynfRimraf(resolvedPath);
     }
@@ -57,4 +60,12 @@ exports.default = async function(context) {
 
     // Sign binaries
     childPaths.forEach(file => signFile(file, context.appOutDir));
+
+    // Notarize app
+    child_process.execFileSync(notarizeCommand, [
+        path.basename(appPath),
+        context.packager.appInfo.info._configuration.appId
+    ], {
+        cwd: path.dirname(appPath)
+    });
 }
