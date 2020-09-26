@@ -7,8 +7,7 @@ NEEDS_UNZIP=false
 # if folder, zip it
 if [ -d "${INPUT}" ]; then
     NEEDS_UNZIP=true
-    chmod -R a-st "${INPUT}"
-    zip -r -q --symlinks unsigned.zip "${INPUT}"
+    zip -r -q -y unsigned.zip "${INPUT}"
     rm -rf "${INPUT}"
     INPUT=unsigned.zip
 fi
@@ -38,8 +37,9 @@ if [ "$NEEDS_UNZIP" = true ]; then
 
     if [ $? -ne 0 ]; then
         # echo contents if unzip failed
-        output=$(cat $INPUT)	
-        echo "$output"	
+        output=$(cat $INPUT)
+        echo "$output"
+        exit 1
     fi
 
     rm -f "${INPUT}"
