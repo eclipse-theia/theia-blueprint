@@ -7,6 +7,7 @@ const sign_util = require('app-builder-lib/electron-osx-sign/util');
 const asynfRimraf = util.promisify(rimraf);
 
 const DELETE_PATHS = [
+    'Contents/Resources/app/node_modules/unzip-stream/aa.zip',
     'Contents/Resources/app/node_modules/unzip-stream/testData*'
 ];
 
