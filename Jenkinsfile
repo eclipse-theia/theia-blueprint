@@ -158,9 +158,9 @@ def notarizeInstaller(String ext) {
             error("Failed to notarize ${installers[0].name}: ${response}")
         }
 
-        sh "curl -o dist/notarized-${installers[0].name} ${service}/${uuid}/download"
+        sh "curl -o dist/stapled-${installers[0].name} ${service}/${uuid}/download"
         sh "rm ${installers[0].path}"
-        sh "mv dist/notarized-${installers[0].name} ${installers[0].path}"
+        sh "mv dist/stapled-${installers[0].name} ${installers[0].path}"
     } else {
         error("Error during notarization: installer not found or multiple installers exist: ${installers.size()}")
     }
