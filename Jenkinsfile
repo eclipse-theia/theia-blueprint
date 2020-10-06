@@ -94,7 +94,6 @@ spec:
                         unstash 'mac'
                         script {
                             signInstaller('dmg', 'macsign')
-                            notarizeInstaller('dmg')
                             signInstaller('pkg', 'macsign')
                             uploadInstaller('macos')
                         }
