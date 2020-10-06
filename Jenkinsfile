@@ -96,7 +96,6 @@ spec:
                             signInstaller('dmg', 'macsign')
                             notarizeInstaller('dmg')
                             signInstaller('pkg', 'macsign')
-                            notarizeInstaller('pkg')
                             uploadInstaller('macos')
                         }
                     }
