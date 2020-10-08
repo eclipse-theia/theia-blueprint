@@ -24,7 +24,7 @@ install:
 - npm install -g yarn
 
 script: 
-- yarn && travis_wait 30 yarn package
+- yarn
 
 notifications:
   on_success: change
