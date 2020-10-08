@@ -12,6 +12,7 @@ Eclipse Theia is an extensible platform to develop full-fledged multi-language C
 </div>
 
 [![Build Status](https://travis-ci.com/eclipse-theia/theia-example.svg?branch=master)](https://travis-ci.com/eclipse-theia/theia-example)
+[![Installers](https://img.shields.io/badge/download-installers-blue.svg?style=flat-curved)](https://download.eclipse.org/theia/)
 
 [Main Theia Repository](https://github.com/eclipse-theia/theia)
 
