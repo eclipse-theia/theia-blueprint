@@ -93,8 +93,6 @@ spec:
                     steps {
                         unstash 'mac'
                         script {
-                            signInstaller('dmg', 'macsign')
-                            notarizeInstaller('dmg')
                             signInstaller('pkg', 'macsign')
                             notarizeInstaller('pkg')
                             uploadInstaller('macos')
