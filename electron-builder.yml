@@ -23,6 +23,7 @@ mac:
   darkModeSupport: true
   target:
     - pkg
+    - dmg
 linux:
   icon: resources/icons
   category: Development
