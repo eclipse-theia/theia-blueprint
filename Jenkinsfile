@@ -95,6 +95,8 @@ spec:
                         script {
                             signInstaller('pkg', 'macsign')
                             signInstaller('dmg', 'macsign')
+                            notarizeInstaller('pkg')
+                            notarizeInstaller('dmg')
                             uploadInstaller('macos')
                         }
                     }
@@ -130,6 +132,8 @@ def signInstaller(String ext, String url) {
 
     if (installers.size() == 1) {
         sh "curl -o dist/signed-${installers[0].name} -F file=@${installers[0].path} http://build.eclipse.org:31338/${url}.php"
+        sh "rm ${installers[0].path}"
+        sh "mv dist/signed-${installers[0].name} ${installers[0].path}"
     } else {
         error("Error during signing: installer not found or multiple installers exist: ${installers.size()}")
     }
@@ -157,8 +161,6 @@ def notarizeInstaller(String ext) {
         }
 
         sh "curl -o dist/stapled-${installers[0].name} ${service}/${uuid}/download"
-        sh "rm ${installers[0].path}"
-        sh "mv dist/stapled-${installers[0].name} ${installers[0].path}"
     } else {
         error("Error during notarization: installer not found or multiple installers exist: ${installers.size()}")
     }
