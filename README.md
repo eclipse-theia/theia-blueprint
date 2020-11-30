@@ -28,6 +28,12 @@ https://www.eclipse.org/theia
 
 ## Development
 
+### Repository structure
+
+- Root level configures mono-repo build with lerna
+- `electron-app` contains app to package, packaging configuration, and E2E tests.
+- `theia-example-updater` contains Theia extension to update the package app at runtime.
+
 ### Build
 
 ```sh
@@ -40,11 +46,15 @@ yarn
 yarn package
 ```
 
+The packaged application is located in `electron-app/dist`.
+
 ### Create a preview application (without packaging it)
 
 ```sh
 yarn package:preview
 ```
+
+The packaged application is located in `electron-app/dist`.
 
 ### Troubleshooting
 
