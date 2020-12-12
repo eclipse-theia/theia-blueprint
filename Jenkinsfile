@@ -167,11 +167,13 @@ def notarizeInstaller(String ext) {
 }
 
 def uploadInstaller(String platform) {
-    def packageJSON = readJSON file: "package.json"
-    String version = "${packageJSON.version}"
-    sshagent(['projects-storage.eclipse.org-bot-ssh']) {
-        sh "ssh genie.theia@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/theia/${version}/${platform}"
-        sh "ssh genie.theia@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/theia/${version}/${platform}"
-        sh "scp dist/*.* genie.theia@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/theia/${version}/${platform}"
+    if (env.BRANCH_NAME == 'master') {
+        def packageJSON = readJSON file: "package.json"
+        String version = "${packageJSON.version}"
+        sshagent(['projects-storage.eclipse.org-bot-ssh']) {
+            sh "ssh genie.theia@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/theia/${version}/${platform}"
+            sh "ssh genie.theia@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/theia/${version}/${platform}"
+            sh "scp dist/*.* genie.theia@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/theia/${version}/${platform}"
+        }
     }
 }
