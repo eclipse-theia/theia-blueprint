@@ -3,7 +3,7 @@
  */
 import groovy.json.JsonSlurper
 
-distFolder = "dist"
+distFolder = "electron-app/dist"
 releaseBranch = "master"
 
 pipeline {
