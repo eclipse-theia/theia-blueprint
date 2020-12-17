@@ -3,6 +3,9 @@
  */
 import groovy.json.JsonSlurper
 
+def distFolder = "dist"
+def releaseBranch = "master"
+
 pipeline {
     agent none
     options {
@@ -119,19 +122,19 @@ def buildInstaller() {
     sh "printenv"
     sh "yarn cache clean"
     sh "yarn --frozen-lockfile --force"
-    sh "rm -rf ./dist"
+    sh "rm -rf ./${distFolder}"
     sshagent(['projects-storage.eclipse.org-bot-ssh']) {
         sh "yarn package"
     }
 }
 
 def signInstaller(String ext, String url) {
-    List installers = findFiles(glob: "dist/*.${ext}")
+    List installers = findFiles(glob: "${distFolder}/*.${ext}")
 
     if (installers.size() == 1) {
-        sh "curl -o dist/signed-${installers[0].name} -F file=@${installers[0].path} http://build.eclipse.org:31338/${url}.php"
+        sh "curl -o ${distFolder}/signed-${installers[0].name} -F file=@${installers[0].path} http://build.eclipse.org:31338/${url}.php"
         sh "rm ${installers[0].path}"
-        sh "mv dist/signed-${installers[0].name} ${installers[0].path}"
+        sh "mv ${distFolder}/signed-${installers[0].name} ${installers[0].path}"
     } else {
         error("Error during signing: installer not found or multiple installers exist: ${installers.size()}")
     }
@@ -139,7 +142,7 @@ def signInstaller(String ext, String url) {
 
 def notarizeInstaller(String ext) {
     String service = 'http://172.30.206.146:8383/macos-notarization-service'
-    List installers = findFiles(glob: "dist/*.${ext}")
+    List installers = findFiles(glob: "${distFolder}/*.${ext}")
 
     if (installers.size() == 1) {
         String response = sh(script: "curl -X POST -F file=@${installers[0].path} -F \'options={\"primaryBundleId\": \"eclipse.theia\", \"staple\": true};type=application/json\' ${service}/notarize", returnStdout: true)
@@ -158,22 +161,24 @@ def notarizeInstaller(String ext) {
             error("Failed to notarize ${installers[0].name}: ${response}")
         }
 
-        sh "curl -o dist/stapled-${installers[0].name} ${service}/${uuid}/download"
+        sh "curl -o ${distFolder}/stapled-${installers[0].name} ${service}/${uuid}/download"
         sh "rm ${installers[0].path}"
-        sh "mv dist/stapled-${installers[0].name} ${installers[0].path}"
+        sh "mv ${distFolder}/stapled-${installers[0].name} ${installers[0].path}"
     } else {
         error("Error during notarization: installer not found or multiple installers exist: ${installers.size()}")
     }
 }
 
 def uploadInstaller(String platform) {
-    if (env.BRANCH_NAME == 'master') {
+    if (env.BRANCH_NAME == releaseBranch) {
         def packageJSON = readJSON file: "package.json"
         String version = "${packageJSON.version}"
         sshagent(['projects-storage.eclipse.org-bot-ssh']) {
             sh "ssh genie.theia@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/theia/${version}/${platform}"
             sh "ssh genie.theia@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/theia/${version}/${platform}"
-            sh "scp dist/*.* genie.theia@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/theia/${version}/${platform}"
+            sh "scp ${distFolder}/*.* genie.theia@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/theia/${version}/${platform}"
         }
+    } else {
+        echo "Skipped upload for branch ${env.BRANCH_NAME}"
     }
 }
