@@ -3,8 +3,8 @@
  */
 import groovy.json.JsonSlurper
 
-def distFolder = "dist"
-def releaseBranch = "master"
+distFolder = "dist"
+releaseBranch = "master"
 
 pipeline {
     agent none
