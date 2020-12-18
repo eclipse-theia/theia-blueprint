@@ -1,17 +1,27 @@
 appId: eclipse.theia
 productName: Theia
 copyright: Copyright © 2020 Eclipse Foundation, Inc
-electronDist: node_modules/electron/dist
+electronDist: ../node_modules/electron/dist
+electronVersion: 9.3.2
+# Although it is generally not recommended to disable asar, it is required for Theia.
+# Enabling this leads to: process ERROR Error: spawn ENOTDIR 
+# because binaries can not be executed from the asar archive.
+# See asar file API limitations: https://www.electronjs.org/docs/tutorial/application-packaging#limitations-of-the-node-api
 asar: false
 
 directories:
   buildResources: resources
+
+# node_modules and package.json are copied automatically
+# Copying node_modules must be automatic for correct resolvement of binaries.
+# Furthermore, This reduces bundle sizes significantly because it avoids duplicates of the electron runtime.
 files:
-  - node_modules
   - src-gen
   - lib
   - scripts
-  - package.json
+extraResources:
+  - from: plugins
+    to: app/plugins
 
 win:
   icon: resources/icon.ico
@@ -50,3 +60,4 @@ deb:
   artifactName: ${productName}-${version}.${ext}
 
 afterPack: ./scripts/after-pack.js
+  
