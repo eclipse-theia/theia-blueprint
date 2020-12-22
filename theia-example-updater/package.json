@@ -6,6 +6,7 @@
   "dependencies": {
     "@theia/core": "^1.9.0",
     "@theia/output": "^1.9.0",
+    "@theia/preferences": "^1.9.0",
     "electron-updater": "^4.3.5",
     "electron-log": "^4.3.0"
   },

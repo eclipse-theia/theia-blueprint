@@ -22,9 +22,11 @@ import { AboutDialog } from '@theia/core/lib/browser/about-dialog';
 import { ContainerModule } from 'inversify';
 import { ElectronIpcConnectionProvider } from '@theia/core/lib/electron-browser/messaging/electron-ipc-connection-provider';
 import { GettingStartedWidget } from '@theia/getting-started/lib/browser/getting-started-widget';
+import { PreferenceContribution } from '@theia/core/lib/browser';
 import { TheiaInstallerAboutDialog } from './customization/theia-installer-about-dialog';
 import { TheiaInstallerGettingStartedWidget } from './customization/theia-installer-getting-started-widget';
 import { WidgetFactory } from '@theia/core/lib/browser';
+import { theiaUpdaterPreferenceSchema } from './updater/theia-updater-preferences';
 
 export default new ContainerModule((bind, _unbind, isBound, rebind) => {
     bind(ElectronMenuUpdater).toSelf().inSingletonScope();
@@ -45,4 +47,6 @@ export default new ContainerModule((bind, _unbind, isBound, rebind) => {
     })).inSingletonScope();
 
     isBound(AboutDialog) ? rebind(AboutDialog).to(TheiaInstallerAboutDialog).inSingletonScope() : bind(AboutDialog).to(TheiaInstallerAboutDialog).inSingletonScope();
+
+    bind(PreferenceContribution).toConstantValue({ schema: theiaUpdaterPreferenceSchema });
 });

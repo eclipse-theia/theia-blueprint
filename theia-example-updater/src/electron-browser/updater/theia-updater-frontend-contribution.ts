@@ -25,6 +25,7 @@ import {
     MenuPath,
     MessageService
 } from '@theia/core/lib/common';
+import { PreferenceScope, PreferenceService } from '@theia/core/lib/browser/preferences';
 import { TheiaUpdater, TheiaUpdaterClient } from '../../common/updater/theia-updater';
 import { inject, injectable, postConstruct } from 'inversify';
 
@@ -57,6 +58,8 @@ export namespace TheiaUpdaterMenu {
 @injectable()
 export class TheiaUpdaterClientImpl implements TheiaUpdaterClient {
 
+    @inject(PreferenceService) private readonly preferenceService: PreferenceService;
+
     protected readonly onReadyToInstallEmitter = new Emitter<void>();
     readonly onReadyToInstall = this.onReadyToInstallEmitter.event;
 
@@ -68,8 +71,23 @@ export class TheiaUpdaterClientImpl implements TheiaUpdaterClient {
         this.onReadyToInstallEmitter.fire();
     }
 
-    updateAvailable(available: boolean): void {
-        this.onUpdateAvailableEmitter.fire(available);
+    updateAvailable(available: boolean, startupCheck: boolean): void {
+        if (startupCheck) {
+            // When we are checking for updates after program launch we need to check whether to prompt the user
+            // we need to wait for the preference service. Also add a few seconds delay before showing the dialog
+            this.preferenceService.ready
+                .then(() => {
+                    setTimeout( () => { 
+                        const reportOnStart: boolean = this.preferenceService.get('updates.reportOnStart', true);
+                        if (reportOnStart) {
+                            this.onUpdateAvailableEmitter.fire(available);
+                        }
+                     }, 10000 );
+                })
+        } else {
+            this.onUpdateAvailableEmitter.fire(available);
+        }
+
     }
 
 }
@@ -109,6 +127,9 @@ export class TheiaUpdaterFrontendContribution implements CommandContribution, Me
 
     @inject(TheiaUpdaterClientImpl)
     protected readonly updaterClient: TheiaUpdaterClientImpl;
+
+    @inject(PreferenceService)
+    private readonly preferenceService: PreferenceService;
 
     protected readyToUpdate = false;
 
@@ -154,7 +175,11 @@ export class TheiaUpdaterFrontendContribution implements CommandContribution, Me
     }
 
     protected async handleDownloadUpdate(): Promise<void> {
-        const answer = await this.messageService.info('Updates found, do you want to download the update?', 'No', 'Yes');
+        const answer = await this.messageService.info('Updates found, do you want to download the update?', 'No', 'Yes', 'Never');
+        if (answer === 'Never') {
+            this.preferenceService.set('updates.reportOnStart', false, PreferenceScope.User)
+            return;
+        }
         if (answer === 'Yes') {
             this.updater.downloadUpdate();
         }
