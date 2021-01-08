@@ -1,5 +1,5 @@
 appId: eclipse.theia
-productName: Theia
+productName: TheiaBlueprint
 copyright: Copyright © 2020 Eclipse Foundation, Inc
 electronDist: ../node_modules/electron/dist
 electronVersion: 9.3.2
