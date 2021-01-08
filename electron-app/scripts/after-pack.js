@@ -67,6 +67,7 @@ exports.default = async function(context) {
         path.basename(appPath),
         context.packager.appInfo.info._configuration.appId
     ], {
-        cwd: path.dirname(appPath)
+        cwd: path.dirname(appPath),
+        maxBuffer: 400 * 1024
     });
 }
