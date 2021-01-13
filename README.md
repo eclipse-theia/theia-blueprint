@@ -56,6 +56,16 @@ yarn package:preview
 
 The packaged application is located in `electron-app/dist`.
 
+### Running E2E Tests
+
+The E2E tests basic UI tests of the actual application.
+This is done based on the preview of the packaged application.
+
+```sh
+yarn package:preview
+(cd electron-app && yarn test)
+```
+
 ### Troubleshooting
 
 - [_"Don't expect that you can build app for all platforms on one platform."_](https://www.electron.build/multi-platform-build)
