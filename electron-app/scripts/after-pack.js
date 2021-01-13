@@ -24,7 +24,8 @@ const signFile = file => {
         path.basename(file),
         entitlements
     ], {
-        cwd: path.dirname(file)
+        cwd: path.dirname(file),
+        maxBuffer: 1024 * 10000
     });
 
     if (mode) {
@@ -67,6 +68,7 @@ exports.default = async function(context) {
         path.basename(appPath),
         context.packager.appInfo.info._configuration.appId
     ], {
-        cwd: path.dirname(appPath)
+        cwd: path.dirname(appPath),
+        maxBuffer: 1024 * 10000
     });
 }
