@@ -13,7 +13,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
- 
+
 :root {
     --theia-branding-logo: url(../icons/theia-logo-blueprint.svg);
 }
@@ -33,7 +33,7 @@
 }
 
 .gs-logo {
-    float: right;  
+    float: right;
     background-image: var(--theia-branding-logo);
     background-position: center center;
     background-repeat: no-repeat;
@@ -42,3 +42,32 @@
     height: 118px;
     padding: 20px;
 }
+
+.ad-logo {
+    background-image: var(--theia-branding-logo);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 250px;
+    height: 118px;
+    padding: 20px;
+}
+
+.ad-float {
+    float: right;
+}
+
+.ad-container {
+    padding: 20px;
+    width: 1150px;
+    height: 700;
+}
+
+ul.theia-aboutExtensions {
+    height: 340px;
+    overflow: hidden;
+    overflow-y: scroll;
+    list-style-type: none;
+    padding: 0;
+    margin-left: 10px;
+ }
