@@ -1,21 +1,38 @@
+const os = require("os");
 const path = require("path");
 const { remote } = require("webdriverio");
 const { expect } = require("chai");
 
 const THEIA_LOAD_TIMEOUT = 15000; // 15 seconds
 
+function getBinaryPath() {
+  const distFolder = path.join(__dirname, "..", "dist");
+  switch (os.platform()) {
+    case "linux":
+      return path.join(
+        distFolder,
+        "linux-unpacked",
+        "theia-example"
+      );
+    case "win32":
+      return path.join(
+        distFolder,
+        "win-unpacked",
+        "Theia.exe"
+      );
+    default:
+      return undefined;
+  }
+};
+
 describe("Theia App", function() {
   // In mocha, 'this' is a common context between sibling beforeEach, afterEach, it, etc methods within the same describe.
   // Each describe has its own context.
   beforeEach(async function() {
-    // TODO: only works for Linux
-    const binary = path.join(
-      __dirname,
-      "..",
-      "dist",
-      "linux-unpacked",
-      "theia-example"
-    );
+    const binary = getBinaryPath();
+    if (!binary) {
+      throw new Error("Tests are not supported for this platform.")
+    }
 
     // Start app and store connection in context (this)
     this.browser = await remote({
@@ -58,7 +75,7 @@ describe("Theia App", function() {
 
   it("Correct window title", async function() {
     const windowTitle = await this.browser.getTitle();
-    expect(windowTitle).to.equal("workspace — Theia");
+    expect(windowTitle).to.include("workspace — Theia");
   });
 
   it("Builtin extensions", async function() {
