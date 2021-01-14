@@ -20,9 +20,30 @@ function getBinaryPath() {
         "win-unpacked",
         "Theia.exe"
       );
+    case "darwin":
+      return path.join(
+        distFolder,
+        "mac",
+        "Theia.app",
+        "Contents",
+        "MacOS",
+        "Theia"
+      );
     default:
       return undefined;
   }
+};
+
+// Utility for keyboard shortcuts that execute commands where
+// the key combination is the same on all platforms *except that*
+// the Command key is used instead of Control on MacOS. Note that
+// sometimes MacOS also uses Control. This is not handled, here
+function macSafeKeyCombo(keys) {
+  if (os.platform() === "darwin" && keys.includes("Control")) {
+    // Puppeteer calls the Command key "Meta"
+    return keys.map((k) => k === "Control" ? "Meta" : k);
+  }
+  return keys;
 };
 
 describe("Theia App", function() {
@@ -83,7 +104,7 @@ describe("Theia App", function() {
     await new Promise((r) => setTimeout(r, 2000));
 
     // Open extensions view
-    await this.browser.keys(["Control", "Shift", "x"]);
+    await this.browser.keys(macSafeKeyCombo(["Control", "Shift", "x"]));
     const builtinContainer = await this.browser.$(
       "#vsx-extensions-view-container--vsx-extensions\\:builtin"
     );
