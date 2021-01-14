@@ -60,4 +60,7 @@ deb:
   artifactName: ${productName}-${version}.${ext}
 
 afterPack: ./scripts/after-pack.js
-  
+
+publish:
+  provider: generic
+  url: "https://download.eclipse.org/theia/latest/"

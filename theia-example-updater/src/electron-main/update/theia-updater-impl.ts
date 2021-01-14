@@ -35,13 +35,14 @@ export class TheiaUpdaterImpl implements TheiaUpdater, ElectronMainApplicationCo
     constructor() {
         autoUpdater.autoDownload = false
         autoUpdater.on('update-available', () => {
+            const startupCheck = this.initialCheck;
             if (this.initialCheck) {
                 this.initialCheck = false;
                 if (this.clients.length === 0) {
                     this.reportOnFirstRegistration = true;
                 }
             }
-            this.clients.forEach(c => c.updateAvailable(true))
+            this.clients.forEach(c => c.updateAvailable(true, startupCheck))
         })
         autoUpdater.on('update-not-available', () => {
             if (this.initialCheck) {
@@ -49,7 +50,7 @@ export class TheiaUpdaterImpl implements TheiaUpdater, ElectronMainApplicationCo
                 /* do not report that no update is available on start up */
                 return;
             }
-            this.clients.forEach(c => c.updateAvailable(false))
+            this.clients.forEach(c => c.updateAvailable(false, false))
         })
 
         autoUpdater.on('update-downloaded', () => {
@@ -83,7 +84,7 @@ export class TheiaUpdaterImpl implements TheiaUpdater, ElectronMainApplicationCo
             this.clients.push(client);
             if (this.reportOnFirstRegistration) {
                 this.reportOnFirstRegistration = false;
-                this.clients.forEach(c => c.updateAvailable(true))
+                this.clients.forEach(c => c.updateAvailable(true, true))
             }
         }
     }
