@@ -3,7 +3,7 @@
   "name": "theia-example",
   "description": "Theia Development Environment",
   "productName": "Theia",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "main": "scripts/theia-electron-main.js",
   "license": "EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0",
   "author": "Rob Moran <github@thegecko.org>",
@@ -116,12 +116,15 @@
     "vscode.json-language-features": "https://open-vsx.org/api/vscode/json-language-features/1.52.1/file/vscode.json-language-features-1.52.1.vsix",
     "vscode.log": "https://open-vsx.org/api/vscode/log/1.52.1/file/vscode.log-1.52.1.vsix",
     "vscode.markdown": "https://open-vsx.org/api/vscode/markdown/1.52.1/file/vscode.markdown-1.52.1.vsix",
+    "vscode-builtin-markdown-language-features": "https://open-vsx.org/api/vscode/markdown-language-features/1.40.0/file/vscode.markdown-language-features-1.40.0.vsix",
     "vscode.npm": "https://open-vsx.org/api/vscode/npm/1.52.1/file/vscode.npm-1.52.1.vsix",
     "vscode.powershell": "https://open-vsx.org/api/vscode/powershell/1.52.1/file/vscode.powershell-1.52.1.vsix",
     "vscode.shellscript": "https://open-vsx.org/api/vscode/shellscript/1.52.1/file/vscode.shellscript-1.52.1.vsix",
     "vscode.typescript": "https://open-vsx.org/api/vscode/typescript/1.52.1/file/vscode.typescript-1.52.1.vsix",
     "vscode.typescript-language-features": "https://open-vsx.org/api/vscode/typescript-language-features/1.52.1/file/vscode.typescript-language-features-1.52.1.vsix",
     "vscode.yaml": "https://open-vsx.org/api/vscode/yaml/1.52.1/file/vscode.yaml-1.52.1.vsix",
-    "vscode.xml": "https://open-vsx.org/api/vscode/xml/1.52.1/file/vscode.xml-1.52.1.vsix"
+    "vscode.xml": "https://open-vsx.org/api/vscode/xml/1.52.1/file/vscode.xml-1.52.1.vsix",
+    "vscode-builtin-node-debug": "https://open-vsx.org/api/ms-vscode/node-debug/1.44.8/file/ms-vscode.node-debug-1.44.8.vsix",
+    "vscode-builtin-node-debug2": "https://open-vsx.org/api/ms-vscode/node-debug2/1.42.1/file/ms-vscode.node-debug2-1.42.1.vsix"
   }
 }
