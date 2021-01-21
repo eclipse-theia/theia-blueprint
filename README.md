@@ -40,7 +40,7 @@ Eclipse Theia Blueprint product is ***not*** **a production-ready product**. The
 
 - Root level configures mono-repo build with lerna
 - `electron-app` contains app to package, packaging configuration, and E2E tests.
-- `theia-example-updater` contains Theia extension to update the package app at runtime.
+- `theia-blueprint-updater` contains Theia extension to update the package app at runtime.
 
 ### Build
 

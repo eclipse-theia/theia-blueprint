@@ -37,6 +37,6 @@
   },
   "workspaces": [
     "electron-app",
-    "theia-example-updater"
+    "theia-blueprint-updater"
   ]
 }

@@ -1,8 +1,8 @@
 {
   "private": true,
-  "name": "theia-example-updater",
+  "name": "theia-blueprint-updater",
   "version": "1.10.0",
-  "description": "Theia - Updater and branding for the installer",
+  "description": "Eclipse Theia Blueprint Updater and Customization",
   "dependencies": {
     "@theia/core": "1.10.0",
     "@theia/output": "1.10.0",
