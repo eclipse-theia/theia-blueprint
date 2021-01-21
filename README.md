@@ -26,6 +26,14 @@ Eclipse Theia is an extensible platform to develop full-fledged multi-language C
 "Theia" is a trademark of the Eclipse Foundation
 https://www.eclipse.org/theia
 
+## What is this?
+
+Eclipse Theia Blueprint product is a **template** to showcase the capabilities of Theia as well as how to build desktop-based products based on the platform. Theia Blueprint assembles a selected subset of existing Theia features and extensions. We provide installers for Theia Blueprint to be downloaded (see below) as well as documentation on how to customize this template to build a product and installers for your own Theia-based product.
+
+## What is it not?
+
+Eclipse Theia Blueprint product is ***not*** **a production-ready product**. Therefore, it is also not a replacement for Visual Studio Code or any other IDE.
+
 ## Development
 
 ### Repository structure
@@ -69,3 +77,8 @@ yarn package:preview
 ### Troubleshooting
 
 - [_"Don't expect that you can build app for all platforms on one platform."_](https://www.electron.build/multi-platform-build)
+
+### Reporting feature requests and bugs
+
+The features in the Eclipse Theia Blueprint product are based on Theia and the included extensions/plugins. For bugs in Theia please consider opening an issue in the [Theia project on Github](https://github.com/eclipse-theia/theia/issues/new/choose). 
+Eclipse Theia Blueprint product only packages existing functionality into a product and installers for the product. If you believe there is a mistake in packaging, something needs to be added to the packaging or the installers do not work properly, please [open an issue on Github](https://github.com/eclipse-theia/theia-example/issues/new/choose) to let us know.
