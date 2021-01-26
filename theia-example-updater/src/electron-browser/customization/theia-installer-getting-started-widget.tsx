@@ -15,51 +15,63 @@
  ********************************************************************************/
 import * as React from 'react';
 
+import { renderDocumentation, renderDownloads, renderSourceCode, renderTickets, renderWhatIs, renderWhatIsNot } from './branding-util';
+
 import { GettingStartedWidget } from '@theia/getting-started/lib/browser/getting-started-widget';
 import { injectable } from 'inversify';
 
-@injectable() 
+@injectable()
 export class TheiaInstallerGettingStartedWidget extends GettingStartedWidget {
-    
+
     protected render(): React.ReactNode {
         return <div className='gs-container'>
-            {this.renderHeader()}
-            <div className='flex-grid'>
-                <div className='col'>
-                    {this.renderVersion()}
-                </div>
+            <div className='gs-logo'>
             </div>
+            {this.renderHeader()}
             <hr className='gs-hr' />
             <div className='flex-grid'>
                 <div className='col'>
-                    {this.renderOpen()}
+                    {renderWhatIs()}
                 </div>
             </div>
             <div className='flex-grid'>
                 <div className='col'>
-                    {this.renderRecentWorkspaces()}
+                    {renderWhatIsNot()}
                 </div>
             </div>
             <div className='flex-grid'>
                 <div className='col'>
-                    {this.renderSettings()}
+                    {renderTickets()}
                 </div>
             </div>
             <div className='flex-grid'>
                 <div className='col'>
-                    {this.renderHelp()}
+                    {renderSourceCode()}
+                </div>
+            </div>
+            <div className='flex-grid'>
+                <div className='col'>
+                    {renderDocumentation()}
+                </div>
+            </div>
+            <div className='flex-grid'>
+                <div className='col'>
+                    {renderDownloads()}
                 </div>
             </div>
         </div>;
     }
 
-    protected renderVersion(): React.ReactNode {
-        return <div className='gs-section'>
-            <div className='gs-action-container'>
-                <p className='gs-sub-header' >
-                    {this.applicationInfo ? 'Version ' + this.applicationInfo.version + ' (Alpha)' : '(Alpha)'}
-                </p>
-            </div>
+    protected renderHeader(): React.ReactNode {
+        return <div className='gs-header'>
+            <h1>Eclipse Theia <span className='gs-blue-header'>Blueprint</span> Product</h1>
+            {this.renderVersion()}
         </div>;
+    }
+
+    protected renderVersion(): React.ReactNode {
+        return <p className='gs-sub-header' >
+            {this.applicationInfo ? 'Version ' + this.applicationInfo.version + ' (Alpha)' : '(Alpha)'}
+        </p>;
     }
 }
