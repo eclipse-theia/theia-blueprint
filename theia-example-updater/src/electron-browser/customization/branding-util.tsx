@@ -19,12 +19,12 @@ import * as React from 'react';
 export function renderWhatIs(): React.ReactNode {
     return <div className='gs-section'>
         <h3 className='gs-section-header'>
-            What is this?
+            What is Theia Blueprint?
         </h3>
-        {/* Once available we should link the customization documention in below text */}
+        {/* Once available we should link the customization documentation in below text */}
         <div >
-            Eclipse Theia Blueprint product is a <span className='gs-text-bold'>template</span> to showcase
-            the capabilities of Theia as well as how to build desktop-based products based on the platform.
+            Eclipse Theia Blueprint is a <span className='gs-text-bold'>template</span> to showcase
+            the capabilities of Eclipse Theia as well as how to build desktop-based products based on the platform.
             Theia Blueprint assembles a selected subset of existing Theia features and extensions. We
             provide installers for Theia Blueprint to be downloaded (see below) as well
             as <a href='https://github.com/eclipse-theia/theia-example' target='_blank'>documentation</a> on
@@ -40,8 +40,7 @@ export function renderWhatIsNot(): React.ReactNode {
             What is it not?
         </h3>
         <div >
-            Eclipse Theia Blueprint product
-            is <span className='gs-text-bold'><span className='gs-text-underline'>not</span> a production-ready
+            Eclipse Theia Blueprint is <span className='gs-text-bold'><span className='gs-text-underline'>not</span> a production-ready
             product</span>. Therefore, it is also not a replacement for Visual Studio Code or any other IDE.
         </div>
     </div>;
@@ -53,13 +52,13 @@ export function renderTickets(): React.ReactNode {
             Reporting feature requests and bugs
         </h3>
         <div >
-            The features in the Eclipse Theia Blueprint product are based on Theia and the included
+            The features in Eclipse Theia Blueprint are based on Theia and the included
             extensions/plugins. For bugs in Theia please consider opening an issue in
             the <a href='https://github.com/eclipse-theia/theia/issues/new/choose' target='_blank'>Theia
             project on Github</a>.
         </div>
         <div>
-            Eclipse Theia Blueprint product only packages existing functionality into a product and installers
+            Eclipse Theia Blueprint only packages existing functionality into a product and installers
             for the product. If you believe there is a mistake in packaging, something needs to be added to the
             packaging or the installers do not work properly,
             please <a href='https://github.com/eclipse-theia/theia-example/issues/new/choose' target='_blank'>open
@@ -74,7 +73,7 @@ export function renderSourceCode(): React.ReactNode {
             Source Code
         </h3>
         <div >
-            The source code of the Eclipse Theia Blueprint product is available
+            The source code of Eclipse Theia Blueprint is available
             on <a href='https://github.com/eclipse-theia/theia-example' target='_blank'>Github</a>.
         </div>
     </div>;
@@ -85,10 +84,10 @@ export function renderDocumentation(): React.ReactNode {
         <h3 className='gs-section-header'>
             Documentation
         </h3>
-        {/* Once available we should link the customization documention in below text */}
+        {/* Once available we should link the customization documentation in below text */}
         <div >
             Please see <a href='https://github.com/eclipse-theia/theia-example' target='_blank'>here</a> for
-            documentation how to customize the Eclipse Theia Blueprint product
+            documentation how to customize Eclipse Theia Blueprint
         </div>
     </div>;
 }
@@ -99,7 +98,7 @@ export function renderDownloads(): React.ReactNode {
             Updates and Downloads
         </h3>
         <div className='gs-action-container'>
-            You can update the Eclipse Theia Blueprint product directly in this application by navigating to
+            You can update Eclipse Theia Blueprint directly in this application by navigating to
             File {'>'} Settings {'>'} Check for Updates… Moreover the application will check for Updates
             after each launch automatically.
         </div>
