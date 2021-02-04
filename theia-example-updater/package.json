@@ -4,9 +4,9 @@
   "version": "1.10.0",
   "description": "Theia - Updater and branding for the installer",
   "dependencies": {
-    "@theia/core": "^1.10.0",
-    "@theia/output": "^1.10.0",
-    "@theia/preferences": "^1.10.0",
+    "@theia/core": "1.10.0",
+    "@theia/output": "1.10.0",
+    "@theia/preferences": "1.10.0",
     "electron-updater": "^4.3.5",
     "electron-log": "^4.3.0"
   },

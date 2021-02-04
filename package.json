@@ -16,7 +16,7 @@
     "node": ">=12.14.1 <13"
   },
   "devDependencies": {
-    "@theia/cli": "^1.10.0",
+    "@theia/cli": "1.10.0",
     "lerna": "2.11.0",
     "rimraf": "^2.7.1"
   },
