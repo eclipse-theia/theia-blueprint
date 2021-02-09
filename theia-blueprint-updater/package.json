@@ -27,12 +27,12 @@
   "license": "EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/eclipse-theia/theia-example.git"
+    "url": "https://github.com/eclipse-theia/theia-blueprint.git"
   },
   "bugs": {
-    "url": "https://github.com/eclipse-theia/theia-example/issues"
+    "url": "https://github.com/eclipse-theia/theia-blueprint/issues"
   },
-  "homepage": "https://github.com/eclipse-theia/theia-example",
+  "homepage": "https://github.com/eclipse-theia/theia-blueprint",
   "files": [
     "lib",
     "src"

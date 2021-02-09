@@ -27,7 +27,7 @@ export function renderWhatIs(): React.ReactNode {
             the capabilities of Eclipse Theia as well as how to build desktop-based products based on the platform.
             Theia Blueprint assembles a selected subset of existing Theia features and extensions. We
             provide installers for Theia Blueprint to be downloaded (see below) as well
-            as <a href='https://github.com/eclipse-theia/theia-example' target='_blank'>documentation</a> on
+            as <a href='https://github.com/eclipse-theia/theia-blueprint' target='_blank'>documentation</a> on
             how to customize this template to build a product and installers for your own Theia-based
             product.
         </div>
@@ -61,7 +61,7 @@ export function renderTickets(): React.ReactNode {
             Eclipse Theia Blueprint only packages existing functionality into a product and installers
             for the product. If you believe there is a mistake in packaging, something needs to be added to the
             packaging or the installers do not work properly,
-            please <a href='https://github.com/eclipse-theia/theia-example/issues/new/choose' target='_blank'>open
+            please <a href='https://github.com/eclipse-theia/theia-blueprint/issues/new/choose' target='_blank'>open
             an issue on Github</a> to let us know.
         </div>
     </div>;
@@ -74,7 +74,7 @@ export function renderSourceCode(): React.ReactNode {
         </h3>
         <div >
             The source code of Eclipse Theia Blueprint is available
-            on <a href='https://github.com/eclipse-theia/theia-example' target='_blank'>Github</a>.
+            on <a href='https://github.com/eclipse-theia/theia-blueprint' target='_blank'>Github</a>.
         </div>
     </div>;
 }
@@ -86,7 +86,7 @@ export function renderDocumentation(): React.ReactNode {
         </h3>
         {/* Once available we should link the customization documentation in below text */}
         <div >
-            Please see <a href='https://github.com/eclipse-theia/theia-example' target='_blank'>here</a> for
+            Please see <a href='https://github.com/eclipse-theia/theia-blueprint' target='_blank'>here</a> for
             documentation how to customize Eclipse Theia Blueprint
         </div>
     </div>;

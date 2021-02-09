@@ -81,4 +81,4 @@ yarn package:preview
 ### Reporting feature requests and bugs
 
 The features in the Eclipse Theia Blueprint product are based on Theia and the included extensions/plugins. For bugs in Theia please consider opening an issue in the [Theia project on Github](https://github.com/eclipse-theia/theia/issues/new/choose). 
-Eclipse Theia Blueprint product only packages existing functionality into a product and installers for the product. If you believe there is a mistake in packaging, something needs to be added to the packaging or the installers do not work properly, please [open an issue on Github](https://github.com/eclipse-theia/theia-example/issues/new/choose) to let us know.
+Eclipse Theia Blueprint product only packages existing functionality into a product and installers for the product. If you believe there is a mistake in packaging, something needs to be added to the packaging or the installers do not work properly, please [open an issue on Github](https://github.com/eclipse-theia/theia-blueprint/issues/new/choose) to let us know.
