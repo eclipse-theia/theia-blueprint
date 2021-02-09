@@ -44,7 +44,7 @@ linux:
 nsis:
   menuCategory: true
   oneClick: false
-  perMachine: true
+  perMachine: false
   installerHeaderIcon: resources/icon.ico
   installerIcon: resources/icon.ico
   uninstallerIcon: resources/icon.ico
