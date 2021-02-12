@@ -26,7 +26,21 @@ Eclipse Theia is an extensible platform to develop full-fledged multi-language C
 "Theia" is a trademark of the Eclipse Foundation
 https://www.eclipse.org/theia
 
+## What is this?
+
+Eclipse Theia Blueprint product is a **template** to showcase the capabilities of Theia as well as how to build desktop-based products based on the platform. Theia Blueprint assembles a selected subset of existing Theia features and extensions. We provide installers for Theia Blueprint to be downloaded (see below) as well as documentation on how to customize this template to build a product and installers for your own Theia-based product.
+
+## What is it not?
+
+Eclipse Theia Blueprint product is ***not*** **a production-ready product**. Therefore, it is also not a replacement for Visual Studio Code or any other IDE.
+
 ## Development
+
+### Repository structure
+
+- Root level configures mono-repo build with lerna
+- `electron-app` contains app to package, packaging configuration, and E2E tests.
+- `theia-blueprint-updater` contains Theia extension to update the package app at runtime.
 
 ### Build
 
@@ -40,12 +54,31 @@ yarn
 yarn package
 ```
 
+The packaged application is located in `electron-app/dist`.
+
 ### Create a preview application (without packaging it)
 
 ```sh
 yarn package:preview
 ```
 
+The packaged application is located in `electron-app/dist`.
+
+### Running E2E Tests
+
+The E2E tests basic UI tests of the actual application.
+This is done based on the preview of the packaged application.
+
+```sh
+yarn package:preview
+(cd electron-app && yarn test)
+```
+
 ### Troubleshooting
 
 - [_"Don't expect that you can build app for all platforms on one platform."_](https://www.electron.build/multi-platform-build)
+
+### Reporting feature requests and bugs
+
+The features in the Eclipse Theia Blueprint product are based on Theia and the included extensions/plugins. For bugs in Theia please consider opening an issue in the [Theia project on Github](https://github.com/eclipse-theia/theia/issues/new/choose). 
+Eclipse Theia Blueprint product only packages existing functionality into a product and installers for the product. If you believe there is a mistake in packaging, something needs to be added to the packaging or the installers do not work properly, please [open an issue on Github](https://github.com/eclipse-theia/theia-blueprint/issues/new/choose) to let us know.
