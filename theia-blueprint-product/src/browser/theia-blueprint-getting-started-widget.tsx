@@ -15,33 +15,19 @@
  ********************************************************************************/
 import * as React from 'react';
 
-import { AboutDialog, AboutDialogProps, ABOUT_CONTENT_CLASS } from "@theia/core/lib/browser/about-dialog";
-import { injectable, inject } from 'inversify';
 import { renderDocumentation, renderDownloads, renderSourceCode, renderTickets, renderWhatIs, renderWhatIsNot } from './branding-util';
 
-@injectable()
-export class TheiaInstallerAboutDialog extends AboutDialog {
+import { GettingStartedWidget } from '@theia/getting-started/lib/browser/getting-started-widget';
+import { injectable } from 'inversify';
 
-    constructor(
-        @inject(AboutDialogProps) protected readonly props: AboutDialogProps
-    ) {
-        super(props);
-    }
+@injectable()
+export class TheiaBlueprintGettingStartedWidget extends GettingStartedWidget {
 
     protected render(): React.ReactNode {
-        return <div className={ABOUT_CONTENT_CLASS}>
-            {this.renderContent()}
-        </div>;
-    }
-
-    protected renderContent(): React.ReactNode {
-        return <div className='ad-container'>
-            <div className='ad-float'>
-                <div className='ad-logo'>
-                </div>
-                {this.renderExtensions()}
+        return <div className='gs-container'>
+            <div className='gs-logo'>
             </div>
-            {this.renderTitle()}
+            {this.renderHeader()}
             <hr className='gs-hr' />
             <div className='flex-grid'>
                 <div className='col'>
@@ -74,10 +60,9 @@ export class TheiaInstallerAboutDialog extends AboutDialog {
                 </div>
             </div>
         </div>;
-
     }
 
-    protected renderTitle(): React.ReactNode {
+    protected renderHeader(): React.ReactNode {
         return <div className='gs-header'>
             <h1>Eclipse Theia <span className='gs-blue-header'>Blueprint</span> Product</h1>
             {this.renderVersion()}
