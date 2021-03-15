@@ -75,6 +75,7 @@
   },
   "devDependencies": {
     "@theia/cli": "1.11.0",
+    "@theia/electron": "1.11.0",
     "@wdio/cli": "^6.10.2",
     "@wdio/local-runner": "^6.10.2",
     "@wdio/mocha-framework": "^6.8.0",
@@ -89,8 +90,7 @@
     "mocha": "^8.2.1",
     "rimraf": "^2.7.1",
     "wdio-chromedriver-service": "^6.0.4",
-    "webdriverio": "^6.10.2",
-    "@theia/electron": "1.11.0"
+    "webdriverio": "^6.10.2"
   },
   "scripts": {
     "prepare": "yarn build && yarn download:plugins",
