@@ -24,17 +24,17 @@ extraResources:
     to: app/plugins
 
 win:
-  icon: resources/icon.ico
+  icon: resources/icons/WindowsLauncherIcon/TheiaBluePrint.ico
   target:
     - nsis
 mac:
-  icon: resources/icon.icns
+  icon: resources/icons/MacLauncherIcon/512-512-2.icns
   category: public.app-category.developer-tools
   darkModeSupport: true
   target:
     - pkg
 linux:
-  icon: resources/icons
+  icon: resources/icons/LinuxLauncherIcon/512-512.png
   category: Development
   vendor: Eclipse Foundation, Inc
   target:
@@ -45,11 +45,11 @@ nsis:
   menuCategory: true
   oneClick: false
   perMachine: false
-  installerHeaderIcon: resources/icon.ico
-  installerIcon: resources/icon.ico
-  uninstallerIcon: resources/icon.ico
-  installerSidebar: resources/installerSidebar.bmp
-  uninstallerSidebar: resources/installerSidebar.bmp
+  installerHeaderIcon: resources/icons/WindowsLauncherIcon/TheiaBluePrint.ico
+  installerIcon: resources/icons/WindowsLauncherIcon/TheiaBluePrint.ico
+  uninstallerIcon: resources/icons/WindowsLauncherIcon/TheiaBluePrint.ico
+  installerSidebar: resources/icons/InstallerSidebarImage/164-314Windows.bmp
+  uninstallerSidebar: resources/icons/InstallerSidebarImage/164-314Windows.bmp
   allowToChangeInstallationDirectory: true
   runAfterFinish: false
   artifactName: ${productName}-${version}.${ext}
