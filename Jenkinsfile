@@ -23,7 +23,7 @@ kind: Pod
 spec:
   containers:
   - name: theia-dev
-    image: thegecko/theia-dev
+    image: eclipsetheia/theia-blueprint
     command:
     - cat
     tty: true
