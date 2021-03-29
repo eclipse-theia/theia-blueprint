@@ -49,7 +49,7 @@ fi
 ssh -q genie.theia@projects-storage.eclipse.org curl -o "\"stapled-${REMOTE_NAME}\"" http://172.30.206.146:8383/macos-notarization-service/${UUID}/download
 
 # copy stapled file back from server
-scp -p genie.theia@projects-storage.eclipse.org:"\"./stapled-${REMOTE_NAME}\"" "${INPUT}"
+scp -T -p genie.theia@projects-storage.eclipse.org:"\"./stapled-${REMOTE_NAME}\"" "${INPUT}"
 
 # ensure storage server is clean
 ssh -q genie.theia@projects-storage.eclipse.org rm -f "\"${REMOTE_NAME}\"" "\"stapled-${REMOTE_NAME}\"" entitlements.plist
