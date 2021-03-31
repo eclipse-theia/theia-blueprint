@@ -27,12 +27,18 @@ win:
   icon: resources/icons/WindowsLauncherIcon/TheiaBluePrint.ico
   target:
     - nsis
+  publish:
+    provider: generic
+    url: "https://download.eclipse.org/theia/latest/windows"
 mac:
   icon: resources/icons/MacLauncherIcon/512-512-2.icns
   category: public.app-category.developer-tools
   darkModeSupport: true
   target:
     - pkg
+  publish:
+    provider: generic
+    url: "https://download.eclipse.org/theia/latest/macos"
 linux:
   icon: resources/icons/LinuxLauncherIcon/512-512.png
   category: Development
@@ -40,6 +46,9 @@ linux:
   target:
     - deb
     - AppImage
+  publish:
+    provider: generic
+    url: "https://download.eclipse.org/theia/latest/linux"
 
 nsis:
   menuCategory: true
@@ -52,15 +61,14 @@ nsis:
   uninstallerSidebar: resources/icons/InstallerSidebarImage/164-314Windows.bmp
   allowToChangeInstallationDirectory: true
   runAfterFinish: false
-  artifactName: ${productName}-${version}.${ext}
+  artifactName: ${productName}.${ext}
   license: LICENSE
 pkg:
+  artifactName: ${productName}.${ext}
   license: LICENSE
 deb:
-  artifactName: ${productName}-${version}.${ext}
+  artifactName: ${productName}.${ext}
+appImage:
+  artifactName: ${productName}.${ext}
 
 afterPack: ./scripts/after-pack.js
-
-publish:
-  provider: generic
-  url: "https://download.eclipse.org/theia/latest/"
