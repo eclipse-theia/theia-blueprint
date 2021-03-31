@@ -9,7 +9,7 @@ releaseBranch = "master"
 pipeline {
     agent none
     options {
-        timeout(time: 3, unit: 'HOURS') 
+        timeout(time: 5, unit: 'HOURS') 
     }
     stages {
         stage('Build') {
