@@ -9,7 +9,8 @@ releaseBranch = "master"
 pipeline {
     agent none
     options {
-        timeout(time: 5, unit: 'HOURS') 
+        timeout(time: 5, unit: 'HOURS')
+        disableConcurrentBuilds()
     }
     stages {
         stage('Build') {
