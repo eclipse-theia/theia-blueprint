@@ -29,10 +29,10 @@ spec:
     tty: true
     resources:
       limits:
-        memory: "4Gi"
+        memory: "8Gi"
         cpu: "2"
       requests:
-        memory: "4Gi"
+        memory: "8Gi"
         cpu: "2"
     volumeMounts:
     - name: yarn-cache
