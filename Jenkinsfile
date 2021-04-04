@@ -56,6 +56,11 @@ spec:
                         }
                         stash name: 'linux'
                     }
+                    post {
+                        failure {
+                            error("Linux installer creation failed, aborting...")
+                        }
+                    }
                 }
                 stage('Create Mac Installer') {
                     agent {
@@ -67,6 +72,11 @@ spec:
                         }
                         stash name: 'mac'
                     }
+                    post {
+                        failure {
+                            error("Mac installer creation failed, aborting...")
+                        }
+                    }
                 }
                 stage('Create Windows Installer') {
                     agent {
@@ -77,6 +87,11 @@ spec:
                             buildInstaller()
                         }
                         stash name: 'win'
+                    }
+                    post {
+                        failure {
+                            error("Windows installer creation failed, aborting...")
+                        }
                     }
                 }
             }
