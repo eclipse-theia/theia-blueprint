@@ -13,6 +13,11 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
+import * as fs from 'fs-extra';
+import * as http from 'http';
+import * as os from 'os';
+import * as path from 'path';
+
 import { ElectronMainApplication, ElectronMainApplicationContribution } from '@theia/core/lib/electron-main/electron-main-application';
 import { TheiaUpdater, TheiaUpdaterClient } from '../../common/updater/theia-updater';
 
@@ -68,6 +73,18 @@ export class TheiaUpdaterImpl implements TheiaUpdater, ElectronMainApplicationCo
 
     downloadUpdate(): void {
         autoUpdater.downloadUpdate();
+        
+        // record download stat, ignore errors
+        fs.mkdtemp(path.join(os.tmpdir(), 'theia-blueprint-updater-'))
+            .then(tmpDir => {
+                const file = fs.createWriteStream(path.join(tmpDir, "update"));
+                http.get("https://www.eclipse.org/downloads/download.php?file=/theia/update&r=1", response => {
+                    response.pipe(file);
+                    file.on('finish', () => {
+                        file.close();
+                    });
+                });
+            })
     }
 
     onStart(application: ElectronMainApplication): void {
