@@ -79,7 +79,7 @@ export class TheiaBlueprintAboutDialog extends AboutDialog {
 
     protected renderTitle(): React.ReactNode {
         return <div className='gs-header'>
-            <h1>Eclipse Theia <span className='gs-blue-header'>Blueprint</span> Product</h1>
+            <h1>Eclipse Theia <span className='gs-blue-header'>Blueprint</span></h1>
             {this.renderVersion()}
         </div>;
     }
