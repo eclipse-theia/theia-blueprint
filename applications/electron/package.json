@@ -31,6 +31,11 @@
         "startupTimeout": -1,
         "resolveSystemPlugins": false
       }
+    },
+    "generator": {
+      "config": {
+        "preloadTemplate": "./resources/preload.html"
+      }
     }
   },
   "dependencies": {

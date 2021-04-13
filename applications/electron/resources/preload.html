@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        .theia-preload {
+            background-image: none;
+        }
+
+        .spinner-container {
+            display: flex;
+            flex-direction: center;
+            align-self: center;
+            justify-content: center;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        .custom-spinner {
+            align-self: center;
+        }
+
+        .custom-spinner svg {
+            width: 20vw;
+            height: 20vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div class='spinner-container'>
+        <div class='custom-spinner'>
+            <svg id="spinner" xmlns="http://www.w3.org/2000/svg" width="38" height="38" viewBox="0 0 38 38">
+                <defs>
+                    <linearGradient id="trail" x1="0%" x2="100%" y1="0%" y2="0%">
+                        <stop offset="0%" stop-color="#007fff" stop-opacity="0.00" />
+                        <stop offset="50%" stop-color="#007fff" stop-opacity="0.50" />
+                        <stop offset="100%" stop-color="#007fff" stop-opacity="1.00" />
+                    </linearGradient>
+                </defs>
+                <g fill="none" fill-rule="evenodd">
+                    <g transform="translate(1 1)">
+                        <path id="trail-path" stroke="url(#trail)" stroke-width="2" d="M36 18c0-9.94-8.06-18-18-18">
+                            <animateTransform attributeName="transform" dur="0.9s" from="0 18 18"
+                                repeatCount="indefinite" to="360 18 18" type="rotate" />
+                        </path>
+                        <circle cx="36" cy="18" r="1" fill="#007fff">
+                            <animateTransform attributeName="transform" dur="0.9s" from="0 18 18"
+                                repeatCount="indefinite" to="360 18 18" type="rotate" />
+                        </circle>
+                    </g>
+                </g>
+            </svg>
+        </div>
+    </div>
+</body>
+
+</html>
