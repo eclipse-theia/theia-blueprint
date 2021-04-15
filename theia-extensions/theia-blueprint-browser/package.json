@@ -1,0 +1,42 @@
+{
+  "private": true,
+  "name": "theia-blueprint-browser",
+  "version": "1.12.1",
+  "description": "Eclipse Theia Blueprint Product Branding",
+  "dependencies": {
+    "@theia/application-package": "1.12.1",
+    "@theia/core": "1.12.1",
+    "@theia/plugin-ext": "1.12.1"
+  },
+  "devDependencies": {
+    "rimraf": "^2.7.1",
+    "typescript": "^3.9.2",
+    "tslint": "^5.12.0"
+  },
+  "theiaExtensions": [
+    {
+      "backend": "lib/node/theia-blueprint-backend-module"
+    }
+  ],
+  "keywords": [
+    "theia-extension"
+  ],
+  "license": "EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eclipse-theia/theia-blueprint.git"
+  },
+  "bugs": {
+    "url": "https://github.com/eclipse-theia/theia-blueprint/issues"
+  },
+  "homepage": "https://github.com/eclipse-theia/theia-blueprint",
+  "files": [
+    "lib",
+    "src"
+  ],
+  "scripts": {
+    "prepare": "yarn build",
+    "clean": "rimraf lib tsconfig.tsbuildinfo",
+    "build": "tsc -b"
+  }
+}

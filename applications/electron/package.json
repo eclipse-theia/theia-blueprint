@@ -40,7 +40,7 @@
     "@theia/debug": "1.12.1",
     "@theia/editor": "1.12.1",
     "@theia/editor-preview": "1.12.1",
-    "@theia/electron": "1.12.1",    
+    "@theia/electron": "1.12.1",
     "@theia/external-terminal": "1.12.1",
     "@theia/file-search": "1.12.1",
     "@theia/filesystem": "1.12.1",
@@ -96,11 +96,10 @@
     "webdriverio": "^6.10.2"
   },
   "scripts": {
-    "prepare": "yarn build && yarn download:plugins",
+    "prepare": "yarn download:plugins",
     "lint": "theiaext lint",
     "clean": "theia clean && rimraf node_modules",
     "clean:dist": "rimraf dist",
-    "build": "theia rebuild:electron && yarn bundle",
     "bundle": "theia build",
     "watch": "concurrently -n compile,bundle \"theiaext watch --preserveWatchOutput\" \"theia build --watch --mode development\"",
     "start": "electron scripts/theia-electron-main.js",

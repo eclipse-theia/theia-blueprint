@@ -1,0 +1,4 @@
+[submodule "submodules/pkg"]
+	path = submodules/pkg
+	url = https://github.com/marechal-p/pkg.git
+	branch = exec-argv

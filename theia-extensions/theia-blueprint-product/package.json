@@ -1,14 +1,10 @@
 {
   "private": true,
-  "name": "theia-blueprint-updater",
+  "name": "theia-blueprint-product",
   "version": "1.12.1",
-  "description": "Eclipse Theia Blueprint Updater",
+  "description": "Eclipse Theia Blueprint Product Branding",
   "dependencies": {
-    "@theia/core": "1.12.1",
-    "@theia/output": "1.12.1",
-    "@theia/preferences": "1.12.1",
-    "electron-updater": "^4.3.5",
-    "electron-log": "^4.3.0"
+    "@theia/core": "1.12.1"
   },
   "devDependencies": {
     "rimraf": "^2.7.1",
@@ -17,8 +13,7 @@
   },
   "theiaExtensions": [
     {
-      "electronMain": "lib/electron-main/update/theia-updater-main-module",
-      "frontendElectron": "lib/electron-browser/theia-updater-frontend-module"
+      "frontendElectron": "lib/browser/theia-blueprint-frontend-module"
     }
   ],
   "keywords": [
@@ -38,8 +33,8 @@
     "src"
   ],
   "scripts": {
-    "prepare": "yarn run clean && yarn run build",
-    "clean": "rimraf lib && rimraf tsconfig.tsbuildinfo",
-    "build": "tsc --build tsconfig.json"
+    "prepare": "yarn build",
+    "clean": "rimraf lib tsconfig.tsbuildinfo",
+    "build": "tsc -b"
   }
 }

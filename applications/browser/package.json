@@ -1,0 +1,155 @@
+{
+  "private": true,
+  "name": "theia-blueprint-node",
+  "description": "Eclipse Theia blueprint product",
+  "productName": "Theia Blueprint",
+  "version": "1.12.1",
+  "main": "scripts/theia-electron-main.js",
+  "license": "EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0",
+  "author": "Rob Moran <github@thegecko.org>",
+  "homepage": "https://github.com/eclipse-theia/theia-blueprint#readme",
+  "bugs": {
+    "url": "https://github.com/eclipse-theia/theia/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eclipse-theia/theia-blueprint.git"
+  },
+  "engines": {
+    "yarn": "1.0.x || >=1.2.1",
+    "node": ">=12.14.1 <13"
+  },
+  "theia": {
+    "target": "browser",
+    "frontend": {
+      "config": {
+        "applicationName": "Theia Blueprint (Web)"
+      }
+    },
+    "backend": {
+      "config": {
+        "startupTimeout": -1
+      }
+    }
+  },
+  "dependencies": {
+    "@theia/bulk-edit": "1.12.1",
+    "@theia/callhierarchy": "1.12.1",
+    "@theia/console": "1.12.1",
+    "@theia/core": "1.12.1",
+    "@theia/debug": "1.12.1",
+    "@theia/editor": "1.12.1",
+    "@theia/editor-preview": "1.12.1",
+    "@theia/external-terminal": "1.12.1",
+    "@theia/file-search": "1.12.1",
+    "@theia/filesystem": "1.12.1",
+    "@theia/getting-started": "1.12.1",
+    "@theia/git": "1.12.1",
+    "@theia/keymaps": "1.12.1",
+    "@theia/markers": "1.12.1",
+    "@theia/messages": "1.12.1",
+    "@theia/mini-browser": "1.12.1",
+    "@theia/monaco": "1.12.1",
+    "@theia/navigator": "1.12.1",
+    "@theia/outline-view": "1.12.1",
+    "@theia/output": "1.12.1",
+    "@theia/plugin-dev": "1.12.1",
+    "@theia/plugin-ext": "1.12.1",
+    "@theia/plugin-ext-vscode": "1.12.1",
+    "@theia/preferences": "1.12.1",
+    "@theia/preview": "1.12.1",
+    "@theia/process": "1.12.1",
+    "@theia/property-view": "1.12.1",
+    "@theia/scm": "1.12.1",
+    "@theia/scm-extra": "1.12.1",
+    "@theia/search-in-workspace": "1.12.1",
+    "@theia/task": "1.12.1",
+    "@theia/terminal": "1.12.1",
+    "@theia/timeline": "1.12.1",
+    "@theia/typehierarchy": "1.12.1",
+    "@theia/userstorage": "1.12.1",
+    "@theia/variable-resolver": "1.12.1",
+    "@theia/vsx-registry": "1.12.1",
+    "@theia/workspace": "1.12.1",
+    "theia-blueprint-product": "1.12.1",
+    "theia-blueprint-browser": "1.12.1"
+  },
+  "devDependencies": {
+    "@wdio/cli": "^6.10.2",
+    "@wdio/local-runner": "^6.10.2",
+    "@wdio/mocha-framework": "^6.8.0",
+    "@wdio/spec-reporter": "^6.8.1",
+    "@wdio/sync": "^6.10.0",
+    "app-builder-lib": "^22.9.0",
+    "chai": "^4.2.0",
+    "fs-extra": "^9.1.0",
+    "mocha": "^8.2.1",
+    "modify-source-webpack-plugin": "^2.0.0-beta.7",
+    "node-loader": "^1.0.3",
+    "pkg": "5.1.0",
+    "rimraf": "^2.7.1",
+    "wdio-chromedriver-service": "^6.0.4",
+    "webdriverio": "^6.10.2"
+  },
+  "scripts": {
+    "prepare": "yarn download:plugins",
+    "lint": "theiaext lint",
+    "clean": "theia clean && rimraf node_modules bundled dist",
+    "bundle": "yarn bundle:frontend && yarn bundle:backend",
+    "bundle:frontend": "theia build --mode=production",
+    "bundle:backend": "webpack --config node-webpack.config.js",
+    "watch": "concurrently -n compile,bundle \"theiaext watch --preserveWatchOutput\" \"theia build --watch --mode development\"",
+    "start": "node src-gen/backend/main.js --plugins=local-dir:builtins",
+    "start:debug": "yarn start --log-level=debug",
+    "package": "yarn package:clean && yarn package:pkg && yarn package:copy",
+    "package:clean": "rimraf dist",
+    "package:pkg": "pkg --public --public-packages \"*\" --no-bytecode -c package.json -o dist/blueprint.exe -t node12 bundled/blueprint.js",
+    "package:copy": "cp -r bundled/node_modules lib builtins dist",
+    "deploy": "echo skip",
+    "package:preview": "echo skip",
+    "download:plugins": "theia download:plugins",
+    "test": "mocha --timeout 60000 \"./test/*.spec.js\""
+  },
+  "pkg": {
+    "scripts": [
+      "bundled/*.js",
+      "bundled/node_modules/drivelist/**/*.js"
+    ],
+    "assets": [
+      "package.json",
+      "bundled/native/*.node",
+      "bundled/node_modules/drivelist/build/Release/drivelist.node"
+    ]
+  },
+  "theiaPluginsDir": "builtins",
+  "theiaPlugins": {
+    "redhat.java": "https://open-vsx.org/api/redhat/java/0.73.0/file/redhat.java-0.73.0.vsix",
+    "vscjava.vscode-java-debug": "https://open-vsx.org/api/vscjava/vscode-java-debug/0.30.0/file/vscjava.vscode-java-debug-0.30.0.vsix",
+    "vscjava.vscode-java-test": "https://open-vsx.org/api/vscjava/vscode-java-test/0.26.1/file/vscjava.vscode-java-test-0.26.1.vsix",
+    "vscjava.vscode-maven": "https://open-vsx.org/api/vscjava/vscode-maven/0.21.2/file/vscjava.vscode-maven-0.21.2.vsix",
+    "vscjava.vscode-java-dependency": "https://open-vsx.org/api/vscjava/vscode-java-dependency/0.16.0/file/vscjava.vscode-java-dependency-0.16.0.vsix",
+    "alphabotsec.vscode-eclipse-keybindings": "https://open-vsx.org/api/alphabotsec/vscode-eclipse-keybindings/0.12.0/file/alphabotsec.vscode-eclipse-keybindings-0.12.0.vsix",
+    "ms-vscode.js-debug": "https://open-vsx.org/api/ms-vscode/js-debug/1.52.2/file/ms-vscode.js-debug-1.52.2.vsix",
+    "vscode.css": "https://open-vsx.org/api/vscode/css/1.52.1/file/vscode.css-1.52.1.vsix",
+    "vscode.css-language-features": "https://open-vsx.org/api/vscode/css-language-features/1.52.1/file/vscode.css-language-features-1.52.1.vsix",
+    "vscode.docker": "https://open-vsx.org/api/vscode/docker/1.52.1/file/vscode.docker-1.52.1.vsix",
+    "vscode.html": "https://open-vsx.org/api/vscode/html/1.52.1/file/vscode.html-1.52.1.vsix",
+    "vscode.html-language-features": "https://open-vsx.org/api/vscode/html-language-features/1.52.1/file/vscode.html-language-features-1.52.1.vsix",
+    "vscode.image-preview": "https://open-vsx.org/api/vscode/image-preview/1.52.1/file/vscode.image-preview-1.52.1.vsix",
+    "vscode.ini": "https://open-vsx.org/api/vscode/ini/1.52.1/file/vscode.ini-1.52.1.vsix",
+    "vscode.javascript": "https://open-vsx.org/api/vscode/javascript/1.52.1/file/vscode.javascript-1.52.1.vsix",
+    "vscode.json": "https://open-vsx.org/api/vscode/json/1.52.1/file/vscode.json-1.52.1.vsix",
+    "vscode.json-language-features": "https://open-vsx.org/api/vscode/json-language-features/1.52.1/file/vscode.json-language-features-1.52.1.vsix",
+    "vscode.log": "https://open-vsx.org/api/vscode/log/1.52.1/file/vscode.log-1.52.1.vsix",
+    "vscode.markdown": "https://open-vsx.org/api/vscode/markdown/1.52.1/file/vscode.markdown-1.52.1.vsix",
+    "vscode.npm": "https://open-vsx.org/api/vscode/npm/1.52.1/file/vscode.npm-1.52.1.vsix",
+    "vscode.powershell": "https://open-vsx.org/api/vscode/powershell/1.52.1/file/vscode.powershell-1.52.1.vsix",
+    "vscode.shellscript": "https://open-vsx.org/api/vscode/shellscript/1.52.1/file/vscode.shellscript-1.52.1.vsix",
+    "vscode.typescript": "https://open-vsx.org/api/vscode/typescript/1.52.1/file/vscode.typescript-1.52.1.vsix",
+    "vscode.typescript-language-features": "https://open-vsx.org/api/vscode/typescript-language-features/1.52.1/file/vscode.typescript-language-features-1.52.1.vsix",
+    "vscode.yaml": "https://open-vsx.org/api/vscode/yaml/1.52.1/file/vscode.yaml-1.52.1.vsix",
+    "vscode.xml": "https://open-vsx.org/api/vscode/xml/1.52.1/file/vscode.xml-1.52.1.vsix",
+    "vscode-builtin-node-debug": "https://open-vsx.org/api/ms-vscode/node-debug/1.44.8/file/ms-vscode.node-debug-1.44.8.vsix",
+    "vscode-builtin-node-debug2": "https://open-vsx.org/api/ms-vscode/node-debug2/1.42.1/file/ms-vscode.node-debug2-1.42.1.vsix"
+  }
+}
