@@ -13,7 +13,8 @@
   },
   "theiaExtensions": [
     {
-      "frontendElectron": "lib/browser/theia-blueprint-frontend-module"
+      "frontendElectron": "lib/browser/theia-blueprint-frontend-module",
+      "backend": "lib/node/theia-blueprint-backend-module"
     }
   ],
   "keywords": [
