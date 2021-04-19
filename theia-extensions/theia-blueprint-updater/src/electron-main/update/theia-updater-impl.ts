@@ -60,6 +60,10 @@ export class TheiaUpdaterImpl implements TheiaUpdater, ElectronMainApplicationCo
         autoUpdater.on('update-downloaded', () => {
             this.clients.forEach(c => c.notifyReadyToInstall());
         });
+
+        autoUpdater.on('error', (err: unknown) => {
+            this.clients.forEach(c => c.reportError('Error during update'));
+        });
     }
 
     checkForUpdates(): void {

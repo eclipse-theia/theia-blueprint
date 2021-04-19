@@ -28,4 +28,5 @@ export const TheiaUpdaterClient = Symbol('TheiaUpdaterClient');
 export interface TheiaUpdaterClient {
     updateAvailable(available: boolean, startupCheck: boolean): void;
     notifyReadyToInstall(): void;
+    reportError(error: string): void;
 }

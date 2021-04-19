@@ -66,6 +66,9 @@ export class TheiaUpdaterClientImpl implements TheiaUpdaterClient {
     protected readonly onUpdateAvailableEmitter = new Emitter<boolean>();
     readonly onUpdateAvailable = this.onUpdateAvailableEmitter.event;
 
+    protected readonly onErrorEmitter = new Emitter<string>();
+    readonly onError = this.onErrorEmitter.event;
+
     notifyReadyToInstall(): void {
         this.onReadyToInstallEmitter.fire();
     }
@@ -87,6 +90,10 @@ export class TheiaUpdaterClientImpl implements TheiaUpdaterClient {
             this.onUpdateAvailableEmitter.fire(available);
         }
 
+    }
+
+    reportError(error: string): void {
+        this.onErrorEmitter.fire(error);
     }
 
 }
@@ -147,6 +154,8 @@ export class TheiaUpdaterFrontendContribution implements CommandContribution, Me
             this.menuUpdater.update();
             this.handleUpdatesAvailable();
         });
+
+        this.updaterClient.onError(error => this.handleError(error));
     }
 
     registerCommands(registry: CommandRegistry): void {
@@ -193,6 +202,10 @@ export class TheiaUpdaterFrontendContribution implements CommandContribution, Me
         if (answer === 'Yes') {
             this.updater.onRestartToUpdateRequested();
         }
+    }
+
+    protected async handleError(error: string): Promise<void> {
+        this.messageService.error(error);
     }
 
 }
