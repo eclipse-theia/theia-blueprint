@@ -23,6 +23,9 @@ import { WidgetFactory } from '@theia/core/lib/browser';
 import { GettingStartedWidget } from '@theia/getting-started/lib/browser/getting-started-widget';
 import { TheiaBlueprintAboutDialog } from './theia-blueprint-about-dialog';
 import { TheiaBlueprintGettingStartedWidget } from './theia-blueprint-getting-started-widget';
+import { TheiaBlueprintContribution } from './theia-blueprint-contribution';
+import { CommandContribution } from '@theia/core/lib/common/command';
+import { MenuContribution } from '@theia/core/lib/common/menu';
 
 export default new ContainerModule((bind, _unbind, isBound, rebind) => {
     bind(TheiaBlueprintGettingStartedWidget).toSelf();
@@ -31,4 +34,9 @@ export default new ContainerModule((bind, _unbind, isBound, rebind) => {
         createWidget: () => context.container.get<TheiaBlueprintGettingStartedWidget>(TheiaBlueprintGettingStartedWidget),
     })).inSingletonScope();
     isBound(AboutDialog) ? rebind(AboutDialog).to(TheiaBlueprintAboutDialog).inSingletonScope() : bind(AboutDialog).to(TheiaBlueprintAboutDialog).inSingletonScope();
+    
+    bind(TheiaBlueprintContribution).toSelf().inSingletonScope();
+    [CommandContribution, MenuContribution].forEach(serviceIdentifier =>
+        bind(serviceIdentifier).toService(TheiaBlueprintContribution)
+    );
 });
