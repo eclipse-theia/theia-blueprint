@@ -27,17 +27,11 @@
     "build": "lerna run build",
     "bundle": "lerna run bundle",
     "watch": "lerna run --parallel watch",
-    "start": "(cd electron-app && yarn start)",
-    "start:debug": "(cd electron-app && yarn start --log-level=debug)",
     "test": "lerna run test",
-    "package": "(cd electron-app && yarn package)",
-    "deploy": "(cd electron-app && yarn deploy)",
-    "package:preview": "(cd electron-app && yarn package:preview)",
-    "download:plugins": "(cd electron-app && yarn download:plugins)"
+    "electron": "yarn --cwd applications/electron"
   },
   "workspaces": [
-    "electron-app",
-    "theia-blueprint-updater",
-    "theia-blueprint-product"
+    "applications/*",
+    "theia-extensions/*"
   ]
 }

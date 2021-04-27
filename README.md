@@ -7,7 +7,7 @@
 
 <div id="badges" align="center">
 
-Eclipse Theia Blueprint is a template for building desktop-based products based on the Eclipse Theia platform. 
+Eclipse Theia Blueprint is a template for building desktop-based products based on the Eclipse Theia platform.
 
 </div>
 
@@ -44,9 +44,11 @@ Documentation on how to package Theia as a Desktop Product may be found [here](h
 ### Repository structure
 
 - Root level configures mono-repo build with lerna
-- `electron-app` contains app to package, packaging configuration, and E2E tests.
-- `theia-blueprint-product` contains a Theia extension contributing the product branding (about dialogue and welcome page).
-- `theia-blueprint-updater` contains a Theia extension contributing the update mechanism and corresponding UI elements (based on the electron updater).
+- `applications` groups the different app targets
+  - `electron` contains app to package, packaging configuration, and E2E tests for the electron target.
+- `theia-extensions` groups the various custom theia extensions for Blueprint
+  - `theia-blueprint-product` contains a Theia extension contributing the product branding (about dialogue and welcome page).
+  - `theia-blueprint-updater` contains a Theia extension contributing the update mechanism and corresponding UI elements (based on the electron updater).
 
 ### Build
 
@@ -57,18 +59,18 @@ yarn
 ### Package the application
 
 ```sh
-yarn package
+yarn electron package
 ```
 
-The packaged application is located in `electron-app/dist`.
+The packaged application is located in `applications/electron/dist`.
 
 ### Create a preview application (without packaging it)
 
 ```sh
-yarn package:preview
+yarn electron package:preview
 ```
 
-The packaged application is located in `electron-app/dist`.
+The packaged application is located in `applications/electron/dist`.
 
 ### Running E2E Tests
 
@@ -76,8 +78,8 @@ The E2E tests basic UI tests of the actual application.
 This is done based on the preview of the packaged application.
 
 ```sh
-yarn package:preview
-(cd electron-app && yarn test)
+yarn electron package:preview
+yarn electron test
 ```
 
 ### Troubleshooting

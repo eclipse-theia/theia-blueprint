@@ -12,11 +12,11 @@ ports:
   - port: 9339 # Node.js debug port
     onOpen: ignore
 tasks:
-  - init: yarn --network-timeout 100000 && yarn package:preview && yarn package
+  - init: yarn --network-timeout 100000 && yarn electron package:preview && yarn electron package
     command: >
       jwm &
-      gp open /workspace/theia-blueprint/electron-app/dist/latest-linux.yml
-      
+      gp open /workspace/theia-blueprint/applications/electron/dist/latest-linux.yml
+
 github:
   prebuilds:
     pullRequestsFromForks: true
