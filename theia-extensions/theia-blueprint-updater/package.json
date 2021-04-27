@@ -38,8 +38,8 @@
     "src"
   ],
   "scripts": {
-    "prepare": "yarn run clean && yarn run build",
-    "clean": "rimraf lib && rimraf tsconfig.tsbuildinfo",
-    "build": "tsc --build tsconfig.json"
+    "prepare": "yarn clean && yarn build",
+    "clean": "rimraf lib *.tsbuildinfo",
+    "build": "tsc -b"
   }
 }

@@ -3,7 +3,7 @@
  */
 import groovy.json.JsonSlurper
 
-distFolder = "electron-app/dist"
+distFolder = "applications/electron/dist"
 releaseBranch = "master"
 
 pipeline {
@@ -140,7 +140,7 @@ def buildInstaller() {
     sh "yarn --frozen-lockfile --force"
     sh "rm -rf ./${distFolder}"
     sshagent(['projects-storage.eclipse.org-bot-ssh']) {
-        sh "yarn deploy"
+        sh "yarn electron deploy"
     }
 }
 
