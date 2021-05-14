@@ -25,7 +25,10 @@ export class TheiaBlueprintGettingStartedWidget extends GettingStartedWidget {
 
     protected render(): React.ReactNode {
         return <div className='gs-container'>
-            <div className='gs-logo'>
+            <div className='gs-float'>
+                <div className='gs-logo'>
+                </div>
+                {this.renderActions()}
             </div>
             {this.renderHeader()}
             <hr className='gs-hr' />
@@ -57,6 +60,31 @@ export class TheiaBlueprintGettingStartedWidget extends GettingStartedWidget {
             <div className='flex-grid'>
                 <div className='col'>
                     {renderDownloads()}
+                </div>
+            </div>
+        </div>;
+    }
+
+    protected renderActions(): React.ReactNode {
+        return <div className='gs-container'>
+            <div className='flex-grid'>
+                <div className='col'>
+                    {this.renderOpen()}
+                </div>
+            </div>
+            <div className='flex-grid'>
+                <div className='col'>
+                    {this.renderRecentWorkspaces()}
+                </div>
+            </div>
+            <div className='flex-grid'>
+                <div className='col'>
+                    {this.renderSettings()}
+                </div>
+            </div>
+            <div className='flex-grid'>
+                <div className='col'>
+                    {this.renderHelp()}
                 </div>
             </div>
         </div>;

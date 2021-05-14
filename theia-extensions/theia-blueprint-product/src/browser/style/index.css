@@ -32,8 +32,11 @@
     text-decoration: underline;
 }
 
-.gs-logo {
+.gs-float {
     float: right;
+}
+
+.gs-logo {
     background-image: var(--theia-branding-logo);
     background-position: center center;
     background-repeat: no-repeat;
