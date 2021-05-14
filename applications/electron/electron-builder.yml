@@ -4,7 +4,7 @@ copyright: Copyright © 2020 Eclipse Foundation, Inc
 electronDist: ../../node_modules/electron/dist
 electronVersion: 9.3.2
 # Although it is generally not recommended to disable asar, it is required for Theia.
-# Enabling this leads to: process ERROR Error: spawn ENOTDIR
+# Enabling this leads to: process ERROR Error: spawn ENOTDIR 
 # because binaries can not be executed from the asar archive.
 # See asar file API limitations: https://www.electronjs.org/docs/tutorial/application-packaging#limitations-of-the-node-api
 asar: false
@@ -35,7 +35,7 @@ mac:
   category: public.app-category.developer-tools
   darkModeSupport: true
   target:
-    - pkg
+    - dmg
   publish:
     provider: generic
     url: "https://download.eclipse.org/theia/latest/macos"
@@ -63,9 +63,8 @@ nsis:
   runAfterFinish: false
   artifactName: ${productName}.${ext}
   license: LICENSE
-pkg:
+dmg:
   artifactName: ${productName}.${ext}
-  license: LICENSE
 deb:
   artifactName: ${productName}.${ext}
 appImage:
