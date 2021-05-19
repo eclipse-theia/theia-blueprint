@@ -1,7 +1,7 @@
 <br/>
 <div id="theia-logo" align="center">
     <br />
-    <img src="https://raw.githubusercontent.com/eclipse-theia/theia-blueprint/master/theia-blueprint-product/src/browser/icons/TheiaBlueprintLogo-blue.png" alt="Theia Logo" width="300"/>
+    <img src="https://raw.githubusercontent.com/eclipse-theia/theia-blueprint/master/theia-extensions/theia-blueprint-product/src/browser/icons/TheiaBlueprintLogo-blue.png" alt="Theia Logo" width="300"/>
     <h3>Eclipse Theia Blueprint</h3>
 </div>
 
