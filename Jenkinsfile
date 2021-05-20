@@ -135,6 +135,8 @@ spec:
 
 def buildInstaller() {
     checkout scm
+    // clear volumes to avoid occasional CI issue
+    sh "rm -rf /.cache/* /.electron-gyp/*"
     sh "printenv"
     sh "yarn cache clean"
     sh "yarn --frozen-lockfile --force"
