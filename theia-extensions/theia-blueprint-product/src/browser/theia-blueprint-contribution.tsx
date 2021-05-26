@@ -24,7 +24,7 @@ export namespace BlueprintMenus {
     export const BLUEPRINT_HELP: MenuPath = [...CommonMenus.HELP, 'blueprint'];
 }
 export namespace BlueprintCommands {
-    export const CATEGORY = 'Blueprint'
+    export const CATEGORY = 'Blueprint';
     export const REPORT_ISSUE: Command = {
         id: 'blueprint:report-issue',
         category: CATEGORY,

@@ -15,7 +15,7 @@
  ********************************************************************************/
 import * as React from 'react';
 
-import { AboutDialog, AboutDialogProps, ABOUT_CONTENT_CLASS } from "@theia/core/lib/browser/about-dialog";
+import { AboutDialog, AboutDialogProps, ABOUT_CONTENT_CLASS } from '@theia/core/lib/browser/about-dialog';
 import { injectable, inject } from 'inversify';
 import { renderDocumentation, renderDownloads, renderSourceCode, renderTickets, renderWhatIs, renderWhatIsNot } from './branding-util';
 

@@ -1460,7 +1460,7 @@
     uuid "^8.0.0"
     vscode-languageserver-textdocument "^1.0.1"
 
-"@theia/getting-started@1.13.0":
+"@theia/getting-started@1.13.0", "@theia/getting-started@^1.13.0":
   version "1.13.0"
   resolved "https://registry.yarnpkg.com/@theia/getting-started/-/getting-started-1.13.0.tgz#aa18501d9d37068874aa5420fff18eaf908b146b"
   integrity sha512-X+WS8T+aMPDDtlOZLgrYzImWxfvyH36rqku/ODHPKXrpUVBSa/ZNlWiyeCuMaaguAv3q2aHKZzH6i15tzaaVRw==
@@ -6898,7 +6898,7 @@ electron@9.3.2:
     "@types/node" "^12.0.12"
     extract-zip "^1.0.3"
 
-electron@^9.0.2:
+electron@^9.0.2, electron@^9.3.2:
   version "9.4.4"
   resolved "https://registry.yarnpkg.com/electron/-/electron-9.4.4.tgz#2a74a0655a74bd326216672c5ae6ed3a44451446"
   integrity sha512-dcPlTrMWQu5xuSm6sYV42KK/BRIqh3erM8v/WtZqaDmG7pkCeJpvw26Dgbqhdt78XmqqGiN96giEe6A3S9vpAQ==
@@ -9252,7 +9252,7 @@ invariant@^2.2.2:
   dependencies:
     loose-envify "^1.0.0"
 
-inversify@^5.0.1:
+inversify@^5.0.1, inversify@^5.1.1:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/inversify/-/inversify-5.1.1.tgz#6fbd668c591337404e005a1946bfe0d802c08730"
   integrity sha512-j8grHGDzv1v+8T1sAQ+3boTCntFPfvxLCkNcxB1J8qA0lUN+fAlSyYd+RXKvaPRL4AGyPxViutBEJHNXOyUdFQ==

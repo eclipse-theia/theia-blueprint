@@ -23,10 +23,10 @@ import { TheiaUpdater, TheiaUpdaterClient } from '../../common/updater/theia-upd
 
 import { injectable } from 'inversify';
 
-const { autoUpdater } = require("electron-updater");
+const { autoUpdater } = require('electron-updater');
 
-autoUpdater.logger = require("electron-log")
-autoUpdater.logger.transports.file.level = "info"
+autoUpdater.logger = require('electron-log');
+autoUpdater.logger.transports.file.level = 'info';
 
 @injectable()
 export class TheiaUpdaterImpl implements TheiaUpdater, ElectronMainApplicationContribution {
@@ -36,9 +36,8 @@ export class TheiaUpdaterImpl implements TheiaUpdater, ElectronMainApplicationCo
     private initialCheck: boolean = true;
     private reportOnFirstRegistration: boolean = false;
 
-
     constructor() {
-        autoUpdater.autoDownload = false
+        autoUpdater.autoDownload = false;
         autoUpdater.on('update-available', () => {
             const startupCheck = this.initialCheck;
             if (this.initialCheck) {
@@ -47,20 +46,20 @@ export class TheiaUpdaterImpl implements TheiaUpdater, ElectronMainApplicationCo
                     this.reportOnFirstRegistration = true;
                 }
             }
-            this.clients.forEach(c => c.updateAvailable(true, startupCheck))
-        })
+            this.clients.forEach(c => c.updateAvailable(true, startupCheck));
+        });
         autoUpdater.on('update-not-available', () => {
             if (this.initialCheck) {
                 this.initialCheck = false;
                 /* do not report that no update is available on start up */
                 return;
             }
-            this.clients.forEach(c => c.updateAvailable(false, false))
-        })
+            this.clients.forEach(c => c.updateAvailable(false, false));
+        });
 
         autoUpdater.on('update-downloaded', () => {
-            this.clients.forEach(c => c.notifyReadyToInstall())
-        })
+            this.clients.forEach(c => c.notifyReadyToInstall());
+        });
     }
 
     checkForUpdates(): void {
@@ -73,18 +72,18 @@ export class TheiaUpdaterImpl implements TheiaUpdater, ElectronMainApplicationCo
 
     downloadUpdate(): void {
         autoUpdater.downloadUpdate();
-        
+
         // record download stat, ignore errors
         fs.mkdtemp(path.join(os.tmpdir(), 'theia-blueprint-updater-'))
             .then(tmpDir => {
-                const file = fs.createWriteStream(path.join(tmpDir, "update"));
-                http.get("https://www.eclipse.org/downloads/download.php?file=/theia/update&r=1", response => {
+                const file = fs.createWriteStream(path.join(tmpDir, 'update'));
+                http.get('https://www.eclipse.org/downloads/download.php?file=/theia/update&r=1', response => {
                     response.pipe(file);
                     file.on('finish', () => {
                         file.close();
                     });
                 });
-            })
+            });
     }
 
     onStart(application: ElectronMainApplication): void {
@@ -101,7 +100,7 @@ export class TheiaUpdaterImpl implements TheiaUpdater, ElectronMainApplicationCo
             this.clients.push(client);
             if (this.reportOnFirstRegistration) {
                 this.reportOnFirstRegistration = false;
-                this.clients.forEach(c => c.updateAvailable(true, true))
+                this.clients.forEach(c => c.updateAvailable(true, true));
             }
         }
     }

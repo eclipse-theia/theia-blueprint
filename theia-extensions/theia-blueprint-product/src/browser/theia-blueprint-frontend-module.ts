@@ -16,7 +16,6 @@
 
 import '../../src/browser/style/index.css';
 
-
 import { AboutDialog } from '@theia/core/lib/browser/about-dialog';
 import { ContainerModule } from 'inversify';
 import { WidgetFactory } from '@theia/core/lib/browser';
@@ -30,11 +29,15 @@ import { MenuContribution } from '@theia/core/lib/common/menu';
 export default new ContainerModule((bind, _unbind, isBound, rebind) => {
     bind(TheiaBlueprintGettingStartedWidget).toSelf();
     bind(WidgetFactory).toDynamicValue(context => ({
-        id: GettingStartedWidget.ID, 
+        id: GettingStartedWidget.ID,
         createWidget: () => context.container.get<TheiaBlueprintGettingStartedWidget>(TheiaBlueprintGettingStartedWidget),
     })).inSingletonScope();
-    isBound(AboutDialog) ? rebind(AboutDialog).to(TheiaBlueprintAboutDialog).inSingletonScope() : bind(AboutDialog).to(TheiaBlueprintAboutDialog).inSingletonScope();
-    
+    if (isBound(AboutDialog)) {
+        rebind(AboutDialog).to(TheiaBlueprintAboutDialog).inSingletonScope();
+    } else {
+        bind(AboutDialog).to(TheiaBlueprintAboutDialog).inSingletonScope();
+    }
+
     bind(TheiaBlueprintContribution).toSelf().inSingletonScope();
     [CommandContribution, MenuContribution].forEach(serviceIdentifier =>
         bind(serviceIdentifier).toService(TheiaBlueprintContribution)

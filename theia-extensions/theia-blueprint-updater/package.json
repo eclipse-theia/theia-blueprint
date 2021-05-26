@@ -7,13 +7,16 @@
     "@theia/core": "1.13.0",
     "@theia/output": "1.13.0",
     "@theia/preferences": "1.13.0",
+    "electron": "^9.3.2",
+    "electron-log": "^4.3.0",
     "electron-updater": "^4.3.5",
-    "electron-log": "^4.3.0"
+    "fs-extra": "^10.0.0",
+    "inversify": "^5.1.1"
   },
   "devDependencies": {
     "rimraf": "^2.7.1",
-    "typescript": "^3.9.2",
-    "tslint": "^5.12.0"
+    "tslint": "^5.12.0",
+    "typescript": "^3.9.2"
   },
   "theiaExtensions": [
     {
