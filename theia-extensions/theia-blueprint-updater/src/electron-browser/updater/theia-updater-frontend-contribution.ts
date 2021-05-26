@@ -63,7 +63,6 @@ export class TheiaUpdaterClientImpl implements TheiaUpdaterClient {
     protected readonly onReadyToInstallEmitter = new Emitter<void>();
     readonly onReadyToInstall = this.onReadyToInstallEmitter.event;
 
-
     protected readonly onUpdateAvailableEmitter = new Emitter<boolean>();
     readonly onUpdateAvailable = this.onUpdateAvailableEmitter.event;
 
@@ -77,13 +76,13 @@ export class TheiaUpdaterClientImpl implements TheiaUpdaterClient {
             // we need to wait for the preference service. Also add a few seconds delay before showing the dialog
             this.preferenceService.ready
                 .then(() => {
-                    setTimeout( () => { 
+                    setTimeout(() => {
                         const reportOnStart: boolean = this.preferenceService.get('updates.reportOnStart', true);
                         if (reportOnStart) {
                             this.onUpdateAvailableEmitter.fire(available);
                         }
                      }, 10000 );
-                })
+                });
         } else {
             this.onUpdateAvailableEmitter.fire(available);
         }
@@ -141,7 +140,7 @@ export class TheiaUpdaterFrontendContribution implements CommandContribution, Me
             } else {
                 this.handleNoUpdate();
             }
-        })
+        });
 
         this.updaterClient.onReadyToInstall(async () => {
             this.readyToUpdate = true;
@@ -177,7 +176,7 @@ export class TheiaUpdaterFrontendContribution implements CommandContribution, Me
     protected async handleDownloadUpdate(): Promise<void> {
         const answer = await this.messageService.info('Updates found, do you want to download the update?', 'No', 'Yes', 'Never');
         if (answer === 'Never') {
-            this.preferenceService.set('updates.reportOnStart', false, PreferenceScope.User)
+            this.preferenceService.set('updates.reportOnStart', false, PreferenceScope.User);
             return;
         }
         if (answer === 'Yes') {
