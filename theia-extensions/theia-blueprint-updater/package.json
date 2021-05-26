@@ -40,6 +40,8 @@
   "scripts": {
     "prepare": "yarn clean && yarn build",
     "clean": "rimraf lib *.tsbuildinfo",
-    "build": "tsc -b"
+    "build": "tsc -b",
+    "lint": "eslint --ext js,jsx,ts,tsx src",
+    "lint:fix": "eslint --ext js,jsx,ts,tsx src --fix"
   }
 }
