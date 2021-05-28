@@ -1,11 +1,11 @@
 {
   "private": true,
   "name": "theia-blueprint-product",
-  "version": "1.13.0",
+  "version": "1.14.0",
   "description": "Eclipse Theia Blueprint Product Branding",
   "dependencies": {
-    "@theia/core": "1.13.0",
-    "@theia/getting-started": "^1.13.0",
+    "@theia/core": "1.14.0",
+    "@theia/getting-started": "^1.14.0",
     "inversify": "^5.1.1"
   },
   "devDependencies": {
