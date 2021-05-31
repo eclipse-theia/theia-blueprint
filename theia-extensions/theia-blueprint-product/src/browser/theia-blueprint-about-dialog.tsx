@@ -18,9 +18,13 @@ import * as React from 'react';
 import { AboutDialog, AboutDialogProps, ABOUT_CONTENT_CLASS } from '@theia/core/lib/browser/about-dialog';
 import { injectable, inject } from 'inversify';
 import { renderDocumentation, renderDownloads, renderSourceCode, renderTickets, renderWhatIs, renderWhatIsNot } from './branding-util';
+import { VSXApiVersionProvider } from '@theia/vsx-registry/lib/common/vsx-api-version-provider';
 
 @injectable()
 export class TheiaBlueprintAboutDialog extends AboutDialog {
+
+    @inject(VSXApiVersionProvider)
+    protected readonly apiVersionProvider: VSXApiVersionProvider;
 
     constructor(
         @inject(AboutDialogProps) protected readonly props: AboutDialogProps
@@ -85,8 +89,14 @@ export class TheiaBlueprintAboutDialog extends AboutDialog {
     }
 
     protected renderVersion(): React.ReactNode {
-        return <p className='gs-sub-header' >
-            {this.applicationInfo ? 'Version ' + this.applicationInfo.version + ' (Alpha)' : '(Alpha)'}
-        </p>;
+        return <div>
+            <p className='gs-sub-header' >
+                {this.applicationInfo ? 'Version ' + this.applicationInfo.version + ' (Alpha)' : '(Alpha)'}
+            </p>
+
+            <p className='gs-sub-header' >
+                {'VS Code API Version: ' + this.apiVersionProvider.getApiVersion()}
+            </p>
+        </div>;
     }
 }

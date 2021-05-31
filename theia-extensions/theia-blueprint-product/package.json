@@ -6,6 +6,7 @@
   "dependencies": {
     "@theia/core": "1.13.0",
     "@theia/getting-started": "^1.13.0",
+    "@theia/vsx-registry": "1.13.0",
     "inversify": "^5.1.1"
   },
   "devDependencies": {

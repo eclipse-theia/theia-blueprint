@@ -18,10 +18,14 @@ import * as React from 'react';
 import { renderDocumentation, renderDownloads, renderSourceCode, renderTickets, renderWhatIs, renderWhatIsNot } from './branding-util';
 
 import { GettingStartedWidget } from '@theia/getting-started/lib/browser/getting-started-widget';
-import { injectable } from 'inversify';
+import { inject, injectable } from 'inversify';
+import { VSXApiVersionProvider } from '@theia/vsx-registry/lib/common/vsx-api-version-provider';
 
 @injectable()
 export class TheiaBlueprintGettingStartedWidget extends GettingStartedWidget {
+
+    @inject(VSXApiVersionProvider)
+    protected readonly apiVersionProvider: VSXApiVersionProvider;
 
     protected render(): React.ReactNode {
         return <div className='gs-container'>
@@ -70,8 +74,14 @@ export class TheiaBlueprintGettingStartedWidget extends GettingStartedWidget {
     }
 
     protected renderVersion(): React.ReactNode {
-        return <p className='gs-sub-header' >
-            {this.applicationInfo ? 'Version ' + this.applicationInfo.version + ' (Alpha)' : '(Alpha)'}
-        </p>;
+        return <div>
+            <p className='gs-sub-header' >
+                {this.applicationInfo ? 'Version ' + this.applicationInfo.version + ' (Alpha)' : '(Alpha)'}
+            </p>
+
+            <p className='gs-sub-header' >
+                {'VS Code API Version: ' + this.apiVersionProvider.getApiVersion()}
+            </p>
+        </div>;
     }
 }
