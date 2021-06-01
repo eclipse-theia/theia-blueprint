@@ -136,10 +136,16 @@ spec:
 def buildInstaller() {
     checkout scm
     // clear electron-gyp volume content to avoid occasional CI issue
-    sh "rm -rf /.electron-gyp/*"
-    sh "printenv"
-    sh "yarn cache clean"
-    sh "yarn --frozen-lockfile --force"
+    sh "ls -al /.electron-gyp/ || /bin/true"
+    sh "ls -al /.cache/ || /bin/true"
+    sh "df -h || /bin/true"
+    // sh "rm -rf /.electron-gyp/*"
+    // sh "ls -al /.electron-gyp/"
+    sh "printenv && yarn cache dir"
+    // sh "yarn cache clean"
+    sh "yarn --frozen-lockfile --force || yarn"
+    sh "ls -al /.electron-gyp/ || /bin/true"
+    sh "ls -al /.cache/ || /bin/true"
     sh "rm -rf ./${distFolder}"
     sshagent(['projects-storage.eclipse.org-bot-ssh']) {
         sh "yarn electron deploy"
