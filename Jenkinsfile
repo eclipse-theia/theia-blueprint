@@ -36,12 +36,20 @@ spec:
         memory: "8Gi"
         cpu: "2"
     volumeMounts:
-    - name: yarn-cache
+    - name: global-cache
       mountPath: /.cache
+    - name: global-yarn
+      mountPath: /.yarn      
+    - name: global-npm
+      mountPath: /.npm      
     - name: electron-cache
       mountPath: /.electron-gyp
   volumes:
-  - name: yarn-cache
+  - name: global-cache
+    emptyDir: {}
+  - name: global-yarn
+    emptyDir: {}
+  - name: global-npm
     emptyDir: {}
   - name: electron-cache
     emptyDir: {}
@@ -135,9 +143,19 @@ spec:
 
 def buildInstaller() {
     checkout scm
-    sh "printenv"
+    sh "printenv && yarn cache dir"
     sh "yarn cache clean"
-    sh "yarn --frozen-lockfile --force"
+    // Retry a couple times, if yarn fails
+    int MAX_RETRY = 3
+    for (int i = 0; i < MAX_RETRY ; i++) {
+        if (sh(script: 'yarn --frozen-lockfile --force', returnStatus: true) == 0) {
+            break
+        }
+        echo "yarn failed - Retry #${i+1} of ${MAX_RETRY}"
+        // Note: it seems we need to be careful here about 
+        // e.g. performing a "git clean -ffdx" - it seems to
+        // affect more than the current build/OS. 
+    }
     sh "rm -rf ./${distFolder}"
     sshagent(['projects-storage.eclipse.org-bot-ssh']) {
         sh "yarn electron deploy"
