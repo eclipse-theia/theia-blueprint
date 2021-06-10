@@ -142,20 +142,20 @@ spec:
 }
 
 def buildInstaller() {
+    int MAX_RETRY = 3
+
     checkout scm
     sh "printenv && yarn cache dir"
     sh "yarn cache clean"
-    // Retry a couple times, if yarn fails
-    int MAX_RETRY = 3
-    for (int i = 0; i < MAX_RETRY ; i++) {
-        if (sh(script: 'yarn --frozen-lockfile --force', returnStatus: true) == 0) {
-            break
+    try {
+        sh(script: 'yarn --frozen-lockfile --force')
+    } catch(error) {
+        retry(MAX_RETRY) {
+            echo "yarn failed - Retrying"
+            sh(script: 'yarn --frozen-lockfile --force')        
         }
-        echo "yarn failed - Retry #${i+1} of ${MAX_RETRY}"
-        // Note: it seems we need to be careful here about 
-        // e.g. performing a "git clean -ffdx" - it seems to
-        // affect more than the current build/OS. 
     }
+
     sh "rm -rf ./${distFolder}"
     sshagent(['projects-storage.eclipse.org-bot-ssh']) {
         sh "yarn electron deploy"
