@@ -15,10 +15,10 @@
  ********************************************************************************/
 import * as React from 'react';
 
+import { inject, injectable } from 'inversify';
 import { renderDocumentation, renderDownloads, renderSourceCode, renderTickets, renderWhatIs, renderWhatIsNot } from './branding-util';
 
 import { GettingStartedWidget } from '@theia/getting-started/lib/browser/getting-started-widget';
-import { inject, injectable } from 'inversify';
 import { VSXApiVersionProvider } from '@theia/vsx-registry/lib/common/vsx-api-version-provider';
 
 @injectable()
@@ -104,7 +104,7 @@ export class TheiaBlueprintGettingStartedWidget extends GettingStartedWidget {
     protected renderVersion(): React.ReactNode {
         return <div>
             <p className='gs-sub-header' >
-                {this.applicationInfo ? 'Version ' + this.applicationInfo.version + ' (Alpha)' : '(Alpha)'}
+                {this.applicationInfo ? 'Version ' + this.applicationInfo.version + ' (Beta)' : '(Beta)'}
             </p>
 
             <p className='gs-sub-header' >
