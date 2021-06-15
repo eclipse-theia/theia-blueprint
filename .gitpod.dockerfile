@@ -8,7 +8,7 @@ RUN sudo apt-get update \
     # window manager
     && sudo apt-get install -y jwm \
     # electron
-    && sudo apt-get install -y libgtk-3-0 libnss3 libasound2 libgbm1 \
+    && sudo apt-get install -y libgtk-3-0 libnss3 libasound2 libgbm1 libsecret-1-dev\
     # native-keymap
     && sudo apt-get install -y libx11-dev libxkbfile-dev \
     && sudo rm -rf /var/lib/apt/lists/*
