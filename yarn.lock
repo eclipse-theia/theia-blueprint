@@ -1743,7 +1743,7 @@
   dependencies:
     "@theia/core" "1.14.0"
 
-"@theia/vsx-registry@1.14.0":
+"@theia/vsx-registry@1.14.0", "@theia/vsx-registry@^1.14.0":
   version "1.14.0"
   resolved "https://registry.yarnpkg.com/@theia/vsx-registry/-/vsx-registry-1.14.0.tgz#30a5e80b206638e1d8bca931a1d9e402104c5838"
   integrity sha512-QAGHxSBeDk3I5OYOLcC8Z5nYrvCvhFda1wnLPTbq63e94beVzHnMcvhyIQLPfWGEOsbOnrxI1M1127OMYqQ5Zg==
@@ -1765,7 +1765,7 @@
     showdown "^1.9.1"
     uuid "^8.0.0"
 
-"@theia/workspace@1.14.0":
+"@theia/workspace@1.14.0", "@theia/workspace@^1.14.0":
   version "1.14.0"
   resolved "https://registry.yarnpkg.com/@theia/workspace/-/workspace-1.14.0.tgz#62fdbbb715e6ca8010ce11f7bbb7a2c40857c389"
   integrity sha512-lWY1MtU4iVKvWTUT5ZdQQfcirDMEAC7RVv/JlcM2jlowO3ec4i7XHB31Cn2vGO+aOyfP8hGPsfSFGwnOQfj+kA==
