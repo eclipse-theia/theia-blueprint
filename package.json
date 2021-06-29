@@ -1,6 +1,6 @@
 {
   "private": true,
-  "version": "1.12.1",
+  "version": "1.14.0",
   "license": "EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0",
   "author": "Rob Moran <github@thegecko.org>",
   "homepage": "https://github.com/eclipse-theia/theia-blueprint#readme",
@@ -16,31 +16,66 @@
     "node": ">=12.14.1 <13"
   },
   "devDependencies": {
-    "@theia/cli": "1.12.1",
+    "@theia/cli": "1.14.0",
     "lerna": "2.11.0",
-    "rimraf": "^2.7.1"
+    "rimraf": "^2.7.1",
+
+    "@types/chai-string": "^1.4.0",
+    "@types/jsdom": "^11.0.4",
+    "@types/node": "12",
+    "@types/sinon": "^2.3.5",
+    "@types/temp": "^0.8.29",
+    "@types/uuid": "^7.0.3",
+    "@typescript-eslint/eslint-plugin": "^4.8.1",
+    "@typescript-eslint/eslint-plugin-tslint": "^4.8.1",
+    "@typescript-eslint/parser": "^4.8.1",
+    "chai-string": "^1.4.0",
+    "colors": "^1.4.0",
+    "concurrently": "^3.5.0",
+    "electron-mocha": "^8.2.0",
+    "eslint": "^7.14.0",
+    "eslint-plugin-deprecation": "^1.1.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-no-null": "^1.0.2",
+    "eslint-plugin-no-unsanitized": "^3.1.4",
+    "eslint-plugin-react": "^7.21.5",
+    "if-env": "^1.0.4",
+    "ignore-styles": "^5.0.1",
+    "jsdom": "^11.5.1",
+    "nyc": "^15.0.0",
+    "sinon": "^3.3.0",
+    "temp": "^0.8.3",
+    "tslint": "^5.12.0",
+    "typedoc": "^0.17.7",
+    "typedoc-plugin-external-module-map": "^1.2.1",
+    "typescript": "^3.9.2",
+    "uuid": "^8.0.0"
   },
   "scripts": {
-    "prepare": "lerna run prepare",
+    "prepare": "yarn prepare:theia && lerna run prepare",
+    "prepare:theia": "yarn theia prepare:references && yarn prepare:core && yarn theia build",
+    "prepare:core": "yarn --cwd submodules/theia/packages/core prepare",
     "lint": "lerna run lint",
+    "gitclean": "git clean -xfd && git submodule foreach git clean -xfd",
     "clean": "lerna run clean && rimraf node_modules",
     "build": "lerna run build",
     "watch": "lerna run --parallel watch",
     "test": "lerna run test",
     "browser": "yarn --cwd applications/browser",
-    "electron": "yarn --cwd applications/electron"
+    "electron": "yarn --cwd applications/electron",
+    "pkg": "yarn --cwd submodules/pkg",
+    "theia": "yarn --cwd submodules/theia"
   },
   "workspaces": [
     "applications/*",
     "theia-extensions/*",
-    "submodules/pkg"
+    "submodules/pkg",
+    "submodules/theia/dev-packages/*",
+    "submodules/theia/packages/*"
   ],
   "resolutions": {
     "**/@types/react": "^16.8.0",
-    "**/@types/webpack": "^5.28.0",
-    "**/webpack": "^5.34.0",
-    "**/webpack-cli": "^4.6.0",
-    "**/worker-loader": "^3.0.8",
-    "**/copy-webpack-plugin": "^8.1.1"
+    "**/copy-webpack-plugin": "^8.1.1",
+    "**/https-proxy-agent": "^5.0.0"
   }
 }

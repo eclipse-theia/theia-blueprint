@@ -2,3 +2,7 @@
 	path = submodules/pkg
 	url = https://github.com/marechal-p/pkg.git
 	branch = exec-argv
+[submodule "submodules/theia"]
+	path = submodules/theia
+	url = https://github.com/eclipse-theia/theia.git
+	branch = mp/dynamic-require

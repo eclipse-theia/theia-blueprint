@@ -1,12 +1,13 @@
 {
   "private": true,
   "name": "theia-blueprint-browser",
-  "version": "1.12.1",
+  "version": "1.14.0",
   "description": "Eclipse Theia Blueprint Product Branding",
   "dependencies": {
-    "@theia/application-package": "1.12.1",
-    "@theia/core": "1.12.1",
-    "@theia/plugin-ext": "1.12.1"
+    "@theia/application-package": "1.14.0",
+    "@theia/core": "1.14.0",
+    "@theia/search-in-workspace": "1.14.0",
+    "@theia/plugin-ext": "1.14.0"
   },
   "devDependencies": {
     "rimraf": "^2.7.1",
