@@ -62,7 +62,7 @@ spec:
                                 buildInstaller()
                             }
                         }
-                        stash name: 'linux'
+                        stash includes: "${distFolder}/**/*", name: 'linux'
                     }
                     post {
                         failure {
