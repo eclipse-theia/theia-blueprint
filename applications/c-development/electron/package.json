@@ -82,7 +82,8 @@
     "app-builder-lib": "^22.9.0",
     "electron": "9.3.2",
     "electron-builder": "^22.8.0",
-    "rimraf": "^2.7.1"
+    "rimraf": "^2.7.1",
+    "theia-blueprint": "^1.14.0"
   },
   "scripts": {
     "prepare": "yarn build && yarn download:plugins",
@@ -96,8 +97,7 @@
     "package": "yarn clean:dist && electron-builder -c.mac.identity=null --publish never",
     "deploy": "yarn clean:dist && electron-builder -c.mac.identity=null --publish always",
     "package:preview": "yarn clean:dist && electron-builder --dir",
-    "download:plugins": "theia download:plugins",
-    "test": "mocha --timeout 60000 \"./test/*.spec.js\""
+    "download:plugins": "theia download:plugins"
   },
   "theiaPluginsDir": "plugins",
   "theiaPlugins": {
