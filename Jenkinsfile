@@ -24,7 +24,7 @@ kind: Pod
 spec:
   containers:
   - name: theia-dev
-    image: eclipsetheia/theia-blueprint
+    image: node:12.19.0-stretch
     command:
     - cat
     tty: true
@@ -58,6 +58,7 @@ spec:
                     }
                     steps {
                         container('theia-dev') {
+                            sh 'apt-get update && apt-get install -y libxkbfile-dev libsecret-1-dev'
                             script {
                                 buildInstaller()
                             }
