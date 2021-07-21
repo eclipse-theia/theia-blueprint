@@ -43,5 +43,8 @@
   "workspaces": [
     "applications/*",
     "theia-extensions/*"
-  ]
+  ],
+  "resolutions": {
+    "**/keytar": "7.6.0"
+  }
 }

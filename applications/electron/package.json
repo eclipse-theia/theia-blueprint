@@ -123,6 +123,7 @@
     "vscode-builtin-markdown-language-features": "https://open-vsx.org/api/vscode/markdown-language-features/1.39.2/file/vscode.markdown-language-features-1.39.2.vsix",
     "vscode-builtin-json": "https://open-vsx.org/api/vscode/json/1.46.1/file/vscode.json-1.46.1.vsix",
     "vscode-builtin-json-language-features": "https://open-vsx.org/api/vscode/json-language-features/1.46.1/file/vscode.json-language-features-1.46.1.vsix",
+    "vscode-builtin-git": "",
     "vscode built-in extensions pack": "https://open-vsx.org/api/eclipse-theia/builtin-extension-pack/1.50.0/file/eclipse-theia.builtin-extension-pack-1.50.0.vsix"
   }
 }
