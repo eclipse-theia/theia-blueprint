@@ -37,6 +37,7 @@ mac:
   darkModeSupport: true
   target:
     - dmg
+    - zip
   publish:
     provider: generic
     url: "https://download.eclipse.org/theia/latest/macos"
