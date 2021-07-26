@@ -164,12 +164,66 @@ spec:
                     }
                 }
                 stage('Sign and Upload Windows') {
-                    agent any
+                    agent {
+                        kubernetes {
+                            yaml """
+apiVersion: v1
+kind: Pod
+spec:
+  containers:
+  - name: theia-dev
+    image: eclipsetheia/theia-blueprint
+    command:
+    - cat
+    tty: true
+    resources:
+      limits:
+        memory: "8Gi"
+        cpu: "2"
+      requests:
+        memory: "8Gi"
+        cpu: "2"
+    volumeMounts:
+    - name: global-cache
+      mountPath: /.cache
+    - name: global-yarn
+      mountPath: /.yarn      
+    - name: global-npm
+      mountPath: /.npm      
+    - name: electron-cache
+      mountPath: /.electron-gyp
+  - name: jnlp
+    volumeMounts:
+    - name: volume-known-hosts
+      mountPath: /home/jenkins/.ssh
+  volumes:
+  - name: global-cache
+    emptyDir: {}
+  - name: global-yarn
+    emptyDir: {}
+  - name: global-npm
+    emptyDir: {}
+  - name: electron-cache
+    emptyDir: {}
+  - name: volume-known-hosts
+    configMap:
+      name: known-hosts
+"""
+                        }
+                    }
                     steps {
                         unstash 'win'
-                        script {
-                            signInstaller('exe', 'winsign')
-                            uploadInstaller('windows')
+                        container('theia-dev') {
+                            script {
+                                signInstaller('exe', 'winsign')
+                                updateMetadata('TheiaBlueprint.exe', 'latest.yml')
+                            }
+                        }
+                        container('jnlp') {
+                            script {
+                                uploadInstaller('windows')
+                                linkInstaller('windows', 'TheiaBlueprint', 'exe')
+                            }
                         }
                     }
                 }
@@ -240,6 +294,11 @@ def notarizeInstaller(String ext) {
     }
 }
 
+def updateMetadata(String executable, String yaml) {
+    sh "yarn install --force"
+    sh "yarn electron update:checksum -e ${executable} -y ${yaml}"
+}
+
 def uploadInstaller(String platform) {
     if (env.BRANCH_NAME == releaseBranch) {
         def packageJSON = readJSON file: "package.json"
@@ -254,5 +313,17 @@ def uploadInstaller(String platform) {
         }
     } else {
         echo "Skipped upload for branch ${env.BRANCH_NAME}"
+    }
+}
+
+def linkInstaller(String platform, String installer, String extension) {
+    if (env.BRANCH_NAME == releaseBranch) {
+        def packageJSON = readJSON file: "package.json"
+        String version = "${packageJSON.version}"
+        sshagent(['projects-storage.eclipse.org-bot-ssh']) {
+            sh "ssh genie.theia@projects-storage.eclipse.org ln -s /home/data/httpd/download.eclipse.org/theia/latest/${platform}/${installer}.${extension} /home/data/httpd/download.eclipse.org/theia/latest/${platform}/${installer}-${version}.${extension}"
+        }
+    } else {
+        echo "Skipped copying installer for branch ${env.BRANCH_NAME}"
     }
 }
