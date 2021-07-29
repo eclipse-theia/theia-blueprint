@@ -7,7 +7,6 @@
     "@theia/core": "1.16.0",
     "@theia/output": "1.16.0",
     "@theia/preferences": "1.16.0",
-    "electron": "^9.3.2",
     "electron-log": "^4.3.0",
     "electron-updater": "^4.3.5",
     "fs-extra": "^10.0.0",

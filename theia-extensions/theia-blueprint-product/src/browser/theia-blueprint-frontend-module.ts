@@ -20,7 +20,7 @@ import { FrontendApplicationContribution, WidgetFactory, bindViewContribution } 
 
 import { AboutDialog } from '@theia/core/lib/browser/about-dialog';
 import { CommandContribution } from '@theia/core/lib/common/command';
-import { ContainerModule } from 'inversify';
+import { ContainerModule } from '@theia/core/shared/inversify';
 import { GettingStartedWidget } from '@theia/getting-started/lib/browser/getting-started-widget';
 import { MenuContribution } from '@theia/core/lib/common/menu';
 import { TheiaBlueprintAboutDialog } from './theia-blueprint-about-dialog';

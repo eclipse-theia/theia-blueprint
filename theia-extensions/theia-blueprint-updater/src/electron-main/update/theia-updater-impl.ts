@@ -21,7 +21,7 @@ import * as path from 'path';
 import { ElectronMainApplication, ElectronMainApplicationContribution } from '@theia/core/lib/electron-main/electron-main-application';
 import { TheiaUpdater, TheiaUpdaterClient } from '../../common/updater/theia-updater';
 
-import { injectable } from 'inversify';
+import { injectable } from '@theia/core/shared/inversify';
 
 const { autoUpdater } = require('electron-updater');
 

@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { BrowserWindow, Menu, remote } from 'electron';
+import { BrowserWindow, Menu, remote } from '@theia/core/shared/electron';
 import {
     Command,
     CommandContribution,
@@ -27,7 +27,7 @@ import {
 } from '@theia/core/lib/common';
 import { PreferenceScope, PreferenceService } from '@theia/core/lib/browser/preferences';
 import { TheiaUpdater, TheiaUpdaterClient } from '../../common/updater/theia-updater';
-import { inject, injectable, postConstruct } from 'inversify';
+import { inject, injectable, postConstruct } from '@theia/core/shared/inversify';
 
 import { CommonMenus } from '@theia/core/lib/browser';
 import { ElectronMainMenuFactory } from '@theia/core/lib/electron-browser/menu/electron-main-menu-factory';
