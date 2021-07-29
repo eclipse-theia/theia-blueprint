@@ -86,7 +86,6 @@
     "@wdio/sync": "^6.10.0",
     "app-builder-lib": "^22.9.0",
     "chai": "^4.2.0",
-    "electron": "9.3.2",
     "electron-builder": "^22.8.0",
     "electron-chromedriver": "9.0.0",
     "electron-mocha": "^9.3.2",
