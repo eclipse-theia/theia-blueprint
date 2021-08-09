@@ -37,11 +37,14 @@ Eclipse Theia Blueprint is ***not*** **a production-ready product**. Therefore, 
 
 ## Development
 
+### Requirements
+Please check Theia's [prerequisites](https://github.com/eclipse-theia/theia/blob/master/doc/Developing.md#prerequisites), and keep node versions aligned between Theia Blueprint and that of the referenced Theia version.
+
 ### Documentation
 
 Documentation on how to package Theia as a Desktop Product may be found [here](https://theia-ide.org/docs/blueprint_documentation/)
 
-### Repository structure
+### Repository Structure
 
 - Root level configures mono-repo build with lerna
 - `applications` groups the different app targets
@@ -56,7 +59,7 @@ Documentation on how to package Theia as a Desktop Product may be found [here](h
 yarn
 ```
 
-### Package the application
+### Package the Application
 
 ```sh
 yarn electron package
@@ -64,7 +67,7 @@ yarn electron package
 
 The packaged application is located in `applications/electron/dist`.
 
-### Create a preview application (without packaging it)
+### Create a Preview Application (without packaging it)
 
 ```sh
 yarn electron package:preview
@@ -86,7 +89,7 @@ yarn electron test
 
 - [_"Don't expect that you can build app for all platforms on one platform."_](https://www.electron.build/multi-platform-build)
 
-### Reporting feature requests and bugs
+### Reporting Feature Requests and Bugs
 
 The features in Eclipse Theia Blueprint are based on Theia and the included extensions/plugins. For bugs in Theia please consider opening an issue in the [Theia project on Github](https://github.com/eclipse-theia/theia/issues/new/choose).
 Eclipse Theia Blueprint only packages existing functionality into a product and installers for the product. If you believe there is a mistake in packaging, something needs to be added to the packaging or the installers do not work properly, please [open an issue on Github](https://github.com/eclipse-theia/theia-blueprint/issues/new/choose) to let us know.
