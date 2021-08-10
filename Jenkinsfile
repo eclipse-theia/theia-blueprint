@@ -12,6 +12,9 @@ pipeline {
         timeout(time: 5, unit: 'HOURS')
         disableConcurrentBuilds()
     }
+    environment {
+        BLUEPRINT_JENKINS_CI = 'true'
+    }
     stages {
         stage('Build') {
             parallel {
