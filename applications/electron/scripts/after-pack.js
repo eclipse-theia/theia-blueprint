@@ -37,6 +37,7 @@ const signFile = file => {
 };
 
 exports.default = async function(context) {
+    const running_ci = process.env.BLUEPRINT_JENKINS_CI == 'true';
     const appPath = path.resolve(context.appOutDir, `${context.packager.appInfo.productFilename}.app`);
 
     // Remove anything we don't want in the final package
@@ -46,9 +47,12 @@ exports.default = async function(context) {
         await asynfRimraf(resolvedPath);
     }
 
-    // Only continue for macOS
-    if (context.packager.platform.name !== 'mac') {
-        return;
+    // Only continue for macOS during CI
+    if (running_ci && context.packager.platform.name == 'mac') {
+        console.log("Detected that we're running Blueprint Jenkinm CI on Mac - start signing");
+    } else {
+        console.log("Skipping CI signing");
+        return
     }
 
     // Use app-builder-lib to find all binaries to sign, at this level it will include the final .app
