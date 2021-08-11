@@ -117,7 +117,6 @@
     "vscjava.vscode-java-test": "https://open-vsx.org/api/vscjava/vscode-java-test/0.26.1/file/vscjava.vscode-java-test-0.26.1.vsix",
     "vscjava.vscode-maven": "https://open-vsx.org/api/vscjava/vscode-maven/0.21.2/file/vscjava.vscode-maven-0.21.2.vsix",
     "vscjava.vscode-java-dependency": "https://open-vsx.org/api/vscjava/vscode-java-dependency/0.16.0/file/vscjava.vscode-java-dependency-0.16.0.vsix",
-    "alphabotsec.vscode-eclipse-keybindings": "https://open-vsx.org/api/alphabotsec/vscode-eclipse-keybindings/0.12.0/file/alphabotsec.vscode-eclipse-keybindings-0.12.0.vsix",
     "ms-vscode.js-debug": "https://open-vsx.org/api/ms-vscode/js-debug/1.52.2/file/ms-vscode.js-debug-1.52.2.vsix",
     "vscode.css": "https://open-vsx.org/api/vscode/css/1.52.1/file/vscode.css-1.52.1.vsix",
     "vscode.css-language-features": "https://open-vsx.org/api/vscode/css-language-features/1.52.1/file/vscode.css-language-features-1.52.1.vsix",
