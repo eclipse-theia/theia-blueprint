@@ -5,6 +5,10 @@ import groovy.json.JsonSlurper
 
 distFolder = "applications/electron/dist"
 releaseBranch = "master"
+// Attempt to detect that a PR is Jenkins-related, by looking-for 
+// the word "jenkins" (case insensitive) in PR branch name and/or 
+// the PR title
+jenkinsRelatedRegex = "(?i).*jenkins.*"
 
 pipeline {
     agent none
@@ -17,6 +21,18 @@ pipeline {
     }
     stages {
         stage('Build') {
+            // only proceed when merging on the release branch or if the 
+            // PR seems Jenkins-related
+            when {
+                anyOf {
+                    expression { 
+                        env.CHANGE_BRANCH ==~ /($releaseBranch|$jenkinsRelatedRegex)/ 
+                    }
+                    expression {
+                        env.CHANGE_TITLE ==~ /$jenkinsRelatedRegex/
+                    }
+                }
+            }
             parallel {
                 stage('Create Linux Installer') {
                     agent {
@@ -108,6 +124,18 @@ spec:
             }
         }
         stage('Sign and Upload') {
+            // only proceed when merging on the release branch or if the 
+            // PR seems Jenkins-related
+            when {
+                anyOf {
+                    expression { 
+                        env.CHANGE_BRANCH ==~ /($releaseBranch|$jenkinsRelatedRegex)/ 
+                    }
+                    expression {
+                        env.CHANGE_TITLE ==~ /$jenkinsRelatedRegex/
+                    }
+                }
+            }
             parallel {
                 stage('Upload Linux') {
                     agent any
