@@ -25,8 +25,11 @@ pipeline {
             // PR seems Jenkins-related
             when {
                 anyOf {
+                    expression {
+                        env.GIT_BRANCH == /$releaseBranch/
+                    }
                     expression { 
-                        env.CHANGE_BRANCH ==~ /($releaseBranch|$jenkinsRelatedRegex)/ 
+                        env.CHANGE_BRANCH ==~ /$jenkinsRelatedRegex/ 
                     }
                     expression {
                         env.CHANGE_TITLE ==~ /$jenkinsRelatedRegex/
@@ -128,8 +131,11 @@ spec:
             // PR seems Jenkins-related
             when {
                 anyOf {
+                    expression {
+                        env.GIT_BRANCH == /$releaseBranch/
+                    }
                     expression { 
-                        env.CHANGE_BRANCH ==~ /($releaseBranch|$jenkinsRelatedRegex)/ 
+                        env.CHANGE_BRANCH ==~ /$jenkinsRelatedRegex/ 
                     }
                     expression {
                         env.CHANGE_TITLE ==~ /$jenkinsRelatedRegex/
