@@ -26,7 +26,7 @@ pipeline {
             when {
                 anyOf {
                     expression {
-                        env.GIT_BRANCH == /$releaseBranch/
+                        env.GIT_BRANCH ==~ /$releaseBranch/
                     }
                     expression { 
                         env.CHANGE_BRANCH ==~ /$jenkinsRelatedRegex/ 
@@ -132,7 +132,7 @@ spec:
             when {
                 anyOf {
                     expression {
-                        env.GIT_BRANCH == /$releaseBranch/
+                        env.GIT_BRANCH ==~ /$releaseBranch/
                     }
                     expression { 
                         env.CHANGE_BRANCH ==~ /$jenkinsRelatedRegex/ 
