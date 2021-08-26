@@ -20,12 +20,16 @@ import { renderDocumentation, renderDownloads, renderSourceCode, renderTickets, 
 
 import { GettingStartedWidget } from '@theia/getting-started/lib/browser/getting-started-widget';
 import { VSXEnvironment } from '@theia/vsx-registry/lib/common/vsx-environment';
+import { WindowService } from '@theia/core/lib/browser/window/window-service';
 
 @injectable()
 export class TheiaBlueprintGettingStartedWidget extends GettingStartedWidget {
 
     @inject(VSXEnvironment)
     protected readonly environment: VSXEnvironment;
+
+    @inject(WindowService)
+    protected readonly windowService: WindowService;
 
     protected vscodeApiVersion: string;
 
@@ -47,7 +51,7 @@ export class TheiaBlueprintGettingStartedWidget extends GettingStartedWidget {
             <hr className='gs-hr' />
             <div className='flex-grid'>
                 <div className='col'>
-                    {renderWhatIs()}
+                    {renderWhatIs(this.windowService)}
                 </div>
             </div>
             <div className='flex-grid'>
@@ -57,17 +61,17 @@ export class TheiaBlueprintGettingStartedWidget extends GettingStartedWidget {
             </div>
             <div className='flex-grid'>
                 <div className='col'>
-                    {renderTickets()}
+                    {renderTickets(this.windowService)}
                 </div>
             </div>
             <div className='flex-grid'>
                 <div className='col'>
-                    {renderSourceCode()}
+                    {renderSourceCode(this.windowService)}
                 </div>
             </div>
             <div className='flex-grid'>
                 <div className='col'>
-                    {renderDocumentation()}
+                    {renderDocumentation(this.windowService)}
                 </div>
             </div>
             <div className='flex-grid'>

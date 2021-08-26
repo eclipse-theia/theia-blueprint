@@ -14,22 +14,47 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
+import { Key, KeyCode } from '@theia/core/lib/browser';
+import { WindowService } from '@theia/core/lib/browser/window/window-service';
 import * as React from 'react';
 
-export function renderWhatIs(): React.ReactNode {
+export interface ExternalBrowserLinkProps {
+    text: string;
+    url: string;
+    windowService: WindowService;
+}
+
+function ExternalBrowserLink(props: ExternalBrowserLinkProps): JSX.Element {
+    return <a
+        role={'button'}
+        tabIndex={0}
+        onClick={() => openExternalLink(props.url, props.windowService)}
+        onKeyDown={(e: React.KeyboardEvent) => {
+            if (Key.ENTER.keyCode === KeyCode.createKeyCode(e.nativeEvent).key?.keyCode) {
+                openExternalLink(props.url, props.windowService);
+            }
+        }}>
+        {props.text}
+    </a>;
+}
+
+function openExternalLink(url: string, windowService: WindowService): void {
+    windowService.openNewWindow(url, { external: true });
+}
+
+export function renderWhatIs(windowService: WindowService): React.ReactNode {
     return <div className='gs-section'>
         <h3 className='gs-section-header'>
             What is Theia Blueprint?
         </h3>
-        {/* Once available we should link the customization documentation in below text */}
         <div >
             Eclipse Theia Blueprint is a <span className='gs-text-bold'>template</span> to showcase
             the capabilities of Eclipse Theia as well as how to build desktop-based products based on the platform.
             Theia Blueprint assembles a selected subset of existing Theia features and extensions. We
             provide installers for Theia Blueprint to be downloaded (see below) as well
-            as <a href='https://github.com/eclipse-theia/theia-blueprint' target='_blank'>documentation</a> on
-            how to customize this template to build a product and installers for your own Theia-based
-            product.
+            as <ExternalBrowserLink text="documentation" url="https://theia-ide.org/docs/blueprint_documentation/"
+                windowService={windowService} ></ExternalBrowserLink> on how to customize this template to build a
+            product and installers for your own Theia-based product.
         </div>
     </div>;
 }
@@ -41,12 +66,12 @@ export function renderWhatIsNot(): React.ReactNode {
         </h3>
         <div >
             Eclipse Theia Blueprint is <span className='gs-text-bold'><span className='gs-text-underline'>not</span> a production-ready
-            product</span>. Therefore, it is also not a replacement for Visual Studio Code or any other IDE.
+                product</span>. Therefore, it is also not a replacement for Visual Studio Code or any other IDE.
         </div>
     </div>;
 }
 
-export function renderTickets(): React.ReactNode {
+export function renderTickets(windowService: WindowService): React.ReactNode {
     return <div className='gs-section'>
         <h3 className='gs-section-header'>
             Reporting feature requests and bugs
@@ -54,40 +79,41 @@ export function renderTickets(): React.ReactNode {
         <div >
             The features in Eclipse Theia Blueprint are based on Theia and the included
             extensions/plugins. For bugs in Theia please consider opening an issue in
-            the <a href='https://github.com/eclipse-theia/theia/issues/new/choose' target='_blank'>Theia
-            project on Github</a>.
+            the <ExternalBrowserLink text="Theia project on Github" url="https://github.com/eclipse-theia/theia/issues/new/choose"
+                windowService={windowService} ></ExternalBrowserLink>.
         </div>
         <div>
             Eclipse Theia Blueprint only packages existing functionality into a product and installers
             for the product. If you believe there is a mistake in packaging, something needs to be added to the
             packaging or the installers do not work properly,
-            please <a href='https://github.com/eclipse-theia/theia-blueprint/issues/new/choose' target='_blank'>open
-            an issue on Github</a> to let us know.
+            please <ExternalBrowserLink text="open an issue on Github" url="https://github.com/eclipse-theia/theia-blueprint/issues/new/choose"
+                windowService={windowService} ></ExternalBrowserLink> to let us know.
         </div>
     </div>;
 }
 
-export function renderSourceCode(): React.ReactNode {
+export function renderSourceCode(windowService: WindowService): React.ReactNode {
     return <div className='gs-section'>
         <h3 className='gs-section-header'>
             Source Code
         </h3>
         <div >
             The source code of Eclipse Theia Blueprint is available
-            on <a href='https://github.com/eclipse-theia/theia-blueprint' target='_blank'>Github</a>.
+            on <ExternalBrowserLink text="Github" url="https://github.com/eclipse-theia/theia-blueprint"
+                windowService={windowService} ></ExternalBrowserLink>.
         </div>
     </div>;
 }
 
-export function renderDocumentation(): React.ReactNode {
+export function renderDocumentation(windowService: WindowService): React.ReactNode {
     return <div className='gs-section'>
         <h3 className='gs-section-header'>
             Documentation
         </h3>
-        {/* Once available we should link the customization documentation in below text */}
         <div >
-            Please see <a href='https://github.com/eclipse-theia/theia-blueprint' target='_blank'>here</a> for
-            documentation how to customize Eclipse Theia Blueprint
+            Please see <ExternalBrowserLink text="here" url="https://theia-ide.org/docs/blueprint_documentation/"
+                windowService={windowService} ></ExternalBrowserLink> for
+            documentation how to customize Eclipse Theia Blueprint.
         </div>
     </div>;
 }
