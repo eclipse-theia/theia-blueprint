@@ -217,10 +217,12 @@ spec:
                             script {
                                 signInstaller('exe', 'winsign')
                                 updateMetadata('TheiaBlueprint.exe', 'latest.yml')
+                                archiveArtifacts artifacts: 'applications/electron/dist/**', fingerprint: false
                             }
                         }
                         container('jnlp') {
                             script {
+                                testConnectivityToDownloadEclipse('windows')
                                 uploadInstaller('windows')
                                 linkInstaller('windows', 'TheiaBlueprint', 'exe')
                             }
@@ -313,6 +315,15 @@ def uploadInstaller(String platform) {
         }
     } else {
         echo "Skipped upload for branch ${env.BRANCH_NAME}"
+    }
+}
+
+def testConnectivityToDownloadEclipse(String platform) {
+    def packageJSON = readJSON file: "package.json"
+    String version = "${packageJSON.version}"
+    sshagent(['projects-storage.eclipse.org-bot-ssh']) {
+        sh "ssh genie.theia@projects-storage.eclipse.org echo List dir"
+        sh "ssh genie.theia@projects-storage.eclipse.org ls -al /home/data/httpd/download.eclipse.org/theia/${version}/${platform}"
     }
 }
 
