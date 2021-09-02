@@ -222,7 +222,7 @@ spec:
                         container('jnlp') {
                             script {
                                 uploadInstaller('windows')
-                                linkInstaller('windows', 'TheiaBlueprint', 'exe')
+                                copyInstaller('windows', 'TheiaBlueprint', 'exe')
                             }
                         }
                     }
@@ -316,12 +316,12 @@ def uploadInstaller(String platform) {
     }
 }
 
-def linkInstaller(String platform, String installer, String extension) {
+def copyInstaller(String platform, String installer, String extension) {
     if (env.BRANCH_NAME == releaseBranch) {
         def packageJSON = readJSON file: "package.json"
         String version = "${packageJSON.version}"
         sshagent(['projects-storage.eclipse.org-bot-ssh']) {
-            sh "ssh genie.theia@projects-storage.eclipse.org ln -s /home/data/httpd/download.eclipse.org/theia/latest/${platform}/${installer}.${extension} /home/data/httpd/download.eclipse.org/theia/latest/${platform}/${installer}-${version}.${extension}"
+            sh "ssh genie.theia@projects-storage.eclipse.org cp /home/data/httpd/download.eclipse.org/theia/latest/${platform}/${installer}.${extension} /home/data/httpd/download.eclipse.org/theia/latest/${platform}/${installer}-${version}.${extension}"
         }
     } else {
         echo "Skipped copying installer for branch ${env.BRANCH_NAME}"
