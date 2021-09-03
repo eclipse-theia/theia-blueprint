@@ -125,6 +125,7 @@
     "vscjava.vscode-java-dependency": "https://open-vsx.org/api/vscjava/vscode-java-dependency/0.16.0/file/vscjava.vscode-java-dependency-0.16.0.vsix"
   },
   "theiaPluginsExcludeIds": [
-    "vscode.extension-editing"
+    "vscode.extension-editing",
+    "vscode.microsoft-authentication"
   ]
 }
