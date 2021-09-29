@@ -1,0 +1,170 @@
+/**
+ * This Jenkinsfile builds Theia Next across the major OS platforms
+ */
+import groovy.json.JsonSlurper
+
+distFolder = "applications/electron/dist"
+
+pipeline {
+    agent none
+    triggers { cron('@daily') }
+    options {
+        timeout(time: 5, unit: 'HOURS')
+        disableConcurrentBuilds()
+    }
+    environment {
+        BLUEPRINT_JENKINS_CI = 'true'
+    }
+    stages {
+        stage('Build') {
+            parallel {
+                stage('Test Linux Theia@Next') {
+                    agent {
+                        kubernetes {
+                            yaml """
+apiVersion: v1
+kind: Pod
+spec:
+  containers:
+  - name: theia-dev
+    image: eclipsetheia/theia-blueprint
+    command:
+    - cat
+    tty: true
+    resources:
+      limits:
+        memory: "8Gi"
+        cpu: "2"
+      requests:
+        memory: "8Gi"
+        cpu: "2"
+    volumeMounts:
+    - name: global-cache
+      mountPath: /.cache
+    - name: global-yarn
+      mountPath: /.yarn      
+    - name: global-npm
+      mountPath: /.npm      
+    - name: electron-cache
+      mountPath: /.electron-gyp
+  volumes:
+  - name: global-cache
+    emptyDir: {}
+  - name: global-yarn
+    emptyDir: {}
+  - name: global-npm
+    emptyDir: {}
+  - name: electron-cache
+    emptyDir: {}
+"""
+                        }
+                    }
+                    steps {
+                        container('theia-dev') {
+                            script {
+                                buildNext(false)
+                            }
+                        }
+                    }
+                    post {
+                        failure {
+                            error("Linux installer creation failed, aborting...")
+                        }
+                    }
+                }
+                stage('Test Mac Theia@Next') {
+                    agent {
+                        label 'macos'
+                    }
+                    steps {
+                        script {
+                            buildNext(false)
+                        }
+                    }
+                    post {
+                        failure {
+                            error("Mac installer creation failed, aborting...")
+                        }
+                    }
+                }
+                stage('Test Windows Theia@Next') {
+                    agent {
+                        label 'windows'
+                    }
+                    steps {
+                        script {
+                            buildNext(true)
+                        }
+                    }
+                    post {
+                        failure {
+                            error("Windows installer creation failed, aborting...")
+                        }
+                    }
+                }
+            }
+        }
+    }
+    post {
+        failure {
+            echo "Build result FAILURE: Send email notification to jfaltermeier@eclipsesource.com"
+            emailext attachLog: true,
+            body: 'Job: ${JOB_NAME}<br>Build Number: ${BUILD_NUMBER}<br>Build URL: ${BUILD_URL}',
+            mimeType: 'text/html', subject: 'Build ${JOB_NAME} (#${BUILD_NUMBER}) FAILURE', to: 'jfaltermeier@eclipsesource.com'
+        }
+        unstable {
+            echo "Build result UNSTABLE: Send email notification to jfaltermeier@eclipsesource.com"
+            emailext attachLog: true,
+            body: 'Job: ${JOB_NAME}<br>Build Number: ${BUILD_NUMBER}<br>Build URL: ${BUILD_URL}',
+            mimeType: 'text/html', subject: 'Build ${JOB_NAME} (#${BUILD_NUMBER}) UNSTABLE', to: 'jfaltermeier@eclipsesource.com'
+        }
+    }
+}
+
+def buildNext(boolean runTests) {
+    int MAX_RETRY = 3
+
+    checkout scm
+
+    // merge next branch into master to get any known fixes for next version
+    // TODO there might be a more elegant way to merge a branch into this one 
+    // using a jenkings plugin from here
+    sh "git config user.email \"not@real.user\""
+    sh "git config user.name \"Not a real user\""
+    sh "git fetch origin next"
+    sh "git merge FETCH_HEAD"
+
+    // regular build
+    sh "printenv && yarn cache dir"
+
+    sh "yarn cache clean"
+    try {
+        sh(script: 'yarn --frozen-lockfile --force')
+    } catch(error) {
+        retry(MAX_RETRY) {
+            echo "yarn failed - Retrying"
+            sh(script: 'yarn --frozen-lockfile --force')        
+        }
+    }
+
+    echo "Updating versions to next"
+    sh "yarn update:next"
+        try {
+        sh(script: 'yarn --force')
+    } catch(error) {
+        retry(MAX_RETRY) {
+            echo "yarn failed - Retrying"
+            sh(script: 'yarn --force')        
+        }
+    }
+
+    sh "rm -rf ./${distFolder}"
+    sshagent(['projects-storage.eclipse.org-bot-ssh']) {
+        sh "yarn electron package:preview"
+    }
+    if (runTests) {
+        wrap([$class: 'Xvnc', takeScreenshot: false, useXauthority: true]) {
+            sh 'yarn electron test'
+        }
+    } 
+}
