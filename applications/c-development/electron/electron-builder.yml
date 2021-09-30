@@ -4,7 +4,7 @@ copyright: Copyright © 2021 Eclipse Foundation, Inc
 electronDist: ../../../node_modules/electron/dist
 electronVersion: 9.3.2
 # Although it is generally not recommended to disable asar, it is required for Theia.
-# Enabling this leads to: process ERROR Error: spawn ENOTDIR 
+# Enabling this leads to: process ERROR Error: spawn ENOTDIR
 # because binaries can not be executed from the asar archive.
 # See asar file API limitations: https://www.electronjs.org/docs/tutorial/application-packaging#limitations-of-the-node-api
 asar: false
@@ -19,6 +19,7 @@ files:
   - src-gen
   - lib
   - scripts
+  - '!**node_modules/electron/**'
 extraResources:
   - from: plugins
     to: app/plugins
@@ -27,18 +28,19 @@ win:
   icon: resources/icons/WindowsLauncherIcon/TheiaBluePrint.ico
   target:
     - nsis
-  # publish:
-  #   provider: generic
-  #   url: "https://download.eclipse.org/theia/latest/windows"
+  publish:
+    provider: generic
+    url: 'https://download.eclipse.org/theia/latest/windows'
 mac:
   icon: resources/icons/MacLauncherIcon/512-512-2.icns
   category: public.app-category.developer-tools
   darkModeSupport: true
   target:
     - dmg
-  # publish:
-  #   provider: generic
-  #   url: "https://download.eclipse.org/theia/latest/macos"
+    - zip
+  publish:
+    provider: generic
+    url: 'https://download.eclipse.org/theia/latest/macos'
 linux:
   icon: resources/icons/LinuxLauncherIcon/512-512.png
   category: Development
@@ -46,9 +48,9 @@ linux:
   target:
     - deb
     - AppImage
-  # publish:
-  #   provider: generic
-  #   url: "https://download.eclipse.org/theia/latest/linux"
+  publish:
+    provider: generic
+    url: 'https://download.eclipse.org/theia/latest/linux'
 
 nsis:
   menuCategory: true

@@ -37,6 +37,8 @@ const signFile = file => {
 };
 
 exports.default = async function(context) {
+    const running_ci = process.env.BLUEPRINT_JENKINS_CI == 'true';
+    const running_on_mac = context.packager.platform.name == 'mac';
     const appPath = path.resolve(context.appOutDir, `${context.packager.appInfo.productFilename}.app`);
 
     // Remove anything we don't want in the final package
@@ -46,9 +48,14 @@ exports.default = async function(context) {
         await asynfRimraf(resolvedPath);
     }
 
-    // Only continue for macOS
-    if (context.packager.platform.name !== 'mac') {
-        return;
+    // Only continue for macOS during CI
+    if (running_ci && running_on_mac) {
+        console.log("Detected Blueprint Jenkins CI on Mac - proceed with signing");
+    } else {
+        if (running_on_mac) {
+            console.log("Skip Mac CI signing");
+        }
+        return
     }
 
     // Use app-builder-lib to find all binaries to sign, at this level it will include the final .app
