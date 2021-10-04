@@ -25,8 +25,14 @@ export interface TheiaUpdater extends JsonRpcServer<TheiaUpdaterClient> {
 }
 
 export const TheiaUpdaterClient = Symbol('TheiaUpdaterClient');
+
+export interface UpdaterError {
+    message: string;
+    errorLogPath?: string;
+}
+
 export interface TheiaUpdaterClient {
     updateAvailable(available: boolean, startupCheck: boolean): void;
     notifyReadyToInstall(): void;
-    reportError(error: string): void;
+    reportError(error: UpdaterError): void;
 }

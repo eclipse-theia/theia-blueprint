@@ -62,7 +62,8 @@ export class TheiaUpdaterImpl implements TheiaUpdater, ElectronMainApplicationCo
         });
 
         autoUpdater.on('error', (err: unknown) => {
-            this.clients.forEach(c => c.reportError('Error during update'));
+            const errorLogPath = autoUpdater.logger.transports.file.getFile().path;
+            this.clients.forEach(c => c.reportError({ message: 'An error has occurred while attempting to update.', errorLogPath }));
         });
     }
 
