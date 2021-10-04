@@ -27,13 +27,14 @@ import {
     Progress
 } from '@theia/core/lib/common';
 import { PreferenceScope, PreferenceService } from '@theia/core/lib/browser/preferences';
-import { TheiaUpdater, TheiaUpdaterClient } from '../../common/updater/theia-updater';
+import { TheiaUpdater, TheiaUpdaterClient, UpdaterError } from '../../common/updater/theia-updater';
 import { inject, injectable, postConstruct } from '@theia/core/shared/inversify';
 
-import { CommonMenus } from '@theia/core/lib/browser';
+import { CommonMenus, OpenerService } from '@theia/core/lib/browser';
 import { ElectronMainMenuFactory } from '@theia/core/lib/electron-browser/menu/electron-main-menu-factory';
 import { isOSX } from '@theia/core/lib/common/os';
 import { setInterval, clearInterval } from 'timers';
+import URI from '@theia/core/lib/common/uri';
 
 export namespace TheiaUpdaterCommands {
 
@@ -68,7 +69,7 @@ export class TheiaUpdaterClientImpl implements TheiaUpdaterClient {
     protected readonly onUpdateAvailableEmitter = new Emitter<boolean>();
     readonly onUpdateAvailable = this.onUpdateAvailableEmitter.event;
 
-    protected readonly onErrorEmitter = new Emitter<string>();
+    protected readonly onErrorEmitter = new Emitter<UpdaterError>();
     readonly onError = this.onErrorEmitter.event;
 
     notifyReadyToInstall(): void {
@@ -94,7 +95,7 @@ export class TheiaUpdaterClientImpl implements TheiaUpdaterClient {
 
     }
 
-    reportError(error: string): void {
+    reportError(error: UpdaterError): void {
         this.onErrorEmitter.fire(error);
     }
 
@@ -138,6 +139,9 @@ export class TheiaUpdaterFrontendContribution implements CommandContribution, Me
 
     @inject(PreferenceService)
     private readonly preferenceService: PreferenceService;
+
+    @inject(OpenerService)
+    protected readonly openerService: OpenerService;
 
     protected readyToUpdate = false;
 
@@ -224,9 +228,19 @@ export class TheiaUpdaterFrontendContribution implements CommandContribution, Me
         }
     }
 
-    protected async handleError(error: string): Promise<void> {
+    protected async handleError(error: UpdaterError): Promise<void> {
         this.stopProgress();
-        this.messageService.error(error);
+        if (error.errorLogPath) {
+            const viewLogAction = 'View Error Log';
+            const answer = await this.messageService.error(error.message, viewLogAction);
+            if (answer === viewLogAction) {
+                const uri = new URI(error.errorLogPath);
+                const opener = await this.openerService.getOpener(uri);
+                opener.open(uri);
+            }
+        } else {
+            this.messageService.error(error.message);
+        }
     }
 
     private stopProgress(): void {
