@@ -23,7 +23,8 @@ scp -p "${ENTITLEMENTS}" genie.theia@projects-storage.eclipse.org:./entitlements
 REMOTE_NAME=${INPUT##*/}
 
 # sign over ssh
-ssh -q genie.theia@projects-storage.eclipse.org curl -o "\"signed-${REMOTE_NAME}\"" -F file=@"\"${REMOTE_NAME}\"" -F entitlements=@entitlements.plist http://build.eclipse.org:31338/macsign.php
+# https://wiki.eclipse.org/IT_Infrastructure_Doc#Web_service
+ssh -q genie.theia@projects-storage.eclipse.org curl -f -o "\"signed-${REMOTE_NAME}\"" -F file=@"\"${REMOTE_NAME}\"" -F entitlements=@entitlements.plist https://cbi.eclipse.org/macos/codesign/sign
 
 # copy signed file back from server
 scp -T -p genie.theia@projects-storage.eclipse.org:"\"./signed-${REMOTE_NAME}\"" "${INPUT}"

@@ -22,12 +22,15 @@ const signFile = file => {
     const mode = stat.isFile() ? stat.mode : undefined;
 
     console.log(`Signing ${file}...`);
-    child_process.execFileSync(signCommand, [
+    child_process.spawnSync(signCommand, [
         path.basename(file),
         entitlements
     ], {
         cwd: path.dirname(file),
-        maxBuffer: 1024 * 10000
+        maxBuffer: 1024 * 10000,
+        env: process.env,
+        stdio: 'inherit',
+        encoding: 'utf-8'
     });
 
     if (mode) {
@@ -73,11 +76,14 @@ exports.default = async function(context) {
     childPaths.forEach(file => signFile(file, context.appOutDir));
 
     // Notarize app
-    child_process.execFileSync(notarizeCommand, [
+    child_process.spawnSync(notarizeCommand, [
         path.basename(appPath),
         context.packager.appInfo.info._configuration.appId
     ], {
         cwd: path.dirname(appPath),
-        maxBuffer: 1024 * 10000
+        maxBuffer: 1024 * 10000,
+        env: process.env,
+        stdio: 'inherit',
+        encoding: 'utf-8'
     });
 }

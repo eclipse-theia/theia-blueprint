@@ -84,7 +84,7 @@ spec:
                                 buildInstaller()
                             }
                         }
-                        stash includes: "${distFolder}/**/*", name: 'linux'
+                        stash includes: "${distFolder}/*", name: 'linux'
                     }
                     post {
                         failure {
@@ -100,7 +100,7 @@ spec:
                         script {
                             buildInstaller()
                         }
-                        stash name: 'mac'
+                        stash includes: "${distFolder}/*", name: 'mac'
                     }
                     post {
                         failure {
@@ -157,7 +157,7 @@ spec:
                     steps {
                         unstash 'mac'
                         script {
-                            signInstaller('dmg', 'macsign')
+                            signInstaller('dmg', 'mac')
                             notarizeInstaller('dmg')
                             uploadInstaller('macos')
                         }
@@ -215,7 +215,7 @@ spec:
                         unstash 'win'
                         container('theia-dev') {
                             script {
-                                signInstaller('exe', 'winsign')
+                                signInstaller('exe', 'windows')
                                 updateMetadata('TheiaBlueprint.exe', 'latest.yml')
                             }
                         }
@@ -253,11 +253,20 @@ def buildInstaller() {
     }
 }
 
-def signInstaller(String ext, String url) {
+def signInstaller(String ext, String os) {
     List installers = findFiles(glob: "${distFolder}/*.${ext}")
+    
+    // https://wiki.eclipse.org/IT_Infrastructure_Doc#Web_service
+    if (os == 'mac') {
+        url = 'https://cbi.eclipse.org/macos/codesign/sign'
+    } else if (os == 'windows') {
+        url = 'https://cbi.eclipse.org/authenticode/sign'
+    } else {
+        error("Error during signing: unsupported OS: ${os}")
+    }
 
     if (installers.size() == 1) {
-        sh "curl -o ${distFolder}/signed-${installers[0].name} -F file=@${installers[0].path} http://build.eclipse.org:31338/${url}.php"
+        sh "curl -o ${distFolder}/signed-${installers[0].name} -F file=@${installers[0].path} ${url}"
         sh "rm ${installers[0].path}"
         sh "mv ${distFolder}/signed-${installers[0].name} ${installers[0].path}"
     } else {
@@ -266,7 +275,7 @@ def signInstaller(String ext, String url) {
 }
 
 def notarizeInstaller(String ext) {
-    String service = 'http://172.30.206.146:8383/macos-notarization-service'
+    String service = 'https://cbi.eclipse.org/macos/xcrun'
     List installers = findFiles(glob: "${distFolder}/*.${ext}")
 
     if (installers.size() == 1) {
@@ -277,7 +286,7 @@ def notarizeInstaller(String ext) {
         String uuid = json.uuid
 
         while(json.notarizationStatus.status == 'IN_PROGRESS') {
-            sleep(30)
+            sh "sleep 60"
             response = sh(script: "curl ${service}/${uuid}/status", returnStdout: true)
             json = jsonSlurper.parseText(response)
         }
