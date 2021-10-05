@@ -22,7 +22,7 @@ rm -f "${INPUT}"
 REMOTE_NAME=${INPUT##*/}
 
 # notarize over ssh
-RESPONSE=$(ssh -q genie.theia@projects-storage.eclipse.org curl -X POST -F file=@"\"${REMOTE_NAME}\"" -F "'options={\"primaryBundleId\": \"${APP_ID}\", \"staple\": true};type=application/json'" http://172.30.206.146:8383/macos-notarization-service/notarize)
+RESPONSE=$(ssh -q genie.theia@projects-storage.eclipse.org curl -X POST -F file=@"\"${REMOTE_NAME}\"" -F "'options={\"primaryBundleId\": \"${APP_ID}\", \"staple\": true};type=application/json'" https://cbi.eclipse.org/macos/xcrun/notarize)
 
 # fund uuid and status
 [[ $RESPONSE =~ $UUID_REGEX ]]
@@ -33,8 +33,8 @@ STATUS=${BASH_REMATCH[1]}
 # poll progress
 echo "  Progress: $RESPONSE"
 while [[ $STATUS == 'IN_PROGRESS' ]]; do
-    sleep 1m
-    RESPONSE=$(ssh -q genie.theia@projects-storage.eclipse.org curl -s http://172.30.206.146:8383/macos-notarization-service/$UUID/status)
+    sleep 120
+    RESPONSE=$(ssh -q genie.theia@projects-storage.eclipse.org curl -s https://cbi.eclipse.org/macos/xcrun/${UUID}/status)
     [[ $RESPONSE =~ $STATUS_REGEX ]]
     STATUS=${BASH_REMATCH[1]}
     echo "  Progress: $RESPONSE"
@@ -46,7 +46,7 @@ if [[ $STATUS != 'COMPLETE' ]]; then
 fi
 
 # download stapled result
-ssh -q genie.theia@projects-storage.eclipse.org curl -o "\"stapled-${REMOTE_NAME}\"" http://172.30.206.146:8383/macos-notarization-service/${UUID}/download
+ssh -q genie.theia@projects-storage.eclipse.org curl -o "\"stapled-${REMOTE_NAME}\"" https://cbi.eclipse.org/macos/xcrun/${UUID}/download
 
 # copy stapled file back from server
 scp -T -p genie.theia@projects-storage.eclipse.org:"\"./stapled-${REMOTE_NAME}\"" "${INPUT}"
