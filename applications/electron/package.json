@@ -1,8 +1,8 @@
 {
   "private": true,
-  "name": "theia-blueprint",
-  "description": "Eclipse Theia blueprint product",
-  "productName": "Theia Blueprint",
+  "name": "theia-blueprint-for-c",
+  "description": "Eclipse Theia blueprint product for C-development",
+  "productName": "Theia Blueprint for C",
   "version": "1.17.2",
   "main": "scripts/theia-electron-main.js",
   "license": "EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0",
@@ -23,7 +23,7 @@
     "target": "electron",
     "frontend": {
       "config": {
-        "applicationName": "Theia Blueprint"
+        "applicationName": "Theia Blueprint for C"
       }
     },
     "backend": {
@@ -58,6 +58,7 @@
     "@theia/plugin-ext": "1.17.2",
     "@theia/plugin-ext-vscode": "1.17.2",
     "@theia/preferences": "1.17.2",
+    "@theia/preview": "1.17.2",
     "@theia/process": "1.17.2",
     "@theia/property-view": "1.17.2",
     "@theia/scm": "1.17.2",
@@ -73,7 +74,9 @@
     "@theia/workspace": "1.17.2",
     "fs-extra": "^9.0.1",
     "theia-blueprint-updater": "1.17.2",
-    "theia-blueprint-product": "1.17.2"
+    "theia-blueprint-product": "1.17.2",
+    "@theia/cpp-debug": "1.17.2",
+    "theia-traceviewer": "0.1.0"
   },
   "devDependencies": {
     "@theia/cli": "1.17.2",
@@ -118,11 +121,10 @@
     "vscode.git": "https://open-vsx.org/api/vscode/git/1.52.1/file/vscode.git-1.52.1.vsix",
     "vscode.markdown-language-features": "https://open-vsx.org/api/vscode/markdown-language-features/1.39.2/file/vscode.markdown-language-features-1.39.2.vsix",
     "vscode-builtin-extensions-pack": "https://open-vsx.org/api/eclipse-theia/builtin-extension-pack/1.50.1/file/eclipse-theia.builtin-extension-pack-1.50.1.vsix",
-    "redhat.java": "https://open-vsx.org/api/redhat/java/0.73.0/file/redhat.java-0.73.0.vsix",
-    "vscjava.vscode-java-debug": "https://open-vsx.org/api/vscjava/vscode-java-debug/0.30.0/file/vscjava.vscode-java-debug-0.30.0.vsix",
-    "vscjava.vscode-java-test": "https://open-vsx.org/api/vscjava/vscode-java-test/0.26.1/file/vscjava.vscode-java-test-0.26.1.vsix",
-    "vscjava.vscode-maven": "https://open-vsx.org/api/vscjava/vscode-maven/0.21.2/file/vscjava.vscode-maven-0.21.2.vsix",
-    "vscjava.vscode-java-dependency": "https://open-vsx.org/api/vscjava/vscode-java-dependency/0.16.0/file/vscjava.vscode-java-dependency-0.16.0.vsix"
+    "cdt-gdb-vscode": "https://open-vsx.org/api/eclipse-cdt/cdt-gdb-vscode/0.0.92/file/eclipse-cdt.cdt-gdb-vscode-0.0.92.vsix",
+    "vscode-builtin-cpp": "https://open-vsx.org/api/vscode/cpp/1.45.1/file/vscode.cpp-1.45.1.vsix",
+    "vscode-clangd": "https://open-vsx.org/api/llvm-vs-code-extensions/vscode-clangd/0.1.7/file/llvm-vs-code-extensions.vscode-clangd-0.1.7.vsix",
+    "vscode-cmake": "https://open-vsx.org/api/ms-vscode/cmake-tools/1.7.0/file/ms-vscode.cmake-tools-1.7.0.vsix"
   },
   "theiaPluginsExcludeIds": [
     "vscode.extension-editing",

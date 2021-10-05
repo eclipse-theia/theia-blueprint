@@ -33,11 +33,12 @@ Eclipse Theia Blueprint is a **template** for building desktop-based products ba
 
 ## What is it not?
 
-Eclipse Theia Blueprint is ***not*** **a production-ready product**. Therefore, it is also not meant to be a replacement for Visual Studio Code or any other IDE.
+Eclipse Theia Blueprint is **_not_** **a production-ready product**. Therefore, it is also not meant to be a replacement for Visual Studio Code or any other IDE.
 
 ## Development
 
 ### Requirements
+
 Please check Theia's [prerequisites](https://github.com/eclipse-theia/theia/blob/master/doc/Developing.md#prerequisites), and keep node versions aligned between Theia Blueprint and that of the referenced Theia version.
 
 ### Documentation
@@ -74,6 +75,12 @@ yarn electron package:preview
 ```
 
 The packaged application is located in `applications/electron/dist`.
+
+### Additionals for a demo
+
+- To use the trace view download and start the [TraceCompassServer](https://download.eclipse.org/tracecompass.incubator/trace-server/rcp/)
+- Example traces can be found here: [TraceCompassTutorialTraces](https://github.com/tuxology/tracevizlab/blob/master/labs/TraceCompassTutorialTraces.tgz)
+- An example workspace including a trace can be found [here](https://github.com/eclipsesource/cdtcloud-alpha/tree/master/example/workspace)
 
 ### Running E2E Tests
 

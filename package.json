@@ -44,7 +44,6 @@
   },
   "workspaces": [
     "applications/*",
-    "applications/c-development/*",
     "theia-extensions/*"
   ]
 }

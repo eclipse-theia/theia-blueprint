@@ -1,6 +1,6 @@
-appId: eclipse.theia
-productName: TheiaBlueprint
-copyright: Copyright © 2020 Eclipse Foundation, Inc
+appId: eclipse.theia.c
+productName: TheiaBlueprintForC
+copyright: Copyright © 2021 Eclipse Foundation, Inc
 electronDist: ../../node_modules/electron/dist
 electronVersion: 9.3.2
 # Although it is generally not recommended to disable asar, it is required for Theia.
@@ -19,7 +19,7 @@ files:
   - src-gen
   - lib
   - scripts
-  - "!**node_modules/electron/**"
+  - '!**node_modules/electron/**'
 extraResources:
   - from: plugins
     to: app/plugins
@@ -30,7 +30,7 @@ win:
     - nsis
   publish:
     provider: generic
-    url: "https://download.eclipse.org/theia/latest/windows"
+    url: 'https://download.eclipse.org/theia/c/latest/windows'
 mac:
   icon: resources/icons/MacLauncherIcon/512-512-2.icns
   category: public.app-category.developer-tools
@@ -40,7 +40,7 @@ mac:
     - zip
   publish:
     provider: generic
-    url: "https://download.eclipse.org/theia/latest/macos"
+    url: 'https://download.eclipse.org/theia/c/latest/macos'
 linux:
   icon: resources/icons/LinuxLauncherIcon/512-512.png
   category: Development
@@ -50,7 +50,7 @@ linux:
     - AppImage
   publish:
     provider: generic
-    url: "https://download.eclipse.org/theia/latest/linux"
+    url: 'https://download.eclipse.org/theia/c/latest/linux'
 
 nsis:
   menuCategory: true

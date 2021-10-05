@@ -12,22 +12,22 @@ function getBinaryPath() {
       return path.join(
         distFolder,
         "linux-unpacked",
-        "theia-blueprint"
+        "theia-blueprint-for-c"
       );
     case "win32":
       return path.join(
         distFolder,
         "win-unpacked",
-        "TheiaBlueprint.exe"
+        "TheiaBlueprintForC.exe"
       );
     case "darwin":
       return path.join(
         distFolder,
         "mac",
-        "TheiaBlueprint.app",
+        "TheiaBlueprintForC.app",
         "Contents",
         "MacOS",
-        "TheiaBlueprint"
+        "TheiaBlueprintForC"
       );
     default:
       return undefined;
@@ -126,7 +126,9 @@ describe("Theia App", function() {
     );
 
     // Exemplary check a few extensions
-    expect(extensionNames).to.include("Debugger for Java");
-    expect(extensionNames).to.include("TypeScript Language Basics (built-in)");
+    expect(extensionNames).to.include("cdt-gdb-vscode");
+    expect(extensionNames).to.include("C/C++ Language Basics (built-in)");
+    expect(extensionNames).to.include("clangd");
+    expect(extensionNames).to.include("CMake");
   });
 });

@@ -3,12 +3,12 @@
  */
 import groovy.json.JsonSlurper
 
-distFolder = "applications/electron/dist"
-releaseBranch = "master"
-// Attempt to detect that a PR is Jenkins-related, by looking-for 
-// the word "jenkins" (case insensitive) in PR branch name and/or 
+distFolder = 'applications/electron/dist'
+releaseBranch = 'c'
+// Attempt to detect that a PR is Jenkins-related, by looking-for
+// the word "jenkins" (case insensitive) in PR branch name and/or
 // the PR title
-jenkinsRelatedRegex = "(?i).*jenkins.*"
+jenkinsRelatedRegex = '(?i).*jenkins.*'
 
 pipeline {
     agent none
@@ -21,15 +21,15 @@ pipeline {
     }
     stages {
         stage('Build') {
-            // only proceed when merging on the release branch or if the 
+            // only proceed when merging on the release branch or if the
             // PR seems Jenkins-related
             when {
                 anyOf {
                     expression {
                         env.JOB_BASE_NAME ==~ /$releaseBranch/
                     }
-                    expression { 
-                        env.CHANGE_BRANCH ==~ /$jenkinsRelatedRegex/ 
+                    expression {
+                        env.CHANGE_BRANCH ==~ /$jenkinsRelatedRegex/
                     }
                     expression {
                         env.CHANGE_TITLE ==~ /$jenkinsRelatedRegex/
@@ -40,7 +40,7 @@ pipeline {
                 stage('Create Linux Installer') {
                     agent {
                         kubernetes {
-                            yaml """
+                            yaml '''
 apiVersion: v1
 kind: Pod
 spec:
@@ -61,9 +61,9 @@ spec:
     - name: global-cache
       mountPath: /.cache
     - name: global-yarn
-      mountPath: /.yarn      
+      mountPath: /.yarn
     - name: global-npm
-      mountPath: /.npm      
+      mountPath: /.npm
     - name: electron-cache
       mountPath: /.electron-gyp
   volumes:
@@ -75,7 +75,7 @@ spec:
     emptyDir: {}
   - name: electron-cache
     emptyDir: {}
-"""
+'''
                         }
                     }
                     steps {
@@ -88,7 +88,7 @@ spec:
                     }
                     post {
                         failure {
-                            error("Linux installer creation failed, aborting...")
+                            error('Linux installer creation failed, aborting...')
                         }
                     }
                 }
@@ -104,7 +104,7 @@ spec:
                     }
                     post {
                         failure {
-                            error("Mac installer creation failed, aborting...")
+                            error('Mac installer creation failed, aborting...')
                         }
                     }
                 }
@@ -120,22 +120,22 @@ spec:
                     }
                     post {
                         failure {
-                            error("Windows installer creation failed, aborting...")
+                            error('Windows installer creation failed, aborting...')
                         }
                     }
                 }
             }
         }
         stage('Sign and Upload') {
-            // only proceed when merging on the release branch or if the 
+            // only proceed when merging on the release branch or if the
             // PR seems Jenkins-related
             when {
                 anyOf {
                     expression {
                         env.JOB_BASE_NAME ==~ /$releaseBranch/
                     }
-                    expression { 
-                        env.CHANGE_BRANCH ==~ /$jenkinsRelatedRegex/ 
+                    expression {
+                        env.CHANGE_BRANCH ==~ /$jenkinsRelatedRegex/
                     }
                     expression {
                         env.CHANGE_TITLE ==~ /$jenkinsRelatedRegex/
@@ -166,7 +166,7 @@ spec:
                 stage('Sign and Upload Windows') {
                     agent {
                         kubernetes {
-                            yaml """
+                            yaml '''
 apiVersion: v1
 kind: Pod
 spec:
@@ -187,9 +187,9 @@ spec:
     - name: global-cache
       mountPath: /.cache
     - name: global-yarn
-      mountPath: /.yarn      
+      mountPath: /.yarn
     - name: global-npm
-      mountPath: /.npm      
+      mountPath: /.npm
     - name: electron-cache
       mountPath: /.electron-gyp
   - name: jnlp
@@ -208,7 +208,7 @@ spec:
   - name: volume-known-hosts
     configMap:
       name: known-hosts
-"""
+'''
                         }
                     }
                     steps {
@@ -236,20 +236,20 @@ def buildInstaller() {
     int MAX_RETRY = 3
 
     checkout scm
-    sh "printenv && yarn cache dir"
-    sh "yarn cache clean"
+    sh 'printenv && yarn cache dir'
+    sh 'yarn cache clean'
     try {
         sh(script: 'yarn --frozen-lockfile --force')
-    } catch(error) {
+    } catch (error) {
         retry(MAX_RETRY) {
-            echo "yarn failed - Retrying"
-            sh(script: 'yarn --frozen-lockfile --force')        
+            echo 'yarn failed - Retrying'
+            sh(script: 'yarn --frozen-lockfile --force')
         }
     }
 
     sh "rm -rf ./${distFolder}"
     sshagent(['projects-storage.eclipse.org-bot-ssh']) {
-        sh "yarn electron deploy"
+        sh 'yarn electron deploy'
     }
 }
 
@@ -276,7 +276,7 @@ def notarizeInstaller(String ext) {
         def json = jsonSlurper.parseText(response)
         String uuid = json.uuid
 
-        while(json.notarizationStatus.status == 'IN_PROGRESS') {
+        while (json.notarizationStatus.status == 'IN_PROGRESS') {
             sleep(30)
             response = sh(script: "curl ${service}/${uuid}/status", returnStdout: true)
             json = jsonSlurper.parseText(response)
@@ -295,21 +295,21 @@ def notarizeInstaller(String ext) {
 }
 
 def updateMetadata(String executable, String yaml) {
-    sh "yarn install --force"
+    sh 'yarn install --force'
     sh "yarn electron update:checksum -e ${executable} -y ${yaml}"
 }
 
 def uploadInstaller(String platform) {
     if (env.BRANCH_NAME == releaseBranch) {
-        def packageJSON = readJSON file: "package.json"
+        def packageJSON = readJSON file: 'package.json'
         String version = "${packageJSON.version}"
         sshagent(['projects-storage.eclipse.org-bot-ssh']) {
-            sh "ssh genie.theia@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/theia/${version}/${platform}"
-            sh "ssh genie.theia@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/theia/${version}/${platform}"
-            sh "scp ${distFolder}/*.* genie.theia@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/theia/${version}/${platform}"
-            sh "ssh genie.theia@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/theia/latest/${platform}"
-            sh "ssh genie.theia@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/theia/latest/${platform}"
-            sh "scp ${distFolder}/*.* genie.theia@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/theia/latest/${platform}"
+            sh "ssh genie.theia@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/theia/c/${version}/${platform}"
+            sh "ssh genie.theia@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/theia/c/${version}/${platform}"
+            sh "scp ${distFolder}/*.* genie.theia@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/theia/c/${version}/${platform}"
+            sh "ssh genie.theia@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/theia/c/latest/${platform}"
+            sh "ssh genie.theia@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/theia/c/latest/${platform}"
+            sh "scp ${distFolder}/*.* genie.theia@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/theia/c/latest/${platform}"
         }
     } else {
         echo "Skipped upload for branch ${env.BRANCH_NAME}"
@@ -318,10 +318,10 @@ def uploadInstaller(String platform) {
 
 def copyInstaller(String platform, String installer, String extension) {
     if (env.BRANCH_NAME == releaseBranch) {
-        def packageJSON = readJSON file: "package.json"
+        def packageJSON = readJSON file: 'package.json'
         String version = "${packageJSON.version}"
         sshagent(['projects-storage.eclipse.org-bot-ssh']) {
-            sh "ssh genie.theia@projects-storage.eclipse.org cp /home/data/httpd/download.eclipse.org/theia/latest/${platform}/${installer}.${extension} /home/data/httpd/download.eclipse.org/theia/latest/${platform}/${installer}-${version}.${extension}"
+            sh "ssh genie.theia@projects-storage.eclipse.org cp /home/data/httpd/download.eclipse.org/theia/c/latest/${platform}/${installer}.${extension} /home/data/httpd/download.eclipse.org/theia/c/latest/${platform}/${installer}-${version}.${extension}"
         }
     } else {
         echo "Skipped copying installer for branch ${env.BRANCH_NAME}"
