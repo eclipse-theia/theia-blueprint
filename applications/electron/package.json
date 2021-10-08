@@ -120,7 +120,6 @@
   "theiaPlugins": {
     "vscode.git": "https://open-vsx.org/api/vscode/git/1.52.1/file/vscode.git-1.52.1.vsix",
     "vscode.markdown-language-features": "https://open-vsx.org/api/vscode/markdown-language-features/1.39.2/file/vscode.markdown-language-features-1.39.2.vsix",
-    "vscode-builtin-extensions-pack": "https://open-vsx.org/api/eclipse-theia/builtin-extension-pack/1.50.1/file/eclipse-theia.builtin-extension-pack-1.50.1.vsix",
     "cdt-gdb-vscode": "https://open-vsx.org/api/eclipse-cdt/cdt-gdb-vscode/0.0.92/file/eclipse-cdt.cdt-gdb-vscode-0.0.92.vsix",
     "vscode-builtin-cpp": "https://open-vsx.org/api/vscode/cpp/1.45.1/file/vscode.cpp-1.45.1.vsix",
     "vscode-clangd": "https://open-vsx.org/api/llvm-vs-code-extensions/vscode-clangd/0.1.7/file/llvm-vs-code-extensions.vscode-clangd-0.1.7.vsix",
