@@ -1,14 +1,12 @@
 {
   "private": true,
-  "name": "theia-blueprint-product",
+  "name": "theia-blueprint-browser",
   "version": "1.23.0",
   "description": "Eclipse Theia Blueprint Product Branding",
   "dependencies": {
     "@theia/core": "1.23.0",
-    "@theia/getting-started": "1.23.0",
-    "@theia/vsx-registry": "1.23.0",
-    "@theia/workspace": "1.23.0",
-    "inversify": "^5.1.1"
+    "@theia/plugin-ext": "1.23.0",
+    "@theia/search-in-workspace": "1.23.0"
   },
   "devDependencies": {
     "rimraf": "^2.7.1",
@@ -16,8 +14,6 @@
   },
   "theiaExtensions": [
     {
-      "frontendElectron": "lib/browser/theia-blueprint-frontend-module",
-      "electronMain": "lib/electron-main/theia-blueprint-main-module",
       "backend": "lib/node/theia-blueprint-backend-module"
     }
   ],
@@ -39,13 +35,7 @@
   ],
   "scripts": {
     "prepare": "yarn build",
-    "clean": "rimraf lib *.tsbuildinfo",
-    "build": "tsc -b",
-    "lint": "eslint --ext js,jsx,ts,tsx src",
-    "lint:fix": "eslint --ext js,jsx,ts,tsx src --fix",
-    "update:next": "ts-node ../../scripts/update-theia-to-next.ts"
-  },
-  "peerDependencies": {
-    "react": "^16.8.0"
+    "clean": "rimraf lib tsconfig.tsbuildinfo",
+    "build": "tsc -b"
   }
 }

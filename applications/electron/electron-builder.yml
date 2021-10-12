@@ -4,8 +4,7 @@ copyright: Copyright © 2020 Eclipse Foundation, Inc
 electronDist: ../../node_modules/electron/dist
 electronVersion: 15.3.7
 # Although it is generally not recommended to disable asar, it is required for Theia.
-# Enabling this leads to: process ERROR Error: spawn ENOTDIR
-# because binaries can not be executed from the asar archive.
+# Enabling this leads to `process ERROR Error: spawn ENOTDIR` because JS scripts cannot be executed from the asar archive.
 # See asar file API limitations: https://www.electronjs.org/docs/tutorial/application-packaging#limitations-of-the-node-api
 asar: false
 
@@ -14,12 +13,16 @@ directories:
 
 # node_modules and package.json are copied automatically
 # Copying node_modules must be automatic for correct resolvement of binaries.
-# Furthermore, This reduces bundle sizes significantly because it avoids duplicates of the electron runtime.
 files:
   - src-gen
   - lib
   - scripts
-  - "!**node_modules/electron/**"
+  # Exclude Electron's development files
+  - "!**/node_modules/electron${/*}"
+  # Exclude TS sources and maps
+  - "!**/node_modules/@theia/*/src${/*}"
+  - "!**/node_modules/**/*.{ts,tsx,js.map,d.ts,d.ts.map,eslintrc,eslintcache,tsbuildinfo}"
+  - "!**/node_modules/*/tsconfig.json"
 extraResources:
   - from: plugins
     to: app/plugins

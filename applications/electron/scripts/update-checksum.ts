@@ -13,13 +13,17 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
+
 import * as crypto from 'crypto';
 import * as fs from 'fs';
 import * as jsyaml from 'js-yaml';
 import * as path from 'path';
+import * as stream from 'stream'
+import { promisify } from 'util';
 import { hideBin } from 'yargs/helpers';
 import yargs from 'yargs/yargs';
 
+const pipeline = promisify(stream.pipeline);
 
 const argv = yargs(hideBin(process.argv))
     .option('executable', { alias: 'e', type: 'string', default: 'TheiaBlueprint.AppImage', desription: 'The executable for which the checksum needs to be updated' })
@@ -48,7 +52,7 @@ async function execute(): Promise<void> {
 
     console.log('Exe: ' + executablePath + '; Yaml: ' + yamlPath)
 
-    const hash = await hashFile(executablePath, 'sha512', 'base64', {});
+    const hash = await hashFile(executablePath, 'sha512', 'base64');
     const size = fs.statSync(executablePath).size
 
     const yamlContents: string = fs.readFileSync(yamlPath, { encoding: 'utf8' })
@@ -66,38 +70,26 @@ async function execute(): Promise<void> {
     fs.writeFileSync(yamlPath, newYamlContents);
 }
 
-function hashFile(file: fs.PathLike, algorithm = 'sha512', encoding: BufferEncoding = 'base64', options: string | {
-    flags?: string;
-    encoding?: BufferEncoding;
-    fd?: number;
-    mode?: number;
-    autoClose?: boolean;
-    emitClose?: boolean;
-    start?: number;
-    end?: number;
-    highWaterMark?: number;
-}): Promise<any> {
-    return new Promise((resolve, reject) => {
-        const hash = crypto.createHash(algorithm);
-        hash.on('error', reject).setEncoding(encoding);
-        fs.createReadStream(
-            file,
-            Object.assign({}, options, {
-                highWaterMark: 1024 * 1024,
-            })
-        )
-            .on('error', reject)
-            .on('end', () => {
-                hash.end();
-                resolve(hash.read());
-            })
-            .pipe(
-                hash,
-                {
-                    end: false,
-                }
-            );
-    });
+interface HashFileOptions {
+    flags?: string
+    encoding?: BufferEncoding
+    fd?: number
+    mode?: number
+    autoClose?: boolean
+    emitClose?: boolean
+    start?: number
+    end?: number
+    highWaterMark?: number
+}
+async function hashFile(file: fs.PathLike, algorithm: string, encoding?: undefined, options?: HashFileOptions): Promise<Buffer>
+async function hashFile(file: fs.PathLike, algorithm: string, encoding: crypto.BinaryToTextEncoding, options?: HashFileOptions): Promise<string>
+async function hashFile(file: fs.PathLike, algorithm = 'sha512', encoding: crypto.BinaryToTextEncoding = 'base64', options: HashFileOptions = {}): Promise<Buffer | string> {
+    const hash = crypto.createHash(algorithm);
+    await pipeline(
+        fs.createReadStream(file, { ...options, highWaterMark: 1024 * 1024 }),
+        hash,
+    );
+    return hash.digest(encoding);
 }
 
 function updatedPath(path: string, version: string): string {

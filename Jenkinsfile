@@ -5,8 +5,8 @@ import groovy.json.JsonSlurper
 
 distFolder = "applications/electron/dist"
 releaseBranch = "master"
-// Attempt to detect that a PR is Jenkins-related, by looking-for 
-// the word "jenkins" (case insensitive) in PR branch name and/or 
+// Attempt to detect that a PR is Jenkins-related, by looking-for
+// the word "jenkins" (case insensitive) in PR branch name and/or
 // the PR title
 jenkinsRelatedRegex = "(?i).*jenkins.*"
 
@@ -21,15 +21,15 @@ pipeline {
     }
     stages {
         stage('Build') {
-            // only proceed when merging on the release branch or if the 
+            // only proceed when merging on the release branch or if the
             // PR seems Jenkins-related
             when {
                 anyOf {
                     expression {
                         env.JOB_BASE_NAME ==~ /$releaseBranch/
                     }
-                    expression { 
-                        env.CHANGE_BRANCH ==~ /$jenkinsRelatedRegex/ 
+                    expression {
+                        env.CHANGE_BRANCH ==~ /$jenkinsRelatedRegex/
                     }
                     expression {
                         env.CHANGE_TITLE ==~ /$jenkinsRelatedRegex/
@@ -61,9 +61,9 @@ spec:
     - name: global-cache
       mountPath: /.cache
     - name: global-yarn
-      mountPath: /.yarn      
+      mountPath: /.yarn
     - name: global-npm
-      mountPath: /.npm      
+      mountPath: /.npm
     - name: electron-cache
       mountPath: /.electron-gyp
   volumes:
@@ -128,15 +128,15 @@ spec:
             }
         }
         stage('Sign and Upload') {
-            // only proceed when merging on the release branch or if the 
+            // only proceed when merging on the release branch or if the
             // PR seems Jenkins-related
             when {
                 anyOf {
                     expression {
                         env.JOB_BASE_NAME ==~ /$releaseBranch/
                     }
-                    expression { 
-                        env.CHANGE_BRANCH ==~ /$jenkinsRelatedRegex/ 
+                    expression {
+                        env.CHANGE_BRANCH ==~ /$jenkinsRelatedRegex/
                     }
                     expression {
                         env.CHANGE_TITLE ==~ /$jenkinsRelatedRegex/
@@ -188,9 +188,9 @@ spec:
     - name: global-cache
       mountPath: /.cache
     - name: global-yarn
-      mountPath: /.yarn      
+      mountPath: /.yarn
     - name: global-npm
-      mountPath: /.npm      
+      mountPath: /.npm
     - name: electron-cache
       mountPath: /.electron-gyp
   - name: jnlp
@@ -239,14 +239,10 @@ def buildInstaller() {
     checkout scm
     sh "printenv && yarn cache dir"
     sh "yarn cache clean"
-    try {
+    retry(MAX_RETRY) {
         sh(script: 'yarn --frozen-lockfile --force')
-    } catch(error) {
-        retry(MAX_RETRY) {
-            echo "yarn failed - Retrying"
-            sh(script: 'yarn --frozen-lockfile --force')        
-        }
     }
+    sh(script: 'yarn electron bundle')
 
     sh "rm -rf ./${distFolder}"
     sshagent(['projects-storage.eclipse.org-bot-ssh']) {
@@ -256,7 +252,7 @@ def buildInstaller() {
 
 def signInstaller(String ext, String os) {
     List installers = findFiles(glob: "${distFolder}/*.${ext}")
-    
+
     // https://wiki.eclipse.org/IT_Infrastructure_Doc#Web_service
     if (os == 'mac') {
         url = 'https://cbi.eclipse.org/macos/codesign/sign'

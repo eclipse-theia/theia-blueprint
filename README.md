@@ -40,7 +40,10 @@ Eclipse Theia Blueprint is ***not*** **a production-ready product**. Therefore, 
 ## Development
 
 ### Requirements
-Please check Theia's [prerequisites](https://github.com/eclipse-theia/theia/blob/master/doc/Developing.md#prerequisites), and keep node versions aligned between Theia Blueprint and that of the referenced Theia version.
+
+Please check Theia's [prerequisites](https://github.com/eclipse-theia/theia/blob/master/doc/Developing.md#prerequisites).
+
+We recommend using Node.js 16, but you might still be able to build this repository using Node.js 12.
 
 ### Documentation
 
@@ -51,9 +54,11 @@ Documentation on how to package Theia as a Desktop Product may be found [here](h
 - Root level configures mono-repo build with lerna
 - `applications` groups the different app targets
   - `electron` contains app to package, packaging configuration, and E2E tests for the electron target.
-- `theia-extensions` groups the various custom theia extensions for Blueprint
-  - `theia-blueprint-product` contains a Theia extension contributing the product branding (about dialogue and welcome page).
-  - `theia-blueprint-updater` contains a Theia extension contributing the update mechanism and corresponding UI elements (based on the electron updater).
+  - `browser` contains app to package, webpack configurations, and packaging configuration for the browser target.
+- `theia-extensions` groups the various custom Theia Extensions for Blueprint
+  - `theia-blueprint-browser` contributes the necessary customizations for the backend to be packaged.
+  - `theia-blueprint-product` contributes the product branding (about dialogue and welcome page).
+  - `theia-blueprint-updater` contributes the update mechanism and corresponding UI elements (based on the electron updater).
 
 ### Build
 

@@ -14,8 +14,7 @@
   },
   "devDependencies": {
     "rimraf": "^2.7.1",
-    "tslint": "^5.12.0",
-    "typescript": "^3.9.2"
+    "tslint": "^5.12.0"
   },
   "theiaExtensions": [
     {
@@ -40,7 +39,7 @@
     "src"
   ],
   "scripts": {
-    "prepare": "yarn clean && yarn build",
+    "prepare": "yarn build",
     "clean": "rimraf lib *.tsbuildinfo",
     "build": "tsc -b",
     "lint": "eslint --ext js,jsx,ts,tsx src",
