@@ -4,11 +4,7 @@
 import groovy.json.JsonSlurper
 
 distFolder = 'applications/electron/dist'
-releaseBranch = 'c'
-// Attempt to detect that a PR is Jenkins-related, by looking-for
-// the word "jenkins" (case insensitive) in PR branch name and/or
-// the PR title
-jenkinsRelatedRegex = '(?i).*jenkins.*'
+releaseBranch = 'jf/wip/c-extend'
 
 pipeline {
     agent none
@@ -21,21 +17,6 @@ pipeline {
     }
     stages {
         stage('Build') {
-            // only proceed when merging on the release branch or if the
-            // PR seems Jenkins-related
-            when {
-                anyOf {
-                    expression {
-                        env.JOB_BASE_NAME ==~ /$releaseBranch/
-                    }
-                    expression {
-                        env.CHANGE_BRANCH ==~ /$jenkinsRelatedRegex/
-                    }
-                    expression {
-                        env.CHANGE_TITLE ==~ /$jenkinsRelatedRegex/
-                    }
-                }
-            }
             parallel {
                 stage('Create Linux Installer') {
                     agent {
@@ -92,22 +73,22 @@ spec:
                         }
                     }
                 }
-                stage('Create Mac Installer') {
-                    agent {
-                        label 'macos'
-                    }
-                    steps {
-                        script {
-                            buildInstaller()
-                        }
-                        stash name: 'mac'
-                    }
-                    post {
-                        failure {
-                            error('Mac installer creation failed, aborting...')
-                        }
-                    }
-                }
+                // stage('Create Mac Installer') {
+                //     agent {
+                //         label 'macos'
+                //     }
+                //     steps {
+                //         script {
+                //             buildInstaller()
+                //         }
+                //         stash name: 'mac'
+                //     }
+                //     post {
+                //         failure {
+                //             error('Mac installer creation failed, aborting...')
+                //         }
+                //     }
+                // }
                 stage('Create Windows Installer') {
                     agent {
                         label 'windows'
@@ -127,21 +108,6 @@ spec:
             }
         }
         stage('Sign and Upload') {
-            // only proceed when merging on the release branch or if the
-            // PR seems Jenkins-related
-            when {
-                anyOf {
-                    expression {
-                        env.JOB_BASE_NAME ==~ /$releaseBranch/
-                    }
-                    expression {
-                        env.CHANGE_BRANCH ==~ /$jenkinsRelatedRegex/
-                    }
-                    expression {
-                        env.CHANGE_TITLE ==~ /$jenkinsRelatedRegex/
-                    }
-                }
-            }
             parallel {
                 stage('Upload Linux') {
                     agent any
@@ -216,7 +182,7 @@ spec:
                         unstash 'win'
                         container('theia-dev') {
                             script {
-                                signInstaller('exe', 'winsign')
+                                // signInstaller('exe', 'winsign')
                                 updateMetadata('TheiaBlueprint.exe', 'latest.yml')
                             }
                         }

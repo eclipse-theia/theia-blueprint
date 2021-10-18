@@ -70,14 +70,14 @@ exports.default = async function(context) {
     });
 
     // Sign binaries
-    childPaths.forEach(file => signFile(file, context.appOutDir));
+    // childPaths.forEach(file => signFile(file, context.appOutDir));
 
     // Notarize app
-    child_process.execFileSync(notarizeCommand, [
-        path.basename(appPath),
-        context.packager.appInfo.info._configuration.appId
-    ], {
-        cwd: path.dirname(appPath),
-        maxBuffer: 1024 * 10000
-    });
+    // child_process.execFileSync(notarizeCommand, [
+    //     path.basename(appPath),
+    //     context.packager.appInfo.info._configuration.appId
+    // ], {
+    //     cwd: path.dirname(appPath),
+    //     maxBuffer: 1024 * 10000
+    // });
 }
