@@ -23,7 +23,8 @@ import {
     MenuContribution,
     MenuModelRegistry,
     MenuPath,
-    MessageService
+    MessageService,
+    Progress
 } from '@theia/core/lib/common';
 import { PreferenceScope, PreferenceService } from '@theia/core/lib/browser/preferences';
 import { TheiaUpdater, TheiaUpdaterClient } from '../../common/updater/theia-updater';
@@ -32,6 +33,7 @@ import { inject, injectable, postConstruct } from '@theia/core/shared/inversify'
 import { CommonMenus } from '@theia/core/lib/browser';
 import { ElectronMainMenuFactory } from '@theia/core/lib/electron-browser/menu/electron-main-menu-factory';
 import { isOSX } from '@theia/core/lib/common/os';
+import { setInterval, clearInterval } from 'timers';
 
 export namespace TheiaUpdaterCommands {
 
@@ -84,7 +86,7 @@ export class TheiaUpdaterClientImpl implements TheiaUpdaterClient {
                         if (reportOnStart) {
                             this.onUpdateAvailableEmitter.fire(available);
                         }
-                     }, 10000 );
+                    }, 10000);
                 });
         } else {
             this.onUpdateAvailableEmitter.fire(available);
@@ -139,6 +141,9 @@ export class TheiaUpdaterFrontendContribution implements CommandContribution, Me
 
     protected readyToUpdate = false;
 
+    private progress: Progress | undefined;
+    private intervalId: NodeJS.Timeout | undefined;
+
     @postConstruct()
     protected init(): void {
         this.updaterClient.onUpdateAvailable(available => {
@@ -189,6 +194,17 @@ export class TheiaUpdaterFrontendContribution implements CommandContribution, Me
             return;
         }
         if (answer === 'Yes') {
+            this.stopProgress();
+            this.progress = await this.messageService.showProgress({
+                text: 'Blueprint Update'
+            });
+            let dots = 0;
+            this.intervalId = setInterval(() => {
+                if (this.progress !== undefined) {
+                    dots = (dots + 1) % 4;
+                    this.progress.report({ message: 'Downloading' + '.'.repeat(dots) });
+                }
+            }, 1000);
             this.updater.downloadUpdate();
         }
     }
@@ -198,6 +214,10 @@ export class TheiaUpdaterFrontendContribution implements CommandContribution, Me
     }
 
     protected async handleUpdatesAvailable(): Promise<void> {
+        if (this.progress !== undefined) {
+            this.progress.report({ work: { done: 1, total: 1 } });
+            this.stopProgress();
+        }
         const answer = await this.messageService.info('Ready to update. Do you want to update now? (This will restart the application)', 'No', 'Yes');
         if (answer === 'Yes') {
             this.updater.onRestartToUpdateRequested();
@@ -205,7 +225,18 @@ export class TheiaUpdaterFrontendContribution implements CommandContribution, Me
     }
 
     protected async handleError(error: string): Promise<void> {
+        this.stopProgress();
         this.messageService.error(error);
     }
 
+    private stopProgress(): void {
+        if (this.intervalId !== undefined) {
+            clearInterval(this.intervalId);
+            this.intervalId = undefined;
+        }
+        if (this.progress !== undefined) {
+            this.progress.cancel();
+            this.progress = undefined;
+        }
+    }
 }
