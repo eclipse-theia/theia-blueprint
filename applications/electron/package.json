@@ -28,7 +28,8 @@
     },
     "backend": {
       "config": {
-        "startupTimeout": -1
+        "startupTimeout": -1,
+        "resolveSystemPlugins": false
       }
     }
   },
