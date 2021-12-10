@@ -12,6 +12,8 @@ Eclipse Theia Blueprint is a template for building desktop-based products based 
 </div>
 
 [![Installers](https://img.shields.io/badge/download-installers-blue.svg?style=flat-curved)](https://theia-ide.org/docs/blueprint_download/)
+[![Build Status](https://ci.eclipse.org/theia/buildStatus/icon?subject=latest&job=Theia2%2Fmaster)](https://ci.eclipse.org/theia/job/Theia2/job/master/)
+[![Build Status](https://ci.eclipse.org/theia/buildStatus/icon?subject=next&job=theia-next%2Fmaster)](https://ci.eclipse.org/theia/job/theia-next/job/master/)
 
 [Main Theia Repository](https://github.com/eclipse-theia/theia)
 
