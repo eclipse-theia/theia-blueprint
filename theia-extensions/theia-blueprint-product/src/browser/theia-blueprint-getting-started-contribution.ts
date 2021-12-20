@@ -14,18 +14,22 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { AbstractViewContribution, FrontendApplication, FrontendApplicationContribution } from '@theia/core/lib/browser';
+import { AbstractViewContribution, FrontendApplication, FrontendApplicationContribution, PreferenceService } from '@theia/core/lib/browser';
 import { inject, injectable } from '@theia/core/shared/inversify';
 
 import { FrontendApplicationStateService } from '@theia/core/lib/browser/frontend-application-state';
 import { GettingStartedWidget } from '@theia/getting-started/lib/browser/getting-started-widget';
 import { TheiaBlueprintGettingStartedWidget } from './theia-blueprint-getting-started-widget';
+import { BlueprintPreferences } from './theia-blueprint-preferences';
 
 @injectable()
 export class TheiaBlueprintGettingStartedContribution extends AbstractViewContribution<TheiaBlueprintGettingStartedWidget> implements FrontendApplicationContribution {
 
     @inject(FrontendApplicationStateService)
     protected readonly stateService: FrontendApplicationStateService;
+
+    @inject(PreferenceService)
+    protected readonly preferenceService: PreferenceService;
 
     constructor() {
         super({
@@ -39,7 +43,12 @@ export class TheiaBlueprintGettingStartedContribution extends AbstractViewContri
 
     async onStart(app: FrontendApplication): Promise<void> {
         this.stateService.reachedState('ready').then(
-            () => this.openView({ reveal: true })
+            () => this.preferenceService.ready.then(() => {
+                const showWelcomePage: boolean = this.preferenceService.get(BlueprintPreferences.alwaysShowWelcomePage, true);
+                if (showWelcomePage) {
+                    this.openView({ reveal: true });
+                }
+            })
         );
     }
 }
