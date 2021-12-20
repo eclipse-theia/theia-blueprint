@@ -16,7 +16,7 @@
 
 import '../../src/browser/style/index.css';
 
-import { FrontendApplicationContribution, WidgetFactory, bindViewContribution } from '@theia/core/lib/browser';
+import { FrontendApplicationContribution, WidgetFactory, bindViewContribution, PreferenceContribution } from '@theia/core/lib/browser';
 
 import { AboutDialog } from '@theia/core/lib/browser/about-dialog';
 import { CommandContribution } from '@theia/core/lib/common/command';
@@ -27,6 +27,7 @@ import { TheiaBlueprintAboutDialog } from './theia-blueprint-about-dialog';
 import { TheiaBlueprintContribution } from './theia-blueprint-contribution';
 import { TheiaBlueprintGettingStartedContribution } from './theia-blueprint-getting-started-contribution';
 import { TheiaBlueprintGettingStartedWidget } from './theia-blueprint-getting-started-widget';
+import { theiaBlueprintPreferenceSchema } from './theia-blueprint-preferences';
 
 export default new ContainerModule((bind, _unbind, isBound, rebind) => {
     bindViewContribution(bind, TheiaBlueprintGettingStartedContribution);
@@ -46,4 +47,6 @@ export default new ContainerModule((bind, _unbind, isBound, rebind) => {
     [CommandContribution, MenuContribution].forEach(serviceIdentifier =>
         bind(serviceIdentifier).toService(TheiaBlueprintContribution)
     );
+
+    bind(PreferenceContribution).toConstantValue({ schema: theiaBlueprintPreferenceSchema });
 });

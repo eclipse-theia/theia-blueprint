@@ -21,6 +21,9 @@ import { renderDocumentation, renderDownloads, renderSourceCode, renderTickets, 
 import { GettingStartedWidget } from '@theia/getting-started/lib/browser/getting-started-widget';
 import { VSXEnvironment } from '@theia/vsx-registry/lib/common/vsx-environment';
 import { WindowService } from '@theia/core/lib/browser/window/window-service';
+import { PreferenceService } from '@theia/core/lib/browser';
+import { BlueprintPreferences } from './theia-blueprint-preferences';
+import { DisposableCollection } from '@theia/core';
 
 @injectable()
 export class TheiaBlueprintGettingStartedWidget extends GettingStartedWidget {
@@ -31,12 +34,18 @@ export class TheiaBlueprintGettingStartedWidget extends GettingStartedWidget {
     @inject(WindowService)
     protected readonly windowService: WindowService;
 
+    @inject(PreferenceService)
+    protected readonly preferenceService: PreferenceService;
+
+    protected readonly toDispose = new DisposableCollection();
+
     protected vscodeApiVersion: string;
 
     @postConstruct()
     protected async init(): Promise<void> {
         super.init();
         this.vscodeApiVersion = await this.environment.getVscodeApiVersion();
+        await this.preferenceService.ready;
         this.update();
     }
 
@@ -77,6 +86,11 @@ export class TheiaBlueprintGettingStartedWidget extends GettingStartedWidget {
             <div className='flex-grid'>
                 <div className='col'>
                     {renderDownloads()}
+                </div>
+            </div>
+            <div className='flex-grid'>
+                <div className='col'>
+                    {this.renderPreferences()}
                 </div>
             </div>
         </div>;
@@ -125,4 +139,35 @@ export class TheiaBlueprintGettingStartedWidget extends GettingStartedWidget {
             </p>
         </div>;
     }
+
+    protected renderPreferences(): React.ReactNode {
+        return <GSPreferences preferenceService={this.preferenceService}></GSPreferences>;
+    }
+}
+
+export interface PreferencesProps {
+    preferenceService: PreferenceService;
+}
+
+function GSPreferences(props: PreferencesProps): JSX.Element {
+    const [alwaysShowWelcomePage, setAlwaysShowWelcomePage] = React.useState<boolean>(props.preferenceService.get(BlueprintPreferences.alwaysShowWelcomePage, true));
+    React.useEffect(() => {
+        const preflistener = props.preferenceService.onPreferenceChanged(change => {
+            if (change.preferenceName === BlueprintPreferences.alwaysShowWelcomePage) {
+                const prefValue: boolean = change.newValue;
+                console.info('Set blueprint.alwaysShowWelcomePage checkbox state to ' + prefValue);
+                setAlwaysShowWelcomePage(prefValue);
+            }
+        });
+        return () => preflistener.dispose();
+    }, [props.preferenceService]);
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newChecked = e.target.checked;
+        console.info('Set blueprint.alwaysShowWelcomePage pref to ' + newChecked);
+        props.preferenceService.updateValue(BlueprintPreferences.alwaysShowWelcomePage, newChecked);
+    };
+    return <div className='gs-preference'>
+        <input type="checkbox" className="theia-input" id="alwaysShowWelcomePage" onChange={handleChange} checked={alwaysShowWelcomePage}></input>
+        <label htmlFor="alwaysShowWelcomePage">Show Welcome Page after every start of the application</label>
+    </div>;
 }
