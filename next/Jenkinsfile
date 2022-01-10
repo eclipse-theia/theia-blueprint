@@ -144,9 +144,20 @@ def buildNext(boolean runTests) {
         }
     }
 
-    echo "Updating versions to next"
+    echo "Updating theia versions to next"
     sh "yarn update:next"
-        try {
+    try {
+        sh(script: 'yarn --force')
+    } catch(error) {
+        retry(MAX_RETRY) {
+            echo "yarn failed - Retrying"
+            sh(script: 'yarn --force')        
+        }
+    }
+
+    echo "Upgrading versions"
+    sh "yarn upgrade"
+    try {
         sh(script: 'yarn --force')
     } catch(error) {
         retry(MAX_RETRY) {
