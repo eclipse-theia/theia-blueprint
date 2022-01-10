@@ -47,5 +47,8 @@
   "workspaces": [
     "applications/*",
     "theia-extensions/*"
-  ]
+  ],
+  "resolutions": {
+    "**/colors": "<=1.4.0"
+  }
 }
