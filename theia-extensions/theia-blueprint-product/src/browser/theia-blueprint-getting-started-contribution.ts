@@ -45,7 +45,7 @@ export class TheiaBlueprintGettingStartedContribution extends AbstractViewContri
             () => this.preferenceService.ready.then(() => {
                 const showWelcomePage: boolean = this.preferenceService.get(BlueprintPreferences.alwaysShowWelcomePage, true);
                 if (showWelcomePage) {
-                    this.openView({ reveal: true });
+                    this.openView({ reveal: true, activate: true });
                 }
             })
         );

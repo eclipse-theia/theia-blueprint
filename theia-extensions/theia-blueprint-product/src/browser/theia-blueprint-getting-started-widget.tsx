@@ -20,7 +20,7 @@ import { renderDocumentation, renderDownloads, renderSourceCode, renderTickets, 
 import { GettingStartedWidget } from '@theia/getting-started/lib/browser/getting-started-widget';
 import { VSXEnvironment } from '@theia/vsx-registry/lib/common/vsx-environment';
 import { WindowService } from '@theia/core/lib/browser/window/window-service';
-import { PreferenceService } from '@theia/core/lib/browser';
+import { Message, PreferenceService } from '@theia/core/lib/browser';
 import { BlueprintPreferences } from './theia-blueprint-preferences';
 import { DisposableCollection } from '@theia/core';
 
@@ -46,6 +46,14 @@ export class TheiaBlueprintGettingStartedWidget extends GettingStartedWidget {
         this.vscodeApiVersion = await this.environment.getVscodeApiVersion();
         await this.preferenceService.ready;
         this.update();
+    }
+
+    protected onActivateRequest(msg: Message): void {
+        super.onActivateRequest(msg);
+        const htmlElement = document.getElementById('alwaysShowWelcomePage');
+        if (htmlElement) {
+            htmlElement.focus();
+        }
     }
 
     protected render(): React.ReactNode {
