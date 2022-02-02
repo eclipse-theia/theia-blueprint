@@ -30,7 +30,6 @@ import {
 import { PreferenceScope, PreferenceService } from '@theia/core/lib/browser/preferences';
 import { TheiaUpdater, TheiaUpdaterClient, UpdaterError } from '../../common/updater/theia-updater';
 import { inject, injectable, postConstruct } from '@theia/core/shared/inversify';
-
 import { CommonMenus, OpenerService } from '@theia/core/lib/browser';
 import { ElectronMainMenuFactory } from '@theia/core/lib/electron-browser/menu/electron-main-menu-factory';
 import { isOSX } from '@theia/core/lib/common/os';

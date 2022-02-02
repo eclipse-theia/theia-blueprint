@@ -16,7 +16,6 @@
 
 import { AbstractViewContribution, FrontendApplication, FrontendApplicationContribution, PreferenceService } from '@theia/core/lib/browser';
 import { inject, injectable } from '@theia/core/shared/inversify';
-
 import { FrontendApplicationStateService } from '@theia/core/lib/browser/frontend-application-state';
 import { GettingStartedWidget } from '@theia/getting-started/lib/browser/getting-started-widget';
 import { TheiaBlueprintGettingStartedWidget } from './theia-blueprint-getting-started-widget';

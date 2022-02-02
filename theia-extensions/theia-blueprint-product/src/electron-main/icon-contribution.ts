@@ -15,7 +15,6 @@
  ********************************************************************************/
 
 import { ElectronMainApplication, ElectronMainApplicationContribution } from '@theia/core/lib/electron-main/electron-main-application';
-
 import { injectable } from '@theia/core/shared/inversify';
 import * as path from 'path';
 import * as os from 'os';

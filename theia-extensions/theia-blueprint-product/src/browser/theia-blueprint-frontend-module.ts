@@ -17,7 +17,6 @@
 import '../../src/browser/style/index.css';
 
 import { FrontendApplicationContribution, WidgetFactory, bindViewContribution, PreferenceContribution } from '@theia/core/lib/browser';
-
 import { AboutDialog } from '@theia/core/lib/browser/about-dialog';
 import { CommandContribution } from '@theia/core/lib/common/command';
 import { ContainerModule } from '@theia/core/shared/inversify';

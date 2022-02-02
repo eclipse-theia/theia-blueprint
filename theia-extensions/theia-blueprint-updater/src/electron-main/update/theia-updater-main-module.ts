@@ -15,7 +15,6 @@
  ********************************************************************************/
 
 import { TheiaUpdater, TheiaUpdaterClient, TheiaUpdaterPath } from '../../common/updater/theia-updater';
-
 import { ContainerModule } from '@theia/core/shared/inversify';
 import { ElectronConnectionHandler } from '@theia/core/lib/electron-common/messaging/electron-connection-handler';
 import { ElectronMainApplicationContribution } from '@theia/core/lib/electron-main/electron-main-application';
