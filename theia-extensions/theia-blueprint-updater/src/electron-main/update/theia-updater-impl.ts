@@ -13,14 +13,13 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
+
 import * as fs from 'fs-extra';
 import * as http from 'http';
 import * as os from 'os';
 import * as path from 'path';
-
 import { ElectronMainApplication, ElectronMainApplicationContribution } from '@theia/core/lib/electron-main/electron-main-application';
 import { TheiaUpdater, TheiaUpdaterClient } from '../../common/updater/theia-updater';
-
 import { injectable } from '@theia/core/shared/inversify';
 
 const { autoUpdater } = require('electron-updater');
