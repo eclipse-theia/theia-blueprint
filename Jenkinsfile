@@ -114,6 +114,7 @@ spec:
                     }
                     steps {
                         script {
+                            sh "npm config set msvs_version 2017"
                             buildInstaller()
                         }
                         stash name: 'win'
