@@ -35,6 +35,7 @@ import { ElectronMainMenuFactory } from '@theia/core/lib/electron-browser/menu/e
 import { isOSX } from '@theia/core/lib/common/os';
 import { setInterval, clearInterval } from 'timers';
 import URI from '@theia/core/lib/common/uri';
+import { URI as VSCodeURI } from 'vscode-uri';
 
 export namespace TheiaUpdaterCommands {
 
@@ -234,7 +235,7 @@ export class TheiaUpdaterFrontendContribution implements CommandContribution, Me
             const viewLogAction = 'View Error Log';
             const answer = await this.messageService.error(error.message, viewLogAction);
             if (answer === viewLogAction) {
-                const uri = new URI(error.errorLogPath);
+                const uri = new URI(VSCodeURI.file(error.errorLogPath));
                 const opener = await this.openerService.getOpener(uri);
                 opener.open(uri);
             }
