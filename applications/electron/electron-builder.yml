@@ -2,7 +2,7 @@ appId: eclipse.theia
 productName: TheiaBlueprint
 copyright: Copyright © 2020 Eclipse Foundation, Inc
 electronDist: ../../node_modules/electron/dist
-electronVersion: 15.3.7
+electronVersion: 15.4.1
 # Although it is generally not recommended to disable asar, it is required for Theia.
 # Enabling this leads to: process ERROR Error: spawn ENOTDIR
 # because binaries can not be executed from the asar archive.

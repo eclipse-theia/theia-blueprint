@@ -1,0 +1,3 @@
+[submodule "theia"]
+	path = theia
+	url = https://github.com/colin-grant-work/theia.git

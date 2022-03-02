@@ -4,7 +4,7 @@
 import groovy.json.JsonSlurper
 
 distFolder = "applications/electron/dist"
-releaseBranch = "master"
+releaseBranch = "jf/monaco-lift"
 // Attempt to detect that a PR is Jenkins-related, by looking-for 
 // the word "jenkins" (case insensitive) in PR branch name and/or 
 // the PR title
@@ -21,21 +21,6 @@ pipeline {
     }
     stages {
         stage('Build') {
-            // only proceed when merging on the release branch or if the 
-            // PR seems Jenkins-related
-            when {
-                anyOf {
-                    expression {
-                        env.JOB_BASE_NAME ==~ /$releaseBranch/
-                    }
-                    expression { 
-                        env.CHANGE_BRANCH ==~ /$jenkinsRelatedRegex/ 
-                    }
-                    expression {
-                        env.CHANGE_TITLE ==~ /$jenkinsRelatedRegex/
-                    }
-                }
-            }
             parallel {
                 stage('Create Linux Installer') {
                     agent {
@@ -130,19 +115,6 @@ spec:
         stage('Sign and Upload') {
             // only proceed when merging on the release branch or if the 
             // PR seems Jenkins-related
-            when {
-                anyOf {
-                    expression {
-                        env.JOB_BASE_NAME ==~ /$releaseBranch/
-                    }
-                    expression { 
-                        env.CHANGE_BRANCH ==~ /$jenkinsRelatedRegex/ 
-                    }
-                    expression {
-                        env.CHANGE_TITLE ==~ /$jenkinsRelatedRegex/
-                    }
-                }
-            }
             parallel {
                 stage('Upload Linux') {
                     agent any
@@ -217,13 +189,11 @@ spec:
                         container('theia-dev') {
                             script {
                                 signInstaller('exe', 'windows')
-                                updateMetadata('TheiaBlueprint.exe', 'latest.yml')
                             }
                         }
                         container('jnlp') {
                             script {
                                 uploadInstaller('windows')
-                                copyInstaller('windows', 'TheiaBlueprint', 'exe')
                             }
                         }
                     }
@@ -237,6 +207,7 @@ def buildInstaller() {
     int MAX_RETRY = 3
 
     checkout scm
+    sh "cd theia && yarn && cd .."
     sh "printenv && yarn cache dir"
     sh "yarn cache clean"
     try {
@@ -304,36 +275,16 @@ def notarizeInstaller(String ext) {
     }
 }
 
-def updateMetadata(String executable, String yaml) {
-    sh "yarn install --force"
-    sh "yarn electron update:checksum -e ${executable} -y ${yaml}"
-}
-
 def uploadInstaller(String platform) {
     if (env.BRANCH_NAME == releaseBranch) {
         def packageJSON = readJSON file: "package.json"
         String version = "${packageJSON.version}"
         sshagent(['projects-storage.eclipse.org-bot-ssh']) {
-            sh "ssh genie.theia@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/theia/${version}/${platform}"
-            sh "ssh genie.theia@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/theia/${version}/${platform}"
-            sh "scp ${distFolder}/*.* genie.theia@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/theia/${version}/${platform}"
-            sh "ssh genie.theia@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/theia/latest/${platform}"
-            sh "ssh genie.theia@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/theia/latest/${platform}"
-            sh "scp ${distFolder}/*.* genie.theia@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/theia/latest/${platform}"
+            sh "ssh genie.theia@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/theia/next-monaco/${platform}"
+            sh "ssh genie.theia@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/theia/next-monaco/${platform}"
+            sh "scp ${distFolder}/*.* genie.theia@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/theia/next-monaco/${platform}"
         }
     } else {
         echo "Skipped upload for branch ${env.BRANCH_NAME}"
-    }
-}
-
-def copyInstaller(String platform, String installer, String extension) {
-    if (env.BRANCH_NAME == releaseBranch) {
-        def packageJSON = readJSON file: "package.json"
-        String version = "${packageJSON.version}"
-        sshagent(['projects-storage.eclipse.org-bot-ssh']) {
-            sh "ssh genie.theia@projects-storage.eclipse.org cp /home/data/httpd/download.eclipse.org/theia/latest/${platform}/${installer}.${extension} /home/data/httpd/download.eclipse.org/theia/latest/${platform}/${installer}-${version}.${extension}"
-        }
-    } else {
-        echo "Skipped copying installer for branch ${env.BRANCH_NAME}"
     }
 }

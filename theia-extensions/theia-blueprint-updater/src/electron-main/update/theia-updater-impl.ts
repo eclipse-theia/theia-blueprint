@@ -67,7 +67,7 @@ export class TheiaUpdaterImpl implements TheiaUpdater, ElectronMainApplicationCo
     }
 
     checkForUpdates(): void {
-        autoUpdater.checkForUpdates();
+        // autoUpdater.checkForUpdates();
     }
 
     onRestartToUpdateRequested(): void {
