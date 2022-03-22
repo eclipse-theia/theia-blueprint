@@ -12,8 +12,8 @@
     "url": "git+https://github.com/eclipse-theia/theia-blueprint.git"
   },
   "engines": {
-    "yarn": "1.0.x || >=1.2.1",
-    "node": ">=12.14.1 <13"
+    "yarn": ">=1.7.0 <2",
+    "node": ">=12.14.1"
   },
   "devDependencies": {
     "@theia/cli": "1.23.0",
