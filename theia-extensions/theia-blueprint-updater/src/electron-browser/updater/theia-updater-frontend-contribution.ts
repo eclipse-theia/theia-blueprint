@@ -193,7 +193,7 @@ export class TheiaUpdaterFrontendContribution implements CommandContribution, Me
     }
 
     protected async handleDownloadUpdate(): Promise<void> {
-        const answer = await this.messageService.info('Updates found, do you want to download the update?', 'No', 'Yes', 'Never');
+        const answer = await this.messageService.info('Updates found, do you want to update?', 'No', 'Yes', 'Never');
         if (answer === 'Never') {
             this.preferenceService.set('updates.reportOnStart', false, PreferenceScope.User);
             return;
@@ -223,7 +223,7 @@ export class TheiaUpdaterFrontendContribution implements CommandContribution, Me
             this.progress.report({ work: { done: 1, total: 1 } });
             this.stopProgress();
         }
-        const answer = await this.messageService.info('Ready to update. Do you want to update now? (This will restart the application)', 'No', 'Yes');
+        const answer = await this.messageService.info('An update has been downloaded and will be automatically installed on exit. Do you want to restart now?', 'No', 'Yes');
         if (answer === 'Yes') {
             this.updater.onRestartToUpdateRequested();
         }
