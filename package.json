@@ -49,6 +49,7 @@
     "theia-extensions/*"
   ],
   "resolutions": {
-      "**/multer": "1.4.4-lts.1"
+      "**/multer": "1.4.4-lts.1",
+      "**/electron-store": "8.0.1"
   }
 }
