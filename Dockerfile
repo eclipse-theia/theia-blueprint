@@ -5,7 +5,7 @@
 
 # We still want Ubuntu 18.04 LTS compatibility, which is based on stretch
 # -> install newer python version manually
-FROM node:12.19.0-stretch
+FROM node:14.19.3-stretch 
 RUN apt-get update && apt-get install -y libxkbfile-dev libsecret-1-dev && \
     cd /tmp && \
     wget https://www.python.org/ftp/python/3.6.15/Python-3.6.15.tar.xz && \
