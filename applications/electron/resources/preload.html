@@ -9,6 +9,14 @@
         }
 
         .theia-preload {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            /* Above styles copied from https://github.com/eclipse-theia/theia/blob/5aeef6c0c683b4e91713ab736957e6655b486adc/packages/core/src/browser/style/index.css#L147-L151 */
+            /* Otherwise, there is a flickering when Theia's CSS loads. */
+
             background-image: none;
         }
 
