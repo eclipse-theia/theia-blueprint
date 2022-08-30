@@ -2500,6 +2500,16 @@
     "@theia/filesystem" "1.29.0"
     "@theia/workspace" "1.29.0"
 
+"@theia/memory-inspector@1.29.0":
+  version "1.29.0"
+  resolved "https://registry.yarnpkg.com/@theia/memory-inspector/-/memory-inspector-1.29.0.tgz#aeba72ea6acd6864f52208d2747ccae651633b3e"
+  integrity sha512-ogbZZrRaJzrhYAi6QNkAv0iWRdlkiojQF/mYHgK7hEQUbQka9F7N7SCYWGd3lezRVARBATNLPET7HHgQHMSnxg==
+  dependencies:
+    "@theia/core" "1.29.0"
+    "@theia/debug" "1.29.0"
+    "@vscode/debugprotocol" "^1.51.0"
+    long "^4.0.0"
+
 "@theia/messages@1.29.0":
   version "1.29.0"
   resolved "https://registry.yarnpkg.com/@theia/messages/-/messages-1.29.0.tgz#af32a904df7990773e904b4cbcff3ef8b186605f"
@@ -8974,6 +8984,11 @@ loglevel@^1.6.0:
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/loglevel/-/loglevel-1.8.0.tgz#e7ec73a57e1e7b419cb6c6ac06bf050b67356114"
   integrity sha512-G6A/nJLRgWOuuwdNuA6koovfEV1YpqqAG4pRUlFaz3jj2QNZ8M4vBqnVA+HBTmU/AMNUtlOsMmSpF6NyOjztbA==
+
+long@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/long/-/long-4.0.0.tgz#9a7b71cfb7d361a194ea555241c92f7468d5bf28"
+  integrity sha512-XsP+KhQif4bjX1kbuSiySJFNAehNxgLb6hPRGJ9QsUr8ajHkuXGdrHmFUTUUXhDwVX2R5bY4JNZEwbUiMhV+MA==
 
 loose-envify@^1.1.0, loose-envify@^1.4.0:
   version "1.4.0"
