@@ -96,7 +96,7 @@ describe("Theia App", function() {
 
   it("Correct window title", async function() {
     const windowTitle = await this.browser.getTitle();
-    expect(windowTitle).to.include("workspace — Theia");
+    expect(windowTitle).to.include("workspace");
   });
 
   it("Builtin extensions", async function() {
