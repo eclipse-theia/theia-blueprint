@@ -2467,6 +2467,30 @@
     "@theia/keymaps" "1.30.0"
     "@theia/workspace" "1.30.0"
 
+"@theia/git@1.30.0":
+  version "1.30.0"
+  resolved "https://registry.yarnpkg.com/@theia/git/-/git-1.30.0.tgz#b19ab1c5c9fc54a090fb925ff087efdc1b4f39c0"
+  integrity sha512-jhz/tOjMgrsdNxm8MfxlmuLCgnAfolr3PylxkUGXNgANYduuzBJVQalAOiP9CZ0vQIPboNJzsesAcVojFGfX6g==
+  dependencies:
+    "@theia/core" "1.30.0"
+    "@theia/editor" "1.30.0"
+    "@theia/filesystem" "1.30.0"
+    "@theia/monaco-editor-core" "1.67.2"
+    "@theia/navigator" "1.30.0"
+    "@theia/scm" "1.30.0"
+    "@theia/scm-extra" "1.30.0"
+    "@theia/workspace" "1.30.0"
+    "@types/diff" "^3.2.2"
+    "@types/p-queue" "^2.3.1"
+    diff "^3.4.0"
+    dugite-extra "0.1.16"
+    find-git-exec "^0.0.4"
+    find-git-repositories "^0.1.1"
+    luxon "^2.4.0"
+    octicons "^7.1.0"
+    p-queue "^2.4.2"
+    ts-md5 "^1.2.2"
+
 "@theia/keymaps@1.30.0":
   version "1.30.0"
   resolved "https://registry.yarnpkg.com/@theia/keymaps/-/keymaps-1.30.0.tgz#2d29b48d2836990950f13acecd8be208b4fe5ba9"
@@ -3263,6 +3287,11 @@
   version "18.8.1"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-18.8.1.tgz#33e6759935f7a82821b72fb936e66f6b99a36173"
   integrity sha512-vuYaNuEIbOYLTLUAJh50ezEbvxrD43iby+lpUA2aa148Nh5kX/AVO/9m1Ahmbux2iU5uxJTNF9g2Y+31uml7RQ==
+
+"@types/node@^10.14.22":
+  version "10.17.60"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-10.17.60.tgz#35f3d6213daed95da7f0f73e75bcc6980e90597b"
+  integrity sha512-F0KIgDJfy2nA3zMLmWGKxcH2ZVEtCZXHHdOQs2gSaQ27+lNeEfGxzkIw90aXswATX7AZ33tahPbzy6KAfUreVw==
 
 "@types/node@^14.6.2":
   version "14.18.31"
@@ -5036,6 +5065,13 @@ check-error@^1.0.2:
   resolved "https://registry.yarnpkg.com/check-error/-/check-error-1.0.2.tgz#574d312edd88bb5dd8912e9286dd6c0aed4aac82"
   integrity sha512-BrgHpW9NURQgzoNyjfq0Wu6VFO6D7IZEmJNdtgNqpzGG8RuNFHt2jQxWlAs4HMe119chBnv+34syEZtc6IhLtA==
 
+checksum@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/checksum/-/checksum-0.1.1.tgz#dc6527d4c90be8560dbd1ed4cecf3297d528e9e9"
+  integrity sha512-xWkkJpoWQ6CptWw2GvtoQbScL3xtvGjoqvHpALE7B0tSHxSw0ex0tlsKOKkbETaOYGBhMliAyscestDyAZIN9g==
+  dependencies:
+    optimist "~0.3.5"
+
 chokidar@3.3.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-3.3.0.tgz#12c0714668c55800f659e262d4962a97faf554a6"
@@ -6118,6 +6154,28 @@ drivelist@^9.0.2:
     nan "^2.14.0"
     prebuild-install "^5.2.4"
 
+dugite-extra@0.1.16:
+  version "0.1.16"
+  resolved "https://registry.yarnpkg.com/dugite-extra/-/dugite-extra-0.1.16.tgz#cc1f48e1090c8e8507ff7fe342e9af8b7bb4e9ed"
+  integrity sha512-Fcl+o0hZy7dwuI4vIxNLYpEsYeYRSEAQDshyiikX3WMJMOj0JZQ6Qt0H3PtlOdJYGUZocGGZ8VFRtbJeCT24lw==
+  dependencies:
+    byline "^5.0.0"
+    dugite-no-gpl "1.69.0"
+    find-git-exec "^0.0.4"
+    upath "^2.0.1"
+
+dugite-no-gpl@1.69.0:
+  version "1.69.0"
+  resolved "https://registry.yarnpkg.com/dugite-no-gpl/-/dugite-no-gpl-1.69.0.tgz#bc9007cf5a595180f563ccc0e4f2cc80ebbaa52e"
+  integrity sha512-9NzPMyWW1uWEm+rEGivfQ0+zZ9soXrtk/zb6FIVpPa5CLoUdhMkLY4jHc0DDyayarxivJgrI/rHDdTUej4Zhrw==
+  dependencies:
+    checksum "^0.1.1"
+    mkdirp "^0.5.1"
+    progress "^2.0.0"
+    request "^2.86.0"
+    rimraf "^2.5.4"
+    tar "^4.0.2"
+
 duplexer2@~0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/duplexer2/-/duplexer2-0.1.4.tgz#8b12dab878c0d69e3e7891051662a32fc6bddcc1"
@@ -7043,6 +7101,22 @@ find-cache-dir@^3.3.1:
     commondir "^1.0.1"
     make-dir "^3.0.2"
     pkg-dir "^4.1.0"
+
+find-git-exec@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/find-git-exec/-/find-git-exec-0.0.4.tgz#f1d0d35f93ad99bc81aacd357388d00ae902bc92"
+  integrity sha512-klzQwno+dpdeahtHhvZZ5Yn6K+zme1Aj+YJ4ZD+DywSLrQoyCywTrsubUZa1hHRehmfwBThoeKjS7fsaxhpfNA==
+  dependencies:
+    "@types/node" "^10.14.22"
+    "@types/which" "^1.3.2"
+    which "^2.0.1"
+
+find-git-repositories@^0.1.1:
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/find-git-repositories/-/find-git-repositories-0.1.3.tgz#4e83e085b20cb3e393c1e091adc3a3eec50b6dda"
+  integrity sha512-6q8ZIQ7loe0eWbz1O79J0gQ2wVpQ1ajsjV64HC2iJ7gOOqlEuDlG/T0xYr5gDYBFSHlS8dah1KGbndiWWdJ0PA==
+  dependencies:
+    nan "^2.14.0"
 
 find-up@3.0.0, find-up@^3.0.0:
   version "3.0.0"
@@ -10091,6 +10165,13 @@ object.values@^1.1.5:
     define-properties "^1.1.3"
     es-abstract "^1.19.1"
 
+octicons@^7.1.0:
+  version "7.4.0"
+  resolved "https://registry.yarnpkg.com/octicons/-/octicons-7.4.0.tgz#0be0082ed75b81e680800ef978bf47078b670091"
+  integrity sha512-j53BDX+FpJ4DQwENARbk9hHkwG/Oaq5NPUMNzYdGxRA/R5M6BbPVQEakUVMNKLzvzPue/gEEUTtSj6utFse5QQ==
+  dependencies:
+    object-assign "^4.1.1"
+
 on-finished@2.4.1:
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/on-finished/-/on-finished-2.4.1.tgz#58c8c44116e54845ad57f14ab10b03533184ac3f"
@@ -10111,6 +10192,13 @@ onetime@^5.1.0, onetime@^5.1.2:
   integrity sha512-kbpaSSGJTWdAY5KPVeMOKXSrPtr8C8C7wodJbcsd51jRnmD+GZu8Y0VoU6Dm5Z4vWr0Ig/1NKuWRKf7j5aaYSg==
   dependencies:
     mimic-fn "^2.1.0"
+
+optimist@~0.3.5:
+  version "0.3.7"
+  resolved "https://registry.yarnpkg.com/optimist/-/optimist-0.3.7.tgz#c90941ad59e4273328923074d2cf2e7cbc6ec0d9"
+  integrity sha512-TCx0dXQzVtSCg2OgY/bO9hjM9cV4XYx09TVK+s3+FhkjT6LovsLe+pPMzpWf+6yXK/hUizs2gUoTw3jHM0VaTQ==
+  dependencies:
+    wordwrap "~0.0.2"
 
 optionator@^0.9.1:
   version "0.9.1"
@@ -11308,7 +11396,7 @@ regjsparser@^0.9.1:
   dependencies:
     jsesc "~0.5.0"
 
-request@^2.82.0, request@^2.88.0, request@^2.88.2:
+request@^2.82.0, request@^2.86.0, request@^2.88.0, request@^2.88.2:
   version "2.88.2"
   resolved "https://registry.yarnpkg.com/request/-/request-2.88.2.tgz#d73c918731cb5a87da047e207234146f664d12b3"
   integrity sha512-MsvtOrfG9ZcrOwAW+Qi+F6HbD0CWXEh9ou77uOb7FM2WPhwT7smM833PzanhJLsgXjN89Ir6V2PczXNnMpwKhw==
@@ -11446,7 +11534,7 @@ rgb2hex@0.2.3:
   resolved "https://registry.yarnpkg.com/rgb2hex/-/rgb2hex-0.2.3.tgz#8aa464c517b8a26c7a79d767dabaec2b49ee78ec"
   integrity sha512-clEe0m1xv+Tva1B/TOepuIcvLAxP0U+sCDfgt1SX1HmI2Ahr5/Cd/nzJM1e78NKVtWdoo0s33YehpFA8UfIShQ==
 
-rimraf@2, rimraf@^2.6.1, rimraf@^2.6.2, rimraf@^2.6.3, rimraf@^2.7.1:
+rimraf@2, rimraf@^2.5.4, rimraf@^2.6.1, rimraf@^2.6.2, rimraf@^2.6.3, rimraf@^2.7.1:
   version "2.7.1"
   resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.7.1.tgz#35797f13a7fdadc566142c29d4f07ccad483e3ec"
   integrity sha512-uWjbaKIK3T1OSVptzX7Nl6PvQ3qAGtKEtVRjRuazjfL3Bx5eI409VZSqgND+4UNnmzLVdPj9FqFJNPqBZFve4w==
@@ -12357,7 +12445,7 @@ tar-stream@^2.1.4, tar-stream@^2.2.0:
     inherits "^2.0.3"
     readable-stream "^3.1.1"
 
-tar@^4.0.0, tar@^4.4.12:
+tar@^4.0.0, tar@^4.0.2, tar@^4.4.12:
   version "4.4.19"
   resolved "https://registry.yarnpkg.com/tar/-/tar-4.4.19.tgz#2e4d7263df26f2b914dee10c825ab132123742f3"
   integrity sha512-a20gEsvHnWe0ygBY8JbxoM4w3SJdhc7ZAuxkLqh+nvNQN2IOt0B5lLgM490X5Hl8FF0dl0tOf2ewFYAlIFgzVA==
@@ -13360,6 +13448,11 @@ wordwrap@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/wordwrap/-/wordwrap-1.0.0.tgz#27584810891456a4171c8d0226441ade90cbcaeb"
   integrity sha512-gvVzJFlPycKc5dZN4yPkP8w7Dc37BtP1yczEneOb4uq34pXZcvrtRTmWV8W+Ume+XCxKgbjM+nevkyFPMybd4Q==
+
+wordwrap@~0.0.2:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/wordwrap/-/wordwrap-0.0.3.tgz#a3d5da6cd5c0bc0008d37234bbaf1bed63059107"
+  integrity sha512-1tMA907+V4QmxV7dbRvb4/8MaRALK6q9Abid3ndMYnbyo8piisCmeONVqVSXqQA3KaP4SLt5b7ud6E2sqP8TFw==
 
 worker-loader@^3.0.8:
   version "3.0.8"
