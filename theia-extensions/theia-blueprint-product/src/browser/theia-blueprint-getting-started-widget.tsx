@@ -22,7 +22,6 @@ import { VSXEnvironment } from '@theia/vsx-registry/lib/common/vsx-environment';
 import { WindowService } from '@theia/core/lib/browser/window/window-service';
 import { Message, PreferenceService } from '@theia/core/lib/browser';
 import { BlueprintPreferences } from './theia-blueprint-preferences';
-import { DisposableCollection } from '@theia/core';
 
 @injectable()
 export class TheiaBlueprintGettingStartedWidget extends GettingStartedWidget {
@@ -35,8 +34,6 @@ export class TheiaBlueprintGettingStartedWidget extends GettingStartedWidget {
 
     @inject(PreferenceService)
     protected readonly preferenceService: PreferenceService;
-
-    protected readonly toDispose = new DisposableCollection();
 
     protected vscodeApiVersion: string;
 
