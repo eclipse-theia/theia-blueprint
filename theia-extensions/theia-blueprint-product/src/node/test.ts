@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2021 Ericsson and others.
+ * Copyright (C) 2022 Ericsson and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -14,13 +14,13 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { ContainerModule } from '@theia/core/shared/inversify';
-import { EnvVariablesServer } from '@theia/core/lib/common/env-variables';
-import { TheiaBlueprintEnvVariableServer } from './theia-blueprint-variables-server';
+import { injectable } from '@theia/core/shared/inversify';
 import { BackendApplicationContribution } from '@theia/core/lib/node';
-import { TestContribution } from './test';
 
-export default new ContainerModule((bind, unbind, isBound, rebind) => {
-    rebind(EnvVariablesServer).to(TheiaBlueprintEnvVariableServer).inSingletonScope();
-    bind(BackendApplicationContribution).to(TestContribution).inSingletonScope();
-});
+@injectable()
+export class TestContribution implements BackendApplicationContribution {
+
+    onStart(): void {
+        console.log('BEEN THERE DONE THAT');
+    }
+}

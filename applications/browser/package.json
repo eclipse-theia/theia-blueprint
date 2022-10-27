@@ -1,8 +1,8 @@
 {
   "private": true,
-  "name": "theia-blueprint",
+  "name": "theia-blueprint-server",
   "description": "Eclipse Theia blueprint product",
-  "productName": "Theia Blueprint",
+  "productName": "Theia Blueprint Server",
   "version": "1.30.0",
   "main": "scripts/theia-electron-main.js",
   "license": "EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0",
@@ -20,10 +20,10 @@
     "node": ">=12.14.1"
   },
   "theia": {
-    "target": "electron",
+    "target": "browser",
     "frontend": {
       "config": {
-        "applicationName": "Theia Blueprint",
+        "applicationName": "Theia Blueprint Server",
         "preferences": {
           "toolbar.showToolbar": true
         }
@@ -49,7 +49,6 @@
     "@theia/debug": "1.30.0",
     "@theia/editor": "1.30.0",
     "@theia/editor-preview": "1.30.0",
-    "@theia/electron": "1.30.0",
     "@theia/external-terminal": "1.30.0",
     "@theia/file-search": "1.30.0",
     "@theia/filesystem": "1.30.0",
@@ -84,7 +83,6 @@
     "@theia/vsx-registry": "1.30.0",
     "@theia/workspace": "1.30.0",
     "fs-extra": "^9.0.1",
-    "theia-blueprint-updater": "1.30.0",
     "theia-blueprint-product": "1.30.0"
   },
   "devDependencies": {
@@ -98,10 +96,6 @@
     "@wdio/sync": "^6.10.0",
     "app-builder-lib": "22.10.5",
     "chai": "^4.2.0",
-    "electron": "^15.5.7",
-    "electron-builder": "22.10.5",
-    "electron-chromedriver": "9.0.0",
-    "electron-mocha": "^9.3.2",
     "js-yaml": "^3.12.0",
     "mocha": "^8.2.1",
     "rimraf": "^2.7.1",
@@ -114,14 +108,13 @@
     "prepare": "yarn download:plugins",
     "clean": "theia clean && rimraf node_modules",
     "clean:dist": "rimraf dist",
-    "build": "theia rebuild:electron && yarn bundle",
+    "build": "theia rebuild:browser && yarn bundle",
     "bundle": "theia build",
     "watch": "concurrently -n compile,bundle \"theiaext watch --preserveWatchOutput\" \"theia build --watch --mode development\"",
-    "start": "electron scripts/theia-electron-main.js",
+    "start": "node src-gen/backend/main.js",
     "start:debug": "yarn start --log-level=debug",
     "package": "yarn clean:dist && electron-builder -c.mac.identity=null --publish never",
     "deploy": "yarn clean:dist && electron-builder -c.mac.identity=null --publish always",
-    "package:preview": "yarn clean:dist && electron-builder -c.mac.identity=null --dir",
     "update:checksum": "ts-node scripts/update-checksum.ts",
     "update:next": "ts-node ../../scripts/update-theia-to-next.ts",
     "download:plugins": "theia download:plugins",
