@@ -1,0 +1,41 @@
+{
+  "name": "theia-blueprint-launcher",
+  "version": "1.32.0",
+  "keywords": [
+    "theia-extension"
+  ],
+  "license": "EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eclipse-theia/theia-blueprint.git"
+  },
+  "bugs": {
+    "url": "https://github.com/eclipse-theia/theia-blueprint/issues"
+  },
+  "homepage": "https://github.com/eclipse-theia/theia-blueprint",
+  "files": [
+    "lib",
+    "src"
+  ],
+  "dependencies": {
+    "@theia/core": "1.32.0",
+    "@theia/plugin-ext": "1.32.0",
+    "@vscode/sudo-prompt": "9.3.1"
+  },
+  "devDependencies": {
+    "rimraf": "^2.7.1",
+    "typescript": "^4.5.5"
+  },
+  "scripts": {
+    "prepare": "yarn run clean && yarn run build",
+    "clean": "rimraf lib",
+    "build": "tsc",
+    "watch": "tsc -w"
+  },
+  "theiaExtensions": [
+    {
+      "frontendElectron": "lib/browser/create-launcher-frontend-module",
+      "backend": "lib/node/launcher-backend-module"
+    }
+  ]
+}
