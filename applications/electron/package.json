@@ -85,7 +85,8 @@
     "@theia/workspace": "1.32.0",
     "fs-extra": "^9.0.1",
     "theia-blueprint-updater": "1.32.0",
-    "theia-blueprint-product": "1.32.0"
+    "theia-blueprint-product": "1.32.0",
+    "theia-blueprint-launcher": "1.32.0"
   },
   "devDependencies": {
     "@theia/cli": "1.32.0",
@@ -108,7 +109,8 @@
     "ts-node": "^10.0.0",
     "wdio-chromedriver-service": "^6.0.4",
     "webdriverio": "^6.10.2",
-    "yargs": "17.2.1"
+    "yargs": "17.2.1",
+    "concurrently": "^3.5.0"
   },
   "scripts": {
     "prepare": "yarn build && yarn download:plugins",
