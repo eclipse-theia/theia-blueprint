@@ -1,6 +1,6 @@
 {
   "private": true,
-  "version": "1.31.1",
+  "version": "1.32.0",
   "license": "EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0",
   "author": "Rob Moran <github@thegecko.org>",
   "homepage": "https://github.com/eclipse-theia/theia-blueprint#readme",
@@ -16,7 +16,7 @@
     "node": ">=12.14.1"
   },
   "devDependencies": {
-    "@theia/cli": "1.31.1",
+    "@theia/cli": "1.32.0",
     "@typescript-eslint/eslint-plugin": "^4.25.0",
     "@typescript-eslint/eslint-plugin-tslint": "^4.25.0",
     "@typescript-eslint/parser": "^4.25.0",
