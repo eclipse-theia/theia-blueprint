@@ -1,12 +1,12 @@
 {
   "private": true,
   "name": "theia-blueprint-updater",
-  "version": "1.31.1",
+  "version": "1.32.0",
   "description": "Eclipse Theia Blueprint Updater",
   "dependencies": {
-    "@theia/core": "1.31.1",
-    "@theia/output": "1.31.1",
-    "@theia/preferences": "1.31.1",
+    "@theia/core": "1.32.0",
+    "@theia/output": "1.32.0",
+    "@theia/preferences": "1.32.0",
     "electron-log": "^4.3.0",
     "electron-updater": "4.3.9",
     "fs-extra": "^10.0.0",
