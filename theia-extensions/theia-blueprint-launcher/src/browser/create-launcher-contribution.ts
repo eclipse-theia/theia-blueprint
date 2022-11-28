@@ -34,11 +34,17 @@ export class CreateLauncherCommandContribution implements FrontendApplicationCon
     onStart(app: FrontendApplication): MaybePromise<void> {
         this.launcherService.isInitialized().then(async initialized => {
             if (!initialized) {
+                const messageContainer = document.createElement('div');
+                messageContainer.textContent = nls.localizeByDefault("Would you like to install a shell command that launches the application?\nYou will be able to run Theia Blueprint from the command line by typing 'theia'.");
+                messageContainer.setAttribute('style', 'white-space: pre-line');
+                const details = document.createElement('p');
+                details.textContent = 'Administrator privileges are required, you will need to enter your password next.';
+                messageContainer.appendChild(details);
                 const dialog = new ConfirmDialog({
                     title: nls.localizeByDefault('Create launcher'),
-                    msg: nls.localizeByDefault("Would you like to install a shell command that launches the application?\n\nAdministrator privileges are required, you will need to enter your password next."),
+                    msg: messageContainer,
                     ok: Dialog.YES,
-                    cancel: Dialog.CANCEL
+                    cancel: Dialog.NO
                 });
                 const install = await dialog.open();
                 this.launcherService.createLauncher(!!install);

@@ -74,9 +74,6 @@ export class TheiaLauncherServiceEndpoint implements BackendApplicationContribut
         return globalStorageFolderFsPath;
     }
     private async readLauncherPathsFromStorage(storageFile: string): Promise<PathEntry[]> {
-        if (!storageFile) {
-            throw new Error(`Could not resolve path to storage file.`);
-        }
         if (!await fs.pathExists(storageFile)) {
             return [];
         }
@@ -112,7 +109,7 @@ export class TheiaLauncherServiceEndpoint implements BackendApplicationContribut
 
         const storageFile = await this.getStorageFilePath();
         const data = this.fileExists(storageFile) ? await this.readLauncherPathsFromStorage(storageFile) : [];
-        await fs.outputJSONSync(storageFile, [...data, { source: launcher, target: shouldCreateLauncher ? target : null }]);
+        fs.outputJSONSync(storageFile, [...data, { source: launcher, target: shouldCreateLauncher ? target : null }]);
 
         response.sendStatus(200);
     }
