@@ -28,7 +28,7 @@
   },
   "scripts": {
     "prepare": "yarn run clean && yarn run build",
-    "clean": "rimraf lib",
+    "clean": "rimraf lib *.tsbuildinfo",
     "build": "tsc",
     "watch": "tsc -w"
   },
