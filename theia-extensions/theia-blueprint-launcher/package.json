@@ -30,7 +30,8 @@
     "prepare": "yarn run clean && yarn run build",
     "clean": "rimraf lib *.tsbuildinfo",
     "build": "tsc",
-    "watch": "tsc -w"
+    "watch": "tsc -w",
+    "update:next": "ts-node ../../scripts/update-theia-to-next.ts"
   },
   "theiaExtensions": [
     {
