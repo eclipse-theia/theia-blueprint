@@ -30,7 +30,8 @@ win:
     - nsis
   publish:
     provider: generic
-    url: "https://download.eclipse.org/theia/latest/windows"
+    url: "https://download.eclipse.org/theia/${version}/windows"
+    useMultipleRangeRequest: false
 mac:
   icon: resources/icons/MacLauncherIcon/512-512-2.icns
   category: public.app-category.developer-tools

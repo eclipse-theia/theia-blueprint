@@ -99,7 +99,7 @@
     "app-builder-lib": "22.10.5",
     "chai": "^4.2.0",
     "electron": "^15.5.7",
-    "electron-builder": "22.10.5",
+    "electron-builder": "23.6.0",
     "electron-chromedriver": "9.0.0",
     "electron-mocha": "^9.3.2",
     "js-yaml": "^3.12.0",
