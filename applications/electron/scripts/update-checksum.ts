@@ -24,6 +24,7 @@ import yargs from 'yargs/yargs';
 const argv = yargs(hideBin(process.argv))
     .option('executable', { alias: 'e', type: 'string', default: 'TheiaBlueprint.AppImage', desription: 'The executable for which the checksum needs to be updated' })
     .option('yaml', { alias: 'y', type: 'string', default: 'latest-linux.yml', desription: 'The yaml file where the checksum needs to be updated' })
+    .option('platform', { alias: 'p', type: 'string', default: 'linux', desription: 'The OS platform' })
     .version(false)
     .wrap(120)
     .parseSync();
@@ -33,6 +34,7 @@ execute();
 async function execute(): Promise<void> {
     const executable = argv.executable;
     const yaml = argv.yaml;
+    const platform = argv.platform;
 
     const executablePath = path.resolve(
         __dirname,
@@ -46,7 +48,7 @@ async function execute(): Promise<void> {
         yaml
     );
 
-    console.log('Exe: ' + executablePath + '; Yaml: ' + yamlPath)
+    console.log('Exe: ' + executablePath + '; Yaml: ' + yamlPath + '; Platform: ' + platform)
 
     const hash = await hashFile(executablePath, 'sha512', 'base64', {});
     const size = fs.statSync(executablePath).size
@@ -54,11 +56,11 @@ async function execute(): Promise<void> {
     const yamlContents: string = fs.readFileSync(yamlPath, { encoding: 'utf8' })
     const latestYaml: any = jsyaml.safeLoad(yamlContents);
     latestYaml.sha512 = hash;
-    latestYaml.path = updatedPath(latestYaml.path, latestYaml.version)
+    latestYaml.path = updatedPath(latestYaml.path, latestYaml.version, platform)
     for (const file of latestYaml.files) {
         file.sha512 = hash;
         file.size = size;
-        file.url = updatedPath(file.url, latestYaml.version)
+        file.url = updatedPath(file.url, latestYaml.version, platform)
     }
 
     //line width -1 to avoid adding >- on long strings like a hash
@@ -100,7 +102,7 @@ function hashFile(file: fs.PathLike, algorithm = 'sha512', encoding: BufferEncod
     });
 }
 
-function updatedPath(path: string, version: string): string {
+function updatedPath(path: string, version: string, platform: string): string {
     const extensionIndex = path.lastIndexOf('.');
-    return path.substring(0, extensionIndex) + '-' + version + path.substring(extensionIndex);
+    return '../../' + version + '/' + platform + '/' + path.substring(0, extensionIndex) + '-' + version + path.substring(extensionIndex);
 }

@@ -220,13 +220,13 @@ spec:
                         container('theia-dev') {
                             script {
                                 signInstaller('exe', 'windows')
-                                updateMetadata('TheiaBlueprint.exe', 'latest.yml', 1200)
+                                updateMetadata('TheiaBlueprint.exe', 'latest.yml', 'windows', 1200)
                             }
                         }
                         container('jnlp') {
                             script {
                                 uploadInstaller('windows')
-                                copyInstaller('windows', 'TheiaBlueprint', 'exe')
+                                copyInstallerAndUpdateLatestYml('windows', 'TheiaBlueprint', 'exe', 'latest.yml', '')
                             }
                         }
                     }
@@ -309,18 +309,20 @@ def notarizeInstaller(String ext) {
     }
 }
 
-def updateMetadata(String executable, String yaml, int sleepBetweenRetries) {
+def updateMetadata(String executable, String yaml, String platform, int sleepBetweenRetries) {
     int MAX_RETRY = 4
     try {
         sh "export NODE_OPTIONS=--max_old_space_size=4096"
         sh "yarn install --force"
-        sh "yarn electron update:checksum -e ${executable} -y ${yaml}"
+        sh "yarn electron update:blockmap -e ${executable}"
+        sh "yarn electron update:checksum -e ${executable} -y ${yaml} -p ${platform}"
     } catch(error) {
         retry(MAX_RETRY) {
             sleep(sleepBetweenRetries)
             echo "yarn failed - Retrying"
             sh "yarn install --force"
-            sh "yarn electron update:checksum -e ${executable} -y ${yaml}"
+            sh "yarn electron update:blockmap -e ${executable}"
+            sh "yarn electron update:checksum -e ${executable} -y ${yaml} -p ${platform}"
         }
     }
 }
@@ -342,13 +344,32 @@ def uploadInstaller(String platform) {
     }
 }
 
-def copyInstaller(String platform, String installer, String extension) {
+/**
+ * Currently we have the windows updater available twice with different names. 
+ * We want to have a name without the versions for providing a stable download link. 
+ * Due to a bug in the nsis-updater the downloaded exe for an update needs to have a different name than initially however.
+ */
+def copyInstallerAndUpdateLatestYml(String platform, String installer, String extension, String yaml, String UPDATABLE_VERSIONS) {
     if (env.BRANCH_NAME == releaseBranch) {
         def packageJSON = readJSON file: "package.json"
         String version = "${packageJSON.version}"
         sshagent(['projects-storage.eclipse.org-bot-ssh']) {
             sh "ssh genie.theia@projects-storage.eclipse.org cp /home/data/httpd/download.eclipse.org/theia/latest/${platform}/${installer}.${extension} /home/data/httpd/download.eclipse.org/theia/latest/${platform}/${installer}-${version}.${extension}"
+            sh "ssh genie.theia@projects-storage.eclipse.org cp /home/data/httpd/download.eclipse.org/theia/${version}/${platform}/${installer}.${extension} /home/data/httpd/download.eclipse.org/theia/${version}/${platform}/${installer}-${version}.${extension}"
+            sh "ssh genie.theia@projects-storage.eclipse.org cp /home/data/httpd/download.eclipse.org/theia/latest/${platform}/${installer}.${extension}.blockmap /home/data/httpd/download.eclipse.org/theia/latest/${platform}/${installer}-${version}.${extension}.blockmap"
+            sh "ssh genie.theia@projects-storage.eclipse.org cp /home/data/httpd/download.eclipse.org/theia/${version}/${platform}/${installer}.${extension}.blockmap /home/data/httpd/download.eclipse.org/theia/${version}/${platform}/${installer}-${version}.${extension}.blockmap"
         }
+        if (UPDATABLE_VERSIONS.length() != 0) {
+            for (oldVersion in UPDATABLE_VERSIONS.split(",")) {
+                sshagent(['projects-storage.eclipse.org-bot-ssh']) {
+                    sh "ssh genie.theia@projects-storage.eclipse.org rm -f /home/data/httpd/download.eclipse.org/theia/${oldVersion}/${platform}/${yaml}"
+                    sh "ssh genie.theia@projects-storage.eclipse.org cp /home/data/httpd/download.eclipse.org/theia/${version}/${platform}/${yaml} /home/data/httpd/download.eclipse.org/theia/${oldVersion}/${platform}/${yaml}"
+                }
+            }
+        } else {
+            echo "No updateable versions"
+        }
+
     } else {
         echo "Skipped copying installer for branch ${env.BRANCH_NAME}"
     }
