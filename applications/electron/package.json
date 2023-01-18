@@ -99,7 +99,7 @@
     "app-builder-lib": "22.10.5",
     "chai": "^4.2.0",
     "electron": "^15.5.7",
-    "electron-builder": "22.10.5",
+    "electron-builder": "23.6.0",
     "electron-chromedriver": "9.0.0",
     "electron-mocha": "^9.3.2",
     "js-yaml": "^3.12.0",
@@ -125,6 +125,7 @@
     "deploy": "yarn clean:dist && electron-builder -c.mac.identity=null --publish always",
     "package:preview": "yarn clean:dist && electron-builder -c.mac.identity=null --dir",
     "update:checksum": "ts-node scripts/update-checksum.ts",
+    "update:blockmap": "ts-node scripts/update-blockmap.ts",
     "update:next": "ts-node ../../scripts/update-theia-to-next.ts",
     "download:plugins": "theia download:plugins --rate-limit=15",
     "test": "mocha --timeout 60000 \"./test/*.spec.js\""
