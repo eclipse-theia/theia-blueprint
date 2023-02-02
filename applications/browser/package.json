@@ -1,10 +1,9 @@
 {
   "private": true,
-  "name": "theia-blueprint",
-  "description": "Eclipse Theia blueprint product",
+  "name": "theia-blueprint-browser",
+  "description": "Eclipse Theia blueprint browser product",
   "productName": "Theia Blueprint",
   "version": "1.35.0",
-  "main": "scripts/theia-electron-main.js",
   "license": "EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0",
   "author": "Eclipse Theia <theia-dev@eclipse.org>",
   "homepage": "https://github.com/eclipse-theia/theia-blueprint#readme",
@@ -20,12 +19,12 @@
     "node": ">=12.14.1"
   },
   "theia": {
-    "target": "electron",
     "frontend": {
       "config": {
         "applicationName": "Theia Blueprint",
         "preferences": {
-          "toolbar.showToolbar": true
+          "toolbar.showToolbar": true,
+          "files.enableTrash": false
         }
       }
     },
@@ -49,7 +48,6 @@
     "@theia/debug": "1.35.0",
     "@theia/editor": "1.35.0",
     "@theia/editor-preview": "1.35.0",
-    "@theia/electron": "1.35.0",
     "@theia/external-terminal": "1.35.0",
     "@theia/file-search": "1.35.0",
     "@theia/filesystem": "1.35.0",
@@ -85,65 +83,38 @@
     "@theia/workspace": "1.35.0",
     "fs-extra": "^9.0.1",
     "theia-blueprint-updater": "1.35.0",
-    "theia-blueprint-product": "1.35.0",
-    "theia-blueprint-launcher": "1.35.0"
+    "theia-blueprint-product": "1.35.0"
   },
   "devDependencies": {
-    "@theia/cli": "1.35.0",
-    "@types/js-yaml": "^3.12.0",
-    "@types/yargs": "17.0.7",
-    "@wdio/cli": "^6.10.2",
-    "@wdio/local-runner": "^6.10.2",
-    "@wdio/mocha-framework": "^6.8.0",
-    "@wdio/spec-reporter": "^6.8.1",
-    "app-builder-lib": "22.10.5",
-    "chai": "^4.2.0",
-    "electron": "^15.5.7",
-    "electron-builder": "22.10.5",
-    "electron-chromedriver": "9.0.0",
-    "electron-mocha": "^9.3.2",
-    "js-yaml": "^3.12.0",
-    "mocha": "^8.2.1",
-    "rimraf": "^2.7.1",
-    "ts-node": "^10.0.0",
-    "wdio-chromedriver-service": "^6.0.4",
-    "webdriverio": "^6.10.2",
-    "yargs": "17.2.1",
-    "concurrently": "^3.5.0"
+    "@theia/cli": "1.35.0"
   },
   "scripts": {
     "prepare": "yarn build && yarn download:plugins",
     "clean": "theia clean && rimraf node_modules",
-    "clean:dist": "rimraf dist",
-    "build": "yarn -s bundle",
+    "build": "yarn -s compile && yarn -s bundle",
     "bundle": "theia build",
-    "rebuild": "theia rebuild:electron --cacheRoot ../..",
-    "watch": "concurrently -n compile,bundle \"theiaext watch --preserveWatchOutput\" \"theia build --watch --mode development\"",
-    "start": "yarn -s rebuild && electron scripts/theia-electron-main.js",
-    "start:debug": "yarn start --log-level=debug",
-    "package": "yarn clean:dist && electron-builder -c.mac.identity=null --publish never",
-    "deploy": "yarn clean:dist && electron-builder -c.mac.identity=null --publish always",
-    "package:preview": "yarn clean:dist && electron-builder -c.mac.identity=null --dir",
-    "update:checksum": "ts-node scripts/update-checksum.ts",
-    "update:next": "ts-node ../../scripts/update-theia-to-next.ts",
-    "download:plugins": "theia download:plugins",
-    "test": "mocha --timeout 60000 \"./test/*.spec.js\""
+    "compile": "tsc -b",
+    "rebuild": "theia rebuild:browser --cacheRoot ../..",
+    "start": "yarn -s rebuild && theia start --plugins=local-dir:./plugins",
+    "watch": "concurrently --kill-others -n tsc,bundle -c red,yellow \"tsc -b -w --preserveWatchOutput\" \"yarn -s watch:bundle\"",
+    "download:plugins": "theia download:plugins"
   },
   "theiaPluginsDir": "plugins",
   "theiaPlugins": {
-    "vscode.markdown-language-features": "https://open-vsx.org/api/vscode/markdown-language-features/1.39.2/file/vscode.markdown-language-features-1.39.2.vsix",
+    "vscode.git": "https://open-vsx.org/api/vscode/git/1.52.1/file/vscode.git-1.52.1.vsix",
     "vscode-builtin-extensions-pack": "https://open-vsx.org/api/eclipse-theia/builtin-extension-pack/1.50.1/file/eclipse-theia.builtin-extension-pack-1.50.1.vsix",
-    "vscode.typescript": "https://open-vsx.org/api/vscode/typescript/1.62.3/file/vscode.typescript-1.62.3.vsix",
-    "vscode.typescript-language-features": "https://open-vsx.org/api/vscode/typescript-language-features/1.62.3/file/vscode.typescript-language-features-1.62.3.vsix",
     "redhat.java": "https://open-vsx.org/api/redhat/java/0.73.0/file/redhat.java-0.73.0.vsix",
     "vscjava.vscode-java-debug": "https://open-vsx.org/api/vscjava/vscode-java-debug/0.30.0/file/vscjava.vscode-java-debug-0.30.0.vsix",
     "vscjava.vscode-java-test": "https://open-vsx.org/api/vscjava/vscode-java-test/0.26.1/file/vscjava.vscode-java-test-0.26.1.vsix",
     "vscjava.vscode-maven": "https://open-vsx.org/api/vscjava/vscode-maven/0.21.2/file/vscjava.vscode-maven-0.21.2.vsix",
-    "vscjava.vscode-java-dependency": "https://open-vsx.org/api/vscjava/vscode-java-dependency/0.16.0/file/vscjava.vscode-java-dependency-0.16.0.vsix"
+    "vscjava.vscode-java-dependency": "https://open-vsx.org/api/vscjava/vscode-java-dependency/0.16.0/file/vscjava.vscode-java-dependency-0.16.0.vsix",
+    "redhat.vscode-xml": "https://open-vsx.org/api/redhat/vscode-xml/0.20.0/file/redhat.vscode-xml-0.20.0.vsix"
   },
   "theiaPluginsExcludeIds": [
     "ms-vscode.js-debug-companion",
     "vscode.extension-editing",
+    "vscode.microsoft-authentication",
+    "vscode.html-language-features",
     "vscode.git",
     "vscode.git-ui",
     "vscode.github",
