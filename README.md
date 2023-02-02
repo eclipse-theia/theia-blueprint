@@ -95,3 +95,19 @@ yarn electron test
 
 The features in Eclipse Theia Blueprint are based on Theia and the included extensions/plugins. For bugs in Theia please consider opening an issue in the [Theia project on Github](https://github.com/eclipse-theia/theia/issues/new/choose).
 Eclipse Theia Blueprint only packages existing functionality into a product and installers for the product. If you believe there is a mistake in packaging, something needs to be added to the packaging or the installers do not work properly, please [open an issue on Github](https://github.com/eclipse-theia/theia-blueprint/issues/new/choose) to let us know.
+
+### Docker Build
+
+You can create a Docker Image for Blueprint with the following build command:
+
+```sh
+docker build -t theia-blueprint -f browser.Dockerfile .
+```
+
+You may then run this with
+
+```sh
+docker run -p=3000:3000 --rm theia-blueprint
+```
+
+and connect to <http://localhost:3000/>
