@@ -2620,11 +2620,6 @@
     "@types/qs" "*"
     "@types/serve-static" "*"
 
-"@types/fibers@^3.1.0":
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/@types/fibers/-/fibers-3.1.1.tgz#b714d357eebf6aec0bc5d70512e573b89bc84f20"
-  integrity sha512-yHoUi46uika0snoTpNcVqUSvgbRndaIps4TUCotrXjtc0DHDoPQckmyXEZ2bX3e4mpJmyEW3hRhCwQa/ISCPaA==
-
 "@types/fs-extra@^4.0.2":
   version "4.0.12"
   resolved "https://registry.yarnpkg.com/@types/fs-extra/-/fs-extra-4.0.12.tgz#357f68e835d381a12f63967a8bb5d3d81145443a"
@@ -2888,13 +2883,6 @@
   version "2.1.8"
   resolved "https://registry.yarnpkg.com/@types/puppeteer/-/puppeteer-2.1.8.tgz#c880b35b7d34ef85806deca7032d959ec5af8498"
   integrity sha512-sFyFD1yIlBwg8jpCbmi4ngecMI6Uw6iEKyUUglFXOiaZQHTvE8oftAWKK7E5sac1Uce+7uR5iVKWDLKDxmjcSA==
-  dependencies:
-    "@types/node" "*"
-
-"@types/puppeteer@^5.4.0":
-  version "5.4.7"
-  resolved "https://registry.yarnpkg.com/@types/puppeteer/-/puppeteer-5.4.7.tgz#b8804737c62c6e236de0c03fa74f91c174bf96b6"
-  integrity sha512-JdGWZZYL0vKapXF4oQTC5hLVNfOgdPrqeZ1BiQnGk5cB7HeE91EWUiTdVSdQPobRN8rIcdffjiOgCYJ/S8QrnQ==
   dependencies:
     "@types/node" "*"
 
@@ -3359,16 +3347,6 @@
     chalk "^4.0.0"
     easy-table "^1.1.1"
     pretty-ms "^7.0.0"
-
-"@wdio/sync@^6.10.0":
-  version "6.11.0"
-  resolved "https://registry.yarnpkg.com/@wdio/sync/-/sync-6.11.0.tgz#fbf869a4888369d2fd269484808d10f971301ecb"
-  integrity sha512-ORdY40PNP1c0VKJV+dIh1tYmMXwsRHPhB66p1Y6TRm6LvIpPVX8peoB/Qx9zBsO40hAS1cFt9pdsGxu7VCHnfg==
-  dependencies:
-    "@types/fibers" "^3.1.0"
-    "@types/puppeteer" "^5.4.0"
-    "@wdio/logger" "6.10.10"
-    fibers "^4.0.1"
 
 "@wdio/utils@6.11.0":
   version "6.11.0"
@@ -6636,13 +6614,6 @@ fd-slicer@~1.1.0:
   integrity sha512-cE1qsB/VwyQozZ+q1dGxR8LBYNZeofhEdUNGSMbQD3Gw2lAzX9Zb3uIU6Ebc/Fmyjo9AWWfnn0AUCHqtevs/8g==
   dependencies:
     pend "~1.2.0"
-
-fibers@^4.0.1:
-  version "4.0.3"
-  resolved "https://registry.yarnpkg.com/fibers/-/fibers-4.0.3.tgz#dda5918280a48507f5d8a96dd9a525e8f4a532e2"
-  integrity sha512-MW5VrDtTOLpKK7lzw4qD7Z9tXaAhdOmOED5RHzg3+HjUk+ibkjVW0Py2ERtdqgTXaerLkVkBy2AEmJiT6RMyzg==
-  dependencies:
-    detect-libc "^1.0.3"
 
 figures@3.2.0, figures@^3.0.0:
   version "3.2.0"
