@@ -94,22 +94,22 @@ spec:
                         }
                     }
                 }
-                stage('Create Mac Installer') {
-                    agent {
-                        label 'macos'
-                    }
-                    steps {
-                        script {
-                            buildInstaller(60)
-                        }
-                        stash includes: "${distFolder}/*", name: 'mac'
-                    }
-                    post {
-                        failure {
-                            error("Mac installer creation failed, aborting...")
-                        }
-                    }
-                }
+                // stage('Create Mac Installer') {
+                //     agent {
+                //         label 'macos'
+                //     }
+                //     steps {
+                //         script {
+                //             buildInstaller(60)
+                //         }
+                //         stash includes: "${distFolder}/*", name: 'mac'
+                //     }
+                //     post {
+                //         failure {
+                //             error("Mac installer creation failed, aborting...")
+                //         }
+                //     }
+                // }
                 stage('Create Windows Installer') {
                     agent {
                         label 'windows'
@@ -156,17 +156,17 @@ spec:
                         }
                     }
                 }
-                stage('Sign, Notarize and Upload Mac') {
-                    agent any
-                    steps {
-                        unstash 'mac'
-                        script {
-                            signInstaller('dmg', 'mac')
-                            notarizeInstaller('dmg')
-                            uploadInstaller('macos')
-                        }
-                    }
-                }
+                // stage('Sign, Notarize and Upload Mac') {
+                //     agent any
+                //     steps {
+                //         unstash 'mac'
+                //         script {
+                //             signInstaller('dmg', 'mac')
+                //             notarizeInstaller('dmg')
+                //             uploadInstaller('macos')
+                //         }
+                //     }
+                // }
                 stage('Sign and Upload Windows') {
                     agent {
                         kubernetes {
