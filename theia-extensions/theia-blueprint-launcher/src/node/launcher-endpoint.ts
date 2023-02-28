@@ -58,7 +58,7 @@ export class TheiaLauncherServiceEndpoint implements BackendApplicationContribut
         if (!storageFile) {
             throw new Error(`Could not resolve path to storage file.`);
         }
-        if (!this.fileExists(storageFile)) {
+        if (!fs.existsSync(storageFile)) {
             response.json({ initialized: false });
             return;
         }
@@ -73,8 +73,9 @@ export class TheiaLauncherServiceEndpoint implements BackendApplicationContribut
         const globalStorageFolderFsPath = globalStorageFolderUri.path.fsPath();
         return globalStorageFolderFsPath;
     }
+
     private async readLauncherPathsFromStorage(storageFile: string): Promise<PathEntry[]> {
-        if (!await fs.pathExists(storageFile)) {
+        if (!fs.existsSync(storageFile)) {
             return [];
         }
         try {
@@ -85,22 +86,20 @@ export class TheiaLauncherServiceEndpoint implements BackendApplicationContribut
         }
     }
 
-    private fileExists(path: string): boolean {
-        try {
-            fs.statSync(path);
-            return true;
-        } catch (err) {
-            return false;
-        }
+    private async getLogFilePath(): Promise<string> {
+        const configDirUri = await this.envServer.getConfigDirUri();
+        const logFileUri = new URI(configDirUri).resolve('logs/launcher.log');
+        return logFileUri.path.fsPath();
     }
 
     private async createLauncher(request: Request, response: Response): Promise<void> {
         const shouldCreateLauncher = request.body.create;
         const launcher = this.LAUNCHER_LINK_SOURCE;
         const target = process.env.APPIMAGE;
-        const command = `printf '%s\n' '#!/bin/bash' 'exec "${target}" \\$1 &' >${launcher} && chmod +x ${launcher}`;
+        const logFile = await this.getLogFilePath();
+        const command = `printf '%s\n' '#!/bin/bash' 'exec "${target}" \\$1 &> ${logFile} &' >${launcher} && chmod +x ${launcher}`;
         if (shouldCreateLauncher) {
-            const targetExists = target && this.fileExists(target);
+            const targetExists = target && fs.existsSync(target);
             if (!targetExists) {
                 throw new Error('Could not find application to launch');
             }
@@ -108,7 +107,7 @@ export class TheiaLauncherServiceEndpoint implements BackendApplicationContribut
         }
 
         const storageFile = await this.getStorageFilePath();
-        const data = this.fileExists(storageFile) ? await this.readLauncherPathsFromStorage(storageFile) : [];
+        const data = fs.existsSync(storageFile) ? await this.readLauncherPathsFromStorage(storageFile) : [];
         fs.outputJSONSync(storageFile, [...data, { source: launcher, target: shouldCreateLauncher ? target : null }]);
 
         response.sendStatus(200);

@@ -19,7 +19,6 @@
   ],
   "dependencies": {
     "@theia/core": "1.35.0",
-    "@theia/plugin-ext": "1.35.0",
     "@vscode/sudo-prompt": "9.3.1"
   },
   "devDependencies": {
