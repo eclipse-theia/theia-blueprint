@@ -18,7 +18,6 @@ pipeline {
     }
     environment {
         BLUEPRINT_JENKINS_CI = 'true'
-        UPDATABLE_VERSIONS = ''
     }
     stages {
         stage('Build') {
@@ -227,7 +226,7 @@ spec:
                         container('jnlp') {
                             script {
                                 uploadInstaller('windows')
-                                copyInstallerAndUpdateLatestYml('windows', 'TheiaBlueprint', 'exe', 'latest.yml', UPDATABLE_VERSIONS)
+                                copyInstallerAndUpdateLatestYml('windows', 'TheiaBlueprint', 'exe', 'latest.yml', '')
                             }
                         }
                     }
@@ -352,12 +351,21 @@ def copyInstallerAndUpdateLatestYml(String platform, String installer, String ex
         String version = "${packageJSON.version}"
         sshagent(['projects-storage.eclipse.org-bot-ssh']) {
             sh "ssh genie.theia@projects-storage.eclipse.org cp /home/data/httpd/download.eclipse.org/theia/diff-update-test/latest/${platform}/${installer}.${extension} /home/data/httpd/download.eclipse.org/theia/diff-update-test/latest/${platform}/${installer}-${version}.${extension}"
-            sh "ssh genie.theia@projects-storage.eclipse.org cp /home/data/httpd/download.eclipse.org/theia/diff-update-test/${version}/${platform}/${installer}.${extension} /home/data/httpd/download.eclipse.org/theia/diff-update-test/latest/${platform}/${installer}-${version}.${extension}"
+            sh "ssh genie.theia@projects-storage.eclipse.org cp /home/data/httpd/download.eclipse.org/theia/diff-update-test/${version}/${platform}/${installer}.${extension} /home/data/httpd/download.eclipse.org/theia/diff-update-test/${version}/${platform}/${installer}-${version}.${extension}"
+            sh "ssh genie.theia@projects-storage.eclipse.org cp /home/data/httpd/download.eclipse.org/theia/diff-update-test/latest/${platform}/${installer}.${extension}.blockmap /home/data/httpd/download.eclipse.org/theia/diff-update-test/latest/${platform}/${installer}-${version}.${extension}.blockmap"
+            sh "ssh genie.theia@projects-storage.eclipse.org cp /home/data/httpd/download.eclipse.org/theia/diff-update-test/${version}/${platform}/${installer}.${extension}.blockmap /home/data/httpd/download.eclipse.org/theia/diff-update-test/${version}/${platform}/${installer}-${version}.${extension}.blockmap"
         }
-        for (oldVersion in UPDATABLE_VERSIONS.split(",")) {
-            sh "ssh genie.theia@projects-storage.eclipse.org rm -f /home/data/httpd/download.eclipse.org/theia/diff-update-test/${oldVersion}/${platform}/${yaml}"
-            sh "ssh genie.theia@projects-storage.eclipse.org cp /home/data/httpd/download.eclipse.org/theia/diff-update-test/${version}/${platform}/${yaml} /home/data/httpd/download.eclipse.org/theia/diff-update-test/${oldVersion}/${platform}/${yaml}"
+        if (UPDATABLE_VERSIONS.length() != 0) {
+            for (oldVersion in UPDATABLE_VERSIONS.split(",")) {
+                sshagent(['projects-storage.eclipse.org-bot-ssh']) {
+                    sh "ssh genie.theia@projects-storage.eclipse.org rm -f /home/data/httpd/download.eclipse.org/theia/diff-update-test/${oldVersion}/${platform}/${yaml}"
+                    sh "ssh genie.theia@projects-storage.eclipse.org cp /home/data/httpd/download.eclipse.org/theia/diff-update-test/${version}/${platform}/${yaml} /home/data/httpd/download.eclipse.org/theia/diff-update-test/${oldVersion}/${platform}/${yaml}"
+                }
+            }
+        } else {
+            echo "No updateable versions"
         }
+
     } else {
         echo "Skipped copying installer for branch ${env.BRANCH_NAME}"
     }
