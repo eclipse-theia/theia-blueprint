@@ -30,7 +30,7 @@ win:
     - nsis
   publish:
     provider: generic
-    url: "https://download.eclipse.org/theia/${version}/windows"
+    url: "https://download.eclipse.org/theia/diff-update-test/${version}/windows"
     useMultipleRangeRequest: false
 mac:
   icon: resources/icons/MacLauncherIcon/512-512-2.icns
@@ -41,7 +41,7 @@ mac:
     - zip
   publish:
     provider: generic
-    url: "https://download.eclipse.org/theia/latest/macos"
+    url: "https://download.eclipse.org/theia/diff-update-test/latest/macos"
 linux:
   icon: resources/icons/LinuxLauncherIcon/512-512.png
   category: Development
@@ -51,7 +51,7 @@ linux:
     - AppImage
   publish:
     provider: generic
-    url: "https://download.eclipse.org/theia/latest/linux"
+    url: "https://download.eclipse.org/theia/diff-update-test/latest/linux"
 
 nsis:
   menuCategory: true

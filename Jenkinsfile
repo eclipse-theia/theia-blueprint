@@ -4,7 +4,7 @@
 import groovy.json.JsonSlurper
 
 distFolder = "applications/electron/dist"
-releaseBranch = "master"
+releaseBranch = "difftest"
 // Attempt to detect that a PR is Jenkins-related, by looking-for 
 // the word "jenkins" (case insensitive) in PR branch name and/or 
 // the PR title
@@ -18,7 +18,7 @@ pipeline {
     }
     environment {
         BLUEPRINT_JENKINS_CI = 'true'
-        UPDATABLE_VERSIONS = '1.34.1,1.32.0,1.31.1'
+        UPDATABLE_VERSIONS = ''
     }
     stages {
         stage('Build') {
@@ -38,79 +38,79 @@ pipeline {
                 }
             }
             parallel {
-                stage('Create Linux Installer') {
-                    agent {
-                        kubernetes {
-                            yaml """
-apiVersion: v1
-kind: Pod
-spec:
-  containers:
-  - name: theia-dev
-    image: eclipsetheia/theia-blueprint
-    command:
-    - cat
-    tty: true
-    resources:
-      limits:
-        memory: "8Gi"
-        cpu: "2"
-      requests:
-        memory: "8Gi"
-        cpu: "2"
-    volumeMounts:
-    - name: global-cache
-      mountPath: /.cache
-    - name: global-yarn
-      mountPath: /.yarn      
-    - name: global-npm
-      mountPath: /.npm      
-    - name: electron-cache
-      mountPath: /.electron-gyp
-  volumes:
-  - name: global-cache
-    emptyDir: {}
-  - name: global-yarn
-    emptyDir: {}
-  - name: global-npm
-    emptyDir: {}
-  - name: electron-cache
-    emptyDir: {}
-"""
-                        }
-                    }
-                    steps {
-                        container('theia-dev') {
-                            withCredentials([string(credentialsId: "github-bot-token", variable: 'GITHUB_TOKEN')]) {
-                                script {
-                                    buildInstaller(1200)
-                                }
-                            }
-                        }
-                        stash includes: "${distFolder}/*", name: 'linux'
-                    }
-                    post {
-                        failure {
-                            error("Linux installer creation failed, aborting...")
-                        }
-                    }
-                }
-                stage('Create Mac Installer') {
-                    agent {
-                        label 'macos'
-                    }
-                    steps {
-                        script {
-                            buildInstaller(60)
-                        }
-                        stash includes: "${distFolder}/*", name: 'mac'
-                    }
-                    post {
-                        failure {
-                            error("Mac installer creation failed, aborting...")
-                        }
-                    }
-                }
+//                 stage('Create Linux Installer') {
+//                     agent {
+//                         kubernetes {
+//                             yaml """
+// apiVersion: v1
+// kind: Pod
+// spec:
+//   containers:
+//   - name: theia-dev
+//     image: eclipsetheia/theia-blueprint
+//     command:
+//     - cat
+//     tty: true
+//     resources:
+//       limits:
+//         memory: "8Gi"
+//         cpu: "2"
+//       requests:
+//         memory: "8Gi"
+//         cpu: "2"
+//     volumeMounts:
+//     - name: global-cache
+//       mountPath: /.cache
+//     - name: global-yarn
+//       mountPath: /.yarn      
+//     - name: global-npm
+//       mountPath: /.npm      
+//     - name: electron-cache
+//       mountPath: /.electron-gyp
+//   volumes:
+//   - name: global-cache
+//     emptyDir: {}
+//   - name: global-yarn
+//     emptyDir: {}
+//   - name: global-npm
+//     emptyDir: {}
+//   - name: electron-cache
+//     emptyDir: {}
+// """
+//                         }
+//                     }
+//                     steps {
+//                         container('theia-dev') {
+//                             withCredentials([string(credentialsId: "github-bot-token", variable: 'GITHUB_TOKEN')]) {
+//                                 script {
+//                                     buildInstaller(1200)
+//                                 }
+//                             }
+//                         }
+//                         stash includes: "${distFolder}/*", name: 'linux'
+//                     }
+//                     post {
+//                         failure {
+//                             error("Linux installer creation failed, aborting...")
+//                         }
+//                     }
+//                 }
+//                 stage('Create Mac Installer') {
+//                     agent {
+//                         label 'macos'
+//                     }
+//                     steps {
+//                         script {
+//                             buildInstaller(60)
+//                         }
+//                         stash includes: "${distFolder}/*", name: 'mac'
+//                     }
+//                     post {
+//                         failure {
+//                             error("Mac installer creation failed, aborting...")
+//                         }
+//                     }
+//                 }
                 stage('Create Windows Installer') {
                     agent {
                         label 'windows'
@@ -148,26 +148,26 @@ spec:
                 }
             }
             parallel {
-                stage('Upload Linux') {
-                    agent any
-                    steps {
-                        unstash 'linux'
-                        script {
-                            uploadInstaller('linux')
-                        }
-                    }
-                }
-                stage('Sign, Notarize and Upload Mac') {
-                    agent any
-                    steps {
-                        unstash 'mac'
-                        script {
-                            signInstaller('dmg', 'mac')
-                            notarizeInstaller('dmg')
-                            uploadInstaller('macos')
-                        }
-                    }
-                }
+                // stage('Upload Linux') {
+                //     agent any
+                //     steps {
+                //         unstash 'linux'
+                //         script {
+                //             uploadInstaller('linux')
+                //         }
+                //     }
+                // }
+                // stage('Sign, Notarize and Upload Mac') {
+                //     agent any
+                //     steps {
+                //         unstash 'mac'
+                //         script {
+                //             signInstaller('dmg', 'mac')
+                //             notarizeInstaller('dmg')
+                //             uploadInstaller('macos')
+                //         }
+                //     }
+                // }
                 stage('Sign and Upload Windows') {
                     agent {
                         kubernetes {
@@ -329,12 +329,12 @@ def uploadInstaller(String platform) {
         def packageJSON = readJSON file: "package.json"
         String version = "${packageJSON.version}"
         sshagent(['projects-storage.eclipse.org-bot-ssh']) {
-            sh "ssh genie.theia@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/theia/${version}/${platform}"
-            sh "ssh genie.theia@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/theia/${version}/${platform}"
-            sh "scp ${distFolder}/*.* genie.theia@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/theia/${version}/${platform}"
-            sh "ssh genie.theia@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/theia/latest/${platform}"
-            sh "ssh genie.theia@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/theia/latest/${platform}"
-            sh "scp ${distFolder}/*.* genie.theia@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/theia/latest/${platform}"
+            sh "ssh genie.theia@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/theia/diff-update-test/${version}/${platform}"
+            sh "ssh genie.theia@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/theia/diff-update-test/${version}/${platform}"
+            sh "scp ${distFolder}/*.* genie.theia@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/theia/diff-update-test/${version}/${platform}"
+            sh "ssh genie.theia@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/theia/diff-update-test/latest/${platform}"
+            sh "ssh genie.theia@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/theia/diff-update-test/latest/${platform}"
+            sh "scp ${distFolder}/*.* genie.theia@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/theia/diff-update-test/latest/${platform}"
         }
     } else {
         echo "Skipped upload for branch ${env.BRANCH_NAME}"
@@ -351,12 +351,12 @@ def copyInstallerAndUpdateLatestYml(String platform, String installer, String ex
         def packageJSON = readJSON file: "package.json"
         String version = "${packageJSON.version}"
         sshagent(['projects-storage.eclipse.org-bot-ssh']) {
-            sh "ssh genie.theia@projects-storage.eclipse.org cp /home/data/httpd/download.eclipse.org/theia/latest/${platform}/${installer}.${extension} /home/data/httpd/download.eclipse.org/theia/latest/${platform}/${installer}-${version}.${extension}"
-            sh "ssh genie.theia@projects-storage.eclipse.org cp /home/data/httpd/download.eclipse.org/theia/${version}/${platform}/${installer}.${extension} /home/data/httpd/download.eclipse.org/theia/latest/${platform}/${installer}-${version}.${extension}"
+            sh "ssh genie.theia@projects-storage.eclipse.org cp /home/data/httpd/download.eclipse.org/theia/diff-update-test/latest/${platform}/${installer}.${extension} /home/data/httpd/download.eclipse.org/theia/diff-update-test/latest/${platform}/${installer}-${version}.${extension}"
+            sh "ssh genie.theia@projects-storage.eclipse.org cp /home/data/httpd/download.eclipse.org/theia/diff-update-test/${version}/${platform}/${installer}.${extension} /home/data/httpd/download.eclipse.org/theia/diff-update-test/latest/${platform}/${installer}-${version}.${extension}"
         }
         for (oldVersion in UPDATABLE_VERSIONS.split(",")) {
-            sh "ssh genie.theia@projects-storage.eclipse.org rm -f /home/data/httpd/download.eclipse.org/theia/${oldVersion}/${platform}/${yaml}"
-            sh "ssh genie.theia@projects-storage.eclipse.org cp /home/data/httpd/download.eclipse.org/theia/${version}/${platform}/${yaml} /home/data/httpd/download.eclipse.org/theia/${oldVersion}/${platform}/${yaml}"
+            sh "ssh genie.theia@projects-storage.eclipse.org rm -f /home/data/httpd/download.eclipse.org/theia/diff-update-test/${oldVersion}/${platform}/${yaml}"
+            sh "ssh genie.theia@projects-storage.eclipse.org cp /home/data/httpd/download.eclipse.org/theia/diff-update-test/${version}/${platform}/${yaml} /home/data/httpd/download.eclipse.org/theia/diff-update-test/${oldVersion}/${platform}/${yaml}"
         }
     } else {
         echo "Skipped copying installer for branch ${env.BRANCH_NAME}"
