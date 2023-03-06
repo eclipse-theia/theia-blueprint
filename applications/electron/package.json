@@ -126,7 +126,7 @@
     "package:preview": "yarn clean:dist && electron-builder -c.mac.identity=null --dir",
     "update:checksum": "ts-node scripts/update-checksum.ts",
     "update:next": "ts-node ../../scripts/update-theia-to-next.ts",
-    "download:plugins": "theia download:plugins",
+    "download:plugins": "theia download:plugins --rate-limit=1",
     "test": "mocha --timeout 60000 \"./test/*.spec.js\""
   },
   "theiaPluginsDir": "plugins",

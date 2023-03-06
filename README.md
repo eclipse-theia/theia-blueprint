@@ -50,7 +50,8 @@ Documentation on how to package Theia as a Desktop Product may be found [here](h
 
 - Root level configures mono-repo build with lerna
 - `applications` groups the different app targets
-  - `electron` contains app to package, packaging configuration, and E2E tests for the electron target.
+  - `browser` contains a browser based version of Eclipse Theia Blueprint that may be packaged as a Docker image
+  - `electron` contains the electron app to package, packaging configuration, and E2E tests for the electron target.
 - `theia-extensions` groups the various custom theia extensions for Blueprint
   - `theia-blueprint-product` contains a Theia extension contributing the product branding (about dialogue and welcome page).
   - `theia-blueprint-updater` contains a Theia extension contributing the update mechanism and corresponding UI elements (based on the electron updater).
@@ -61,7 +62,7 @@ Documentation on how to package Theia as a Desktop Product may be found [here](h
 yarn
 ```
 
-### Package the Application
+### Package the Electron Application
 
 ```sh
 yarn electron package
@@ -69,7 +70,7 @@ yarn electron package
 
 The packaged application is located in `applications/electron/dist`.
 
-### Create a Preview Application (without packaging it)
+### Create a Preview Electron Application (without packaging it)
 
 ```sh
 yarn electron package:preview
@@ -77,7 +78,7 @@ yarn electron package:preview
 
 The packaged application is located in `applications/electron/dist`.
 
-### Running E2E Tests
+### Running E2E Tests on Electron
 
 The E2E tests basic UI tests of the actual application.
 This is done based on the preview of the packaged application.
@@ -86,6 +87,16 @@ This is done based on the preview of the packaged application.
 yarn electron package:preview
 yarn electron test
 ```
+
+### Running Browser app
+
+The browser app may be started with
+
+```sh
+yarn browser start
+```
+
+and connect to <http://localhost:3000/>
 
 ### Troubleshooting
 
@@ -98,7 +109,7 @@ Eclipse Theia Blueprint only packages existing functionality into a product and 
 
 ### Docker Build
 
-You can create a Docker Image for Blueprint with the following build command:
+You can create a Docker Image for Blueprint based on the browser app with the following build command:
 
 ```sh
 docker build -t theia-blueprint -f browser.Dockerfile .
