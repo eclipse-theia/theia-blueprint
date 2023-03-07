@@ -33,7 +33,7 @@
     "yargs": "17.2.1"
   },
   "scripts": {
-    "prepare": "lerna run prepare",
+    "prepare": "lerna run prepare --concurrency 1",
     "lint": "lerna run lint",
     "lint:fix": "lerna run lint:fix",
     "clean": "lerna run clean && rimraf node_modules",
