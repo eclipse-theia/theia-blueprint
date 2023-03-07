@@ -82,7 +82,6 @@
     "@theia/vsx-registry": "1.35.0",
     "@theia/workspace": "1.35.0",
     "fs-extra": "^9.0.1",
-    "theia-blueprint-updater": "1.35.0",
     "theia-blueprint-product": "1.35.0"
   },
   "devDependencies": {
