@@ -22,6 +22,7 @@
     "frontend": {
       "config": {
         "applicationName": "Theia Blueprint",
+        "warnOnPotentiallyInsecureHostPattern": false,
         "preferences": {
           "toolbar.showToolbar": true,
           "files.enableTrash": false
@@ -30,6 +31,7 @@
     },
     "backend": {
       "config": {
+        "warnOnPotentiallyInsecureHostPattern": false,
         "startupTimeout": -1,
         "resolveSystemPlugins": false
       }

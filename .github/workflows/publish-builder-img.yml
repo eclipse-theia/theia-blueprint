@@ -25,4 +25,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: eclipsetheia/theia-blueprint:latest
+          tags: eclipsetheia/theia-blueprint:builder
