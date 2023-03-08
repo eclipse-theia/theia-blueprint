@@ -46,7 +46,7 @@ kind: Pod
 spec:
   containers:
   - name: theia-dev
-    image: eclipsetheia/theia-blueprint
+    image: eclipsetheia/theia-blueprint:builder
     command:
     - cat
     tty: true
@@ -176,7 +176,7 @@ kind: Pod
 spec:
   containers:
   - name: theia-dev
-    image: eclipsetheia/theia-blueprint
+    image: eclipsetheia/theia-blueprint:builder
     command:
     - cat
     tty: true
