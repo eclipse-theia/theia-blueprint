@@ -3,6 +3,7 @@ RUN apt-get update && apt-get install -y libxkbfile-dev libsecret-1-dev
 WORKDIR /home/theia
 COPY . .
 RUN yarn --pure-lockfile && \
+    yarn browser download:plugins && \
     yarn --production && \
     yarn autoclean --init && \
     echo *.ts >> .yarnclean && \

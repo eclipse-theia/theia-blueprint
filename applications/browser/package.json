@@ -88,7 +88,7 @@
     "@theia/cli": "1.35.0"
   },
   "scripts": {
-    "prepare": "yarn build && yarn download:plugins",
+    "prepare": "yarn build",
     "clean": "theia clean && rimraf node_modules",
     "build": "yarn -s compile && yarn -s bundle",
     "bundle": "theia build",
@@ -96,7 +96,8 @@
     "rebuild": "theia rebuild:browser --cacheRoot ../..",
     "start": "yarn -s rebuild && theia start --plugins=local-dir:./plugins",
     "watch": "concurrently --kill-others -n tsc,bundle -c red,yellow \"tsc -b -w --preserveWatchOutput\" \"yarn -s watch:bundle\"",
-    "download:plugins": "theia download:plugins --rate-limit=1"
+    "download:plugins": "theia download:plugins --rate-limit=15",
+    "update:next": "ts-node ../../scripts/update-theia-to-next.ts"
   },
   "theiaPluginsDir": "plugins",
   "theiaPlugins": {
