@@ -240,6 +240,7 @@ def buildInstaller(int sleepBetweenRetries) {
     int MAX_RETRY = 3
 
     checkout scm
+    sh "export NODE_OPTIONS=--max_old_space_size=4096"
     sh "printenv && yarn cache dir"
     sh "yarn cache clean"
     try {
@@ -311,6 +312,7 @@ def notarizeInstaller(String ext) {
 def updateMetadata(String executable, String yaml, int sleepBetweenRetries) {
     int MAX_RETRY = 4
     try {
+        sh "export NODE_OPTIONS=--max_old_space_size=4096"
         sh "yarn install --force"
         sh "yarn electron update:checksum -e ${executable} -y ${yaml}"
     } catch(error) {

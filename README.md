@@ -93,6 +93,10 @@ yarn electron test
 The browser app may be started with
 
 ```sh
+# Download Plugins for browser app
+yarn browser download:plugins
+
+# Start browser app
 yarn browser start
 ```
 
