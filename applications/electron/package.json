@@ -124,6 +124,7 @@
     "deploy": "yarn clean:dist && electron-builder -c.mac.identity=null --publish always",
     "package:preview": "yarn clean:dist && electron-builder -c.mac.identity=null --dir",
     "update:checksum": "ts-node scripts/update-checksum.ts",
+    "update:blockmap": "ts-node scripts/update-blockmap.ts",
     "update:next": "ts-node ../../scripts/update-theia-to-next.ts",
     "download:plugins": "theia download:plugins",
     "test": "mocha --timeout 60000 \"./test/*.spec.js\""
