@@ -65,6 +65,7 @@ export function renderWhatIsNot(): React.ReactNode {
             What is it not?
         </h3>
         <div >
+            While Eclipse Theia as a platform is definitely production-ready and in use in production at many companies,
             Eclipse Theia Blueprint is <span className='gs-text-bold'><span className='gs-text-underline'>not</span> a production-ready
                 product</span>. Therefore, it is also not a replacement for Visual Studio Code or any other IDE.
         </div>

@@ -35,11 +35,12 @@ Eclipse Theia Blueprint is a **template** for building desktop-based products ba
 
 ## What is it not?
 
-Eclipse Theia Blueprint is ***not*** **a production-ready product**. Therefore, it is also not meant to be a replacement for Visual Studio Code or any other IDE.
+While Eclipse Theia as a platform is definitely production-ready and in use in production at many companies, Eclipse Theia Blueprint is ***not*** **a production-ready product**. Therefore, it is also not meant to be a replacement for Visual Studio Code or any other IDE.
 
 ## Development
 
 ### Requirements
+
 Please check Theia's [prerequisites](https://github.com/eclipse-theia/theia/blob/master/doc/Developing.md#prerequisites), and keep node versions aligned between Theia Blueprint and that of the referenced Theia version.
 
 ### Documentation
