@@ -1,0 +1,63 @@
+import groovy.json.JsonSlurper
+
+pipeline {
+    agent none
+    options {
+        timeout(time: 1, unit: 'HOURS')
+        disableConcurrentBuilds()
+    }
+    stages {
+        stage('Cleanup') {
+            parallel {
+                stage('Cleanup Windows temp directory') {
+                    agent {
+                        label 'windows'
+                    }
+                    steps {
+                        script {
+                            cleanDirs('tmp/yarn', '\"%temp%\"', '(yarn--*)')
+                            cleanDirs('tmp/plugin-download', '\"%temp%\"', '(theia-plugin-download*)')
+                            cleanDirs('tmp/lighthouse', '\"%temp%\"', '(lighthouse.*)')
+                            cleanDir('appdata/local/electron', '\"%LocalAppData%\"\\electron\\Cache')
+                            cleanYarnCache('appdata/local/yarn', '\"%LocalAppData%\"\\Yarn\\Cache')
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+def cleanDirs(String label, String parent, String pattern) {
+    bat "echo \"Before ${label} Cleanup:\""
+
+    bat "FOR /D /R ${parent} %%i in ${pattern} do echo \"%%i\""
+    bat "FOR /D /R ${parent} %%i in ${pattern} do @rmdir /s /q \"%%i\""
+
+    bat "echo \"After ${label} Cleanup:\""
+
+    bat "FOR /D /R ${parent} %%i in ${pattern} do echo \"%%i\""
+}
+
+def cleanDir(String label, String parent) {
+    bat "echo \"Before ${label} Cleanup:\""
+
+    bat "FOR /D /R ${parent} %%i in (*) do echo \"%%i\""
+    bat "if exist ${parent} @rmdir /s /q ${parent}"
+
+    bat "echo \"After ${label} Cleanup:\""
+
+    bat "FOR /D /R ${parent} %%i in (*) do echo \"%%i\""
+}
+
+def cleanYarnCache(String label, String parent) {
+    bat "echo \"Before ${label} Cleanup:\""
+
+    bat "FOR /D /R ${parent} %%i in (*) do echo \"%%i\""
+    sh "yarn cache clean --all"
+
+    bat "echo \"After ${label} Cleanup:\""
+
+    bat "FOR /D /R ${parent} %%i in (*) do echo \"%%i\""
+}
+
