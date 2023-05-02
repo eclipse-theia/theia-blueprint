@@ -47,6 +47,7 @@ spec:
   containers:
   - name: theia-dev
     image: eclipsetheia/theia-blueprint:builder
+    imagePullPolicy: Always
     command:
     - cat
     tty: true
@@ -177,6 +178,7 @@ spec:
   containers:
   - name: theia-dev
     image: eclipsetheia/theia-blueprint:builder
+    imagePullPolicy: Always
     command:
     - cat
     tty: true
