@@ -50,6 +50,7 @@
     "theia-extensions/*"
   ],
   "resolutions": {
+    "@types/puppeteer": "^5.4.0",
     "**/multer": "1.4.4-lts.1"
   }
 }
