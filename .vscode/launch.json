@@ -31,7 +31,7 @@
         "--log-level=debug",
         "--hostname=localhost",
         "--no-cluster",
-        "--app-project-path=${workspaceFolder}/examples/electron",
+        "--app-project-path=${workspaceFolder}/applications/electron",
         "--remote-debugging-port=9222",
         "--no-app-auto-install",
         "--plugins=local-dir:../../plugins"
@@ -55,12 +55,12 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Browser Backend",
-      "program": "${workspaceFolder}/examples/browser/src-gen/backend/main.js",
+      "program": "${workspaceFolder}/applications/browser/src-gen/backend/main.js",
       "args": [
         "--hostname=0.0.0.0",
         "--port=3000",
         "--no-cluster",
-        "--app-project-path=${workspaceFolder}/examples/browser",
+        "--app-project-path=${workspaceFolder}/applications/browser",
         "--plugins=local-dir:plugins",
         "--hosted-plugin-inspect=9339"
       ],
@@ -69,8 +69,8 @@
       },
       "sourceMaps": true,
       "outFiles": [
-        "${workspaceFolder}/examples/browser/src-gen/backend/*.js",
-        "${workspaceFolder}/examples/browser/lib/**/*.js",
+        "${workspaceFolder}/applications/browser/src-gen/backend/*.js",
+        "${workspaceFolder}/applications/browser/lib/**/*.js",
         "${workspaceFolder}/packages/*/lib/**/*.js",
         "${workspaceFolder}/dev-packages/*/lib/**/*.js"
       ],
@@ -94,7 +94,7 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Browser Backend (eclipse.jdt.ls)",
-      "program": "${workspaceFolder}/examples/browser/src-gen/backend/main.js",
+      "program": "${workspaceFolder}/applications/browser/src-gen/backend/main.js",
       "args": [
         "--log-level=debug",
         "--root-dir=${workspaceFolder}/../eclipse.jdt.ls/org.eclipse.jdt.ls.core",
@@ -107,8 +107,8 @@
       },
       "sourceMaps": true,
       "outFiles": [
-        "${workspaceFolder}/examples/browser/src-gen/backend/*.js",
-        "${workspaceFolder}/examples/browser/lib/**/*.js",
+        "${workspaceFolder}/applications/browser/src-gen/backend/*.js",
+        "${workspaceFolder}/applications/browser/lib/**/*.js",
         "${workspaceFolder}/packages/*/lib/**/*.js",
         "${workspaceFolder}/dev-packages/*/lib/**/*.js"
       ],
@@ -136,21 +136,21 @@
       "type": "chrome",
       "request": "launch",
       "url": "http://localhost:3000/",
-      "webRoot": "${workspaceFolder}/examples/browser"
+      "webRoot": "${workspaceFolder}/applications/browser"
     },
     {
       "type": "chrome",
       "request": "attach",
       "name": "Attach to Electron Frontend",
       "port": 9222,
-      "webRoot": "${workspaceFolder}/examples/electron"
+      "webRoot": "${workspaceFolder}/applications/electron"
     },
     {
       "name": "Launch VS Code Tests",
       "type": "node",
       "request": "launch",
       "args": [
-        "${workspaceFolder}/examples/browser/src-gen/backend/main.js",
+        "${workspaceFolder}/applications/browser/src-gen/backend/main.js",
         "${workspaceFolder}/plugins/vscode-api-tests/testWorkspace",
         "--port",
         "3030",
@@ -165,16 +165,6 @@
       "stopOnEntry": false,
       "sourceMaps": true,
       "outFiles": ["${workspaceFolder}/../.js"]
-    },
-    {
-      "name": "Run Playwright Test",
-      "type": "node",
-      "request": "launch",
-      "program": "${workspaceFolder}/examples/playwright/node_modules/.bin/playwright",
-      "args": ["test", "--debug", "--config=./configs/playwright.debug.config.ts", "${fileBasenameNoExtension}"],
-      "cwd": "${workspaceFolder}/examples/playwright",
-      "console": "integratedTerminal",
-      "internalConsoleOptions": "neverOpen"
     }
   ],
   "compounds": [
