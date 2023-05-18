@@ -1,63 +1,74 @@
-import groovy.json.JsonSlurper
-
 pipeline {
-    agent none
+    agent {
+        label 'windows'
+    }
     options {
         timeout(time: 1, unit: 'HOURS')
         disableConcurrentBuilds()
     }
     stages {
-        stage('Cleanup') {
-            parallel {
-                stage('Cleanup Windows temp directory') {
-                    agent {
-                        label 'windows'
-                    }
-                    steps {
-                        script {
-                            cleanDirs('tmp/yarn', '\"%temp%\"', '(yarn--*)')
-                            cleanDirs('tmp/plugin-download', '\"%temp%\"', '(theia-plugin-download*)')
-                            cleanDirs('tmp/lighthouse', '\"%temp%\"', '(lighthouse.*)')
-                            cleanDir('appdata/local/electron', '\"%LocalAppData%\"\\electron\\Cache')
-                            cleanYarnCache('appdata/local/yarn', '\"%LocalAppData%\"\\Yarn\\Cache')
-                        }
-                    }
+        stage('Cleanup Windows temp directory') {
+            steps {
+                script {
+                    listTemp('before cleanup', '%temp%')
+                    cleanFiles('tmp/plugin-download', '%temp%', 'theia-plugin-download**')
+                    cleanDirs('tmp/yarn', '%temp%', 'yarn--**')
+                    cleanDirs('tmp/lighthouse', '%temp%', 'lighthouse.*')
+                    listTemp('after cleanup', '%temp%')
+                    cleanDir('appdata/local/electron', '\"%LocalAppData%\"\\electron\\Cache')
+                    cleanYarnCache('appdata/local/yarn')
                 }
             }
         }
     }
 }
 
-def cleanDirs(String label, String parent, String pattern) {
-    bat "echo \"Before ${label} Cleanup:\""
-
-    bat "FOR /D /R ${parent} %%i in ${pattern} do echo \"%%i\""
-    bat "FOR /D /R ${parent} %%i in ${pattern} do @rmdir /s /q \"%%i\""
-
-    bat "echo \"After ${label} Cleanup:\""
-
-    bat "FOR /D /R ${parent} %%i in ${pattern} do echo \"%%i\""
+Object listTemp(String label, String temp) {
+    echo "in listTemp():  ${label}"
+    bat "DIR ${temp}"
+    return
 }
 
-def cleanDir(String label, String parent) {
-    bat "echo \"Before ${label} Cleanup:\""
+Object cleanFiles(String label, String parent, String pattern) {
+    echo "in cleanFile() - clean: ${label} files"
+    echo "parent: ${parent}, pattern: ${pattern}"
+
+    // use "returnStatus" option to avoid an exception being thrown if no
+    // matching files are found, failing the pipeline
+    s = bat(
+            script: "FORFILES /p ${parent} /m ${pattern} /C \"cmd /c Del /q @file\"",
+            returnStatus: true
+        )
+    if (s != 0) {
+        echo "No ${pattern} file found... Good I guess"
+    }
+}
+
+Object cleanDirs(String label, String parent, String pattern) {
+    echo "Before ${label} Cleanup:"
+
+    bat "FOR /D /R ${parent} %%i in (${pattern}) do echo \"%%i\""
+    bat "FOR /D /R ${parent} %%i in (${pattern}) do @rmdir /s /q \"%%i\""
+
+    echo "After ${label} Cleanup:"
+    bat "FOR /D /R ${parent} %%i in (${pattern}) do echo \"%%i\""
+    return
+}
+
+Object cleanDir(String label, String parent) {
+    echo "Before ${label} Cleanup:"
 
     bat "FOR /D /R ${parent} %%i in (*) do echo \"%%i\""
     bat "if exist ${parent} @rmdir /s /q ${parent}"
 
-    bat "echo \"After ${label} Cleanup:\""
-
+    echo "After ${label} Cleanup:"
     bat "FOR /D /R ${parent} %%i in (*) do echo \"%%i\""
+    return
 }
 
-def cleanYarnCache(String label, String parent) {
-    bat "echo \"Before ${label} Cleanup:\""
-
-    bat "FOR /D /R ${parent} %%i in (*) do echo \"%%i\""
-    sh "yarn cache clean --all"
-
-    bat "echo \"After ${label} Cleanup:\""
-
-    bat "FOR /D /R ${parent} %%i in (*) do echo \"%%i\""
+Object cleanYarnCache(String label) {
+    echo "Cleaning-up: ${label}"
+    sh 'yarn cache clean --all'
+    return
 }
 
