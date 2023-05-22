@@ -135,6 +135,7 @@ def buildNext(boolean runTests, int sleepBetweenRetries) {
     sh "git config user.name \"Not a real user\""
     sh "git fetch origin next"
     sh "git merge FETCH_HEAD"
+    sh "node --version"
 
     sh "export NODE_OPTIONS=--max_old_space_size=4096"
 
