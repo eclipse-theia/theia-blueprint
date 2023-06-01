@@ -83,7 +83,7 @@ spec:
                         container('theia-dev') {
                             withCredentials([string(credentialsId: "github-bot-token", variable: 'GITHUB_TOKEN')]) {
                                 script {
-                                    buildInstaller(1200)
+                                    buildInstaller(1200, false)
                                 }
                             }
                         }
@@ -101,7 +101,7 @@ spec:
                     }
                     steps {
                         script {
-                            buildInstaller(60)
+                            buildInstaller(60, false)
                         }
                         stash includes: "${distFolder}/*", name: 'mac'
                     }
@@ -119,7 +119,13 @@ spec:
                         script {
                             sh "npm config set msvs_version 2017"
                             sh "npx node-gyp install 14.20.0"
-                            buildInstaller(60)
+
+                            // analyze memory usage
+                            bat "wmic ComputerSystem get TotalPhysicalMemory"
+                            bat "wmic OS get FreePhysicalMemory"
+                            bat "tasklist"
+
+                            buildInstaller(60, true)
                         }
                         stash name: 'win'
                     }
@@ -238,10 +244,15 @@ spec:
     }
 }
 
-def buildInstaller(int sleepBetweenRetries) {
+def buildInstaller(int sleepBetweenRetries, boolean excludeBrowser) {
     int MAX_RETRY = 3
 
     checkout scm
+    if (excludeBrowser) {
+        sh "npm install -g ts-node typescript '@types/node'"
+        sh "ts-node scripts/patch-workspaces.ts"
+    }
+    sh "node --version"
     sh "export NODE_OPTIONS=--max_old_space_size=4096"
     sh "printenv && yarn cache dir"
     sh "yarn cache clean"
