@@ -2,6 +2,7 @@ pipeline {
     agent {
         label 'windows'
     }
+    triggers { cron('@weekly') }
     options {
         timeout(time: 1, unit: 'HOURS')
         disableConcurrentBuilds()
