@@ -16,7 +16,7 @@
 
 import * as React from 'react';
 import { AboutDialog, AboutDialogProps, ABOUT_CONTENT_CLASS } from '@theia/core/lib/browser/about-dialog';
-import { injectable, inject, postConstruct } from '@theia/core/shared/inversify';
+import { injectable, inject } from '@theia/core/shared/inversify';
 import { renderDocumentation, renderDownloads, renderSourceCode, renderSupport, renderTickets, renderWhatIs, renderWhatIsNot } from './branding-util';
 import { VSXEnvironment } from '@theia/vsx-registry/lib/common/vsx-environment';
 import { WindowService } from '@theia/core/lib/browser/window/window-service';
@@ -38,10 +38,9 @@ export class TheiaBlueprintAboutDialog extends AboutDialog {
         super(props);
     }
 
-    @postConstruct()
-    protected async init(): Promise<void> {
+    protected async doInit(): Promise<void> {
         this.vscodeApiVersion = await this.environment.getVscodeApiVersion();
-        super.init();
+        super.doInit();
     }
 
     protected render(): React.ReactNode {

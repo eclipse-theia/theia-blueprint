@@ -1,6 +1,6 @@
 {
   "name": "theia-blueprint-launcher",
-  "version": "1.38.0",
+  "version": "1.39.0",
   "keywords": [
     "theia-extension"
   ],
@@ -18,7 +18,7 @@
     "src"
   ],
   "dependencies": {
-    "@theia/core": "1.38.0",
+    "@theia/core": "1.39.0",
     "@vscode/sudo-prompt": "9.3.1"
   },
   "devDependencies": {
