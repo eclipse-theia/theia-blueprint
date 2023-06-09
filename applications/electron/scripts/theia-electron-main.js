@@ -13,4 +13,4 @@ process.env.THEIA_PLUGINS = [
 ].filter(Boolean).join(',')
 
 // Handover to the auto-generated electron application handler.
-require('../src-gen/frontend/electron-main.js')
+require('../src-gen/backend/electron-main.js')

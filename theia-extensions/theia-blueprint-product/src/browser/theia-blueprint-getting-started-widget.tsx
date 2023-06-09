@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import * as React from 'react';
-import { inject, injectable, postConstruct } from '@theia/core/shared/inversify';
+import { inject, injectable } from '@theia/core/shared/inversify';
 import { renderDocumentation, renderDownloads, renderSourceCode, renderSupport, renderTickets, renderWhatIs, renderWhatIsNot } from './branding-util';
 import { GettingStartedWidget } from '@theia/getting-started/lib/browser/getting-started-widget';
 import { VSXEnvironment } from '@theia/vsx-registry/lib/common/vsx-environment';
@@ -37,9 +37,8 @@ export class TheiaBlueprintGettingStartedWidget extends GettingStartedWidget {
 
     protected vscodeApiVersion: string;
 
-    @postConstruct()
-    protected async init(): Promise<void> {
-        super.init();
+    protected async doInit(): Promise<void> {
+        super.doInit();
         this.vscodeApiVersion = await this.environment.getVscodeApiVersion();
         await this.preferenceService.ready;
         this.update();
