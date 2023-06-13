@@ -2,7 +2,8 @@
     "extends": "../../configs/base.tsconfig",
     "include": [],
     "compilerOptions": {
-      "composite": true
+      "composite": true,
+      "esModuleInterop": true
     },
     "references": [
       {
@@ -10,6 +11,9 @@
       },
       {
         "path": "../../theia-extensions/product"
+      },
+      {
+        "path": "../../theia-extensions/updater"
       }
     ]
 }

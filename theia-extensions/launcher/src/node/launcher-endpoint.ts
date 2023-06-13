@@ -51,12 +51,12 @@ export class TheiaLauncherServiceEndpoint implements BackendApplicationContribut
     private async isInitialized(_request: Request, response: Response): Promise<void> {
         if (!process.env.APPIMAGE) {
             // we are not running from an AppImage, so there's nothing to initialize
-            //return true
+            // return true
             response.json({ initialized: true });
         }
         const storageFile = await this.getStorageFilePath();
         if (!storageFile) {
-            throw new Error(`Could not resolve path to storage file.`);
+            throw new Error('Could not resolve path to storage file.');
         }
         if (!fs.existsSync(storageFile)) {
             response.json({ initialized: false });
@@ -108,7 +108,7 @@ export class TheiaLauncherServiceEndpoint implements BackendApplicationContribut
 
         const storageFile = await this.getStorageFilePath();
         const data = fs.existsSync(storageFile) ? await this.readLauncherPathsFromStorage(storageFile) : [];
-        fs.outputJSONSync(storageFile, [...data, { source: launcher, target: shouldCreateLauncher ? target : null }]);
+        fs.outputJSONSync(storageFile, [...data, { source: launcher, target: shouldCreateLauncher ? target : undefined }]);
 
         response.sendStatus(200);
     }
