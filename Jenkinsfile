@@ -1,38 +1,59 @@
 /**
  * This Jenkinsfile builds Theia across the major OS platforms
  */
+
+/* groovylint-disable NestedBlockDepth */
 import groovy.json.JsonSlurper
 
-distFolder = "applications/electron/dist"
 releaseBranch = "master"
-// Attempt to detect that a PR is Jenkins-related, by looking-for 
-// the word "jenkins" (case insensitive) in PR branch name and/or 
+distFolder = "applications/electron/dist"
+
+toStashDist = "${distFolder}/**"
+toStashDistInstallers = "${distFolder}/*"
+// default folder to stash
+toStash = toStashDistInstallers
+
+// Attempt to detect whether a PR is Jenkins-related, by looking-for
+// the word "jenkins" (case insensitive) in PR branch name and/or
 // the PR title
 jenkinsRelatedRegex = "(?i).*jenkins.*"
 
 pipeline {
     agent none
     options {
-        timeout(time: 5, unit: 'HOURS')
+        timeout(time: 3, unit: 'HOURS')
         disableConcurrentBuilds()
     }
     environment {
         BLUEPRINT_JENKINS_CI = 'true'
+
+        // to save time and resources, we skip some release-related steps
+        // when not in the process of releasing. e.g. signing/notarizing the
+        // installers. It can sometimes be necessary to run these steps, e.g.
+        // when troubleshooting. Set the variable below to 'true' to do so.
+        // We will still stop short of publishing anything.
+        BLUEPRINT_JENKINS_RELEASE_DRYRUN = 'false'
+        // BLUEPRINT_JENKINS_RELEASE_DRYRUN = 'true'
     }
     stages {
         stage('Build') {
-            // only proceed when merging on the release branch or if the 
-            // PR seems Jenkins-related
             when {
                 anyOf {
                     expression {
                         env.JOB_BASE_NAME ==~ /$releaseBranch/
                     }
                     expression { 
-                        env.CHANGE_BRANCH ==~ /$jenkinsRelatedRegex/ 
+                        env.CHANGE_BRANCH ==~ /$jenkinsRelatedRegex/
                     }
                     expression {
                         env.CHANGE_TITLE ==~ /$jenkinsRelatedRegex/
+                    }
+                    expression {
+                        // PR branch? 
+                        env.BRANCH_NAME ==~ /PR-(\d)+/
+                    }
+                    expression {
+                        env.BLUEPRINT_JENKINS_RELEASE_DRYRUN == 'true'
                     }
                 }
             }
@@ -83,11 +104,11 @@ spec:
                         container('theia-dev') {
                             withCredentials([string(credentialsId: "github-bot-token", variable: 'GITHUB_TOKEN')]) {
                                 script {
-                                    buildInstaller(1200, false)
+                                    buildInstaller(120)
                                 }
                             }
                         }
-                        stash includes: "${distFolder}/*", name: 'linux'
+                        stash includes: "${toStash}", name: 'linux'
                     }
                     post {
                         failure {
@@ -101,9 +122,9 @@ spec:
                     }
                     steps {
                         script {
-                            buildInstaller(60, false)
+                            buildInstaller(60)
                         }
-                        stash includes: "${distFolder}/*", name: 'mac'
+                        stash includes: "${toStash}", name: 'mac'
                     }
                     post {
                         failure {
@@ -125,9 +146,9 @@ spec:
                             bat "wmic OS get FreePhysicalMemory"
                             bat "tasklist"
 
-                            buildInstaller(60, true)
+                            buildInstaller(60)
                         }
-                        stash name: 'win'
+                        stash includes: "${toStash}", name: 'win'
                     }
                     post {
                         failure {
@@ -138,18 +159,22 @@ spec:
             }
         }
         stage('Sign and Upload') {
-            // only proceed when merging on the release branch or if the 
-            // PR seems Jenkins-related
+            // only proceed when merging on the release branch or if the
+            // PR seems Jenkins-related. Note: for PRs, we do not by default
+            // run this stage since it will be of little practical value.
             when {
                 anyOf {
                     expression {
                         env.JOB_BASE_NAME ==~ /$releaseBranch/
                     }
                     expression { 
-                        env.CHANGE_BRANCH ==~ /$jenkinsRelatedRegex/ 
+                        env.CHANGE_BRANCH ==~ /$jenkinsRelatedRegex/
                     }
                     expression {
                         env.CHANGE_TITLE ==~ /$jenkinsRelatedRegex/
+                    }
+                    expression {
+                        env.BLUEPRINT_JENKINS_RELEASE_DRYRUN == 'true'
                     }
                 }
             }
@@ -246,37 +271,53 @@ spec:
     }
 }
 
-def buildInstaller(int sleepBetweenRetries, boolean excludeBrowser) {
-    int MAX_RETRY = 3
+def buildInstaller(int sleepBetweenRetries) {
+    int maxRetry = 3
+    String buildPackageCmd
 
     checkout scm
-    if (excludeBrowser) {
-        sh "npm install -g ts-node typescript '@types/node'"
-        sh "ts-node scripts/patch-workspaces.ts"
+    
+    // only build the Electron app for now
+    buildPackageCmd = 'yarn --frozen-lockfile --force && \
+        yarn build:extensions && yarn electron build'
+
+    if (isRelease()) {
+        // when not a release, build dev to save time
+        buildPackageCmd += ":prod"
     }
-    sh "node --version"
-    sh "export NODE_OPTIONS=--max_old_space_size=4096"
-    sh "printenv && yarn cache dir"
-    sh "yarn cache clean"
+
+    sh 'node --version'
+    sh 'export NODE_OPTIONS=--max_old_space_size=4096'
+    sh 'printenv && yarn cache dir'
     try {
-        sh(script: 'yarn --frozen-lockfile --force')
-    } catch(error) {
-        retry(MAX_RETRY) {
+        sh(script: buildPackageCmd)
+    } catch (error) {
+        retry(maxRetry) {
             sleep(sleepBetweenRetries)
-            echo "yarn failed - Retrying"
-            sh(script: 'yarn --frozen-lockfile --force')        
+            echo 'yarn failed - Retrying'
+            sh(script: buildPackageCmd)
         }
     }
 
-    sh "rm -rf ./${distFolder}"
     sshagent(['projects-storage.eclipse.org-bot-ssh']) {
-        sh "yarn electron deploy"
+        if (isRelease()) {
+            sh 'yarn download:plugins && yarn electron package:prod'
+        } else {
+            // ATM the plugins are not useful for non-releases, so
+            // let's skip ketching them
+            sh 'yarn electron package:preview'
+        }
     }
 }
 
 def signInstaller(String ext, String os) {
+    if (!isRelease()) {
+        echo "This is not a release, so skipping installer signing for branch ${env.BRANCH_NAME}"
+        return
+    }
+
     List installers = findFiles(glob: "${distFolder}/*.${ext}")
-    
+
     // https://wiki.eclipse.org/IT_Infrastructure_Doc#Web_service
     if (os == 'mac') {
         url = 'https://cbi.eclipse.org/macos/codesign/sign'
@@ -296,6 +337,11 @@ def signInstaller(String ext, String os) {
 }
 
 def notarizeInstaller(String ext) {
+    if (!isRelease()) {
+        echo "This is not a release, so skipping installer notarizing for branch ${env.BRANCH_NAME}"
+        return
+    }
+
     String service = 'https://cbi.eclipse.org/macos/xcrun'
     List installers = findFiles(glob: "${distFolder}/*.${ext}")
 
@@ -325,15 +371,20 @@ def notarizeInstaller(String ext) {
 }
 
 def updateMetadata(String executable, String yaml, String platform, int sleepBetweenRetries) {
-    int MAX_RETRY = 4
+    if (!isRelease()) {
+        echo "This is not a release, so skipping updating metadata for branch ${env.BRANCH_NAME}"
+        return
+    }
+
+    int maxRetry = 4
     try {
         sh "export NODE_OPTIONS=--max_old_space_size=4096"
-        sh "rm -rf node_modules"
+        // make sure the npm dependencies are available to the update scripts
         sh "yarn install --force"
         sh "yarn electron update:blockmap -e ${executable}"
         sh "yarn electron update:checksum -e ${executable} -y ${yaml} -p ${platform}"
-    } catch(error) {
-        retry(MAX_RETRY) {
+    } catch (error) {
+        retry(maxRetry) {
             sleep(sleepBetweenRetries)
             echo "yarn failed - Retrying"
             sh "yarn install --force"
@@ -344,7 +395,7 @@ def updateMetadata(String executable, String yaml, String platform, int sleepBet
 }
 
 def uploadInstaller(String platform) {
-    if (env.BRANCH_NAME == releaseBranch) {
+    if (isReleaseBranch()) {
         def packageJSON = readJSON file: "package.json"
         String version = "${packageJSON.version}"
         sshagent(['projects-storage.eclipse.org-bot-ssh']) {
@@ -366,7 +417,7 @@ def uploadInstaller(String platform) {
  * Due to a bug in the nsis-updater the downloaded exe for an update needs to have a different name than initially however.
  */
 def copyInstallerAndUpdateLatestYml(String platform, String installer, String extension, String yaml, String UPDATABLE_VERSIONS) {
-    if (env.BRANCH_NAME == releaseBranch) {
+    if (isReleaseBranch()) {
         def packageJSON = readJSON file: "package.json"
         String version = "${packageJSON.version}"
         sshagent(['projects-storage.eclipse.org-bot-ssh']) {
@@ -385,8 +436,19 @@ def copyInstallerAndUpdateLatestYml(String platform, String installer, String ex
         } else {
             echo "No updateable versions"
         }
-
     } else {
         echo "Skipped copying installer for branch ${env.BRANCH_NAME}"
     }
+}
+
+def isReleaseBranch() {
+    return (env.BRANCH_NAME == releaseBranch)
+}
+
+def isDryRunRelease() {
+    return env.BLUEPRINT_JENKINS_RELEASE_DRYRUN == 'true'
+}
+
+def isRelease() {
+    return isDryRunRelease() || isReleaseBranch()
 }

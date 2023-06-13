@@ -78,7 +78,7 @@ export class TheiaUpdaterImpl implements TheiaUpdater, ElectronMainApplicationCo
         autoUpdater.downloadUpdate();
 
         // record download stat, ignore errors
-        fs.mkdtemp(path.join(os.tmpdir(), 'theia-blueprint-updater-'))
+        fs.mkdtemp(path.join(os.tmpdir(), 'updater-'))
             .then(tmpDir => {
                 const file = fs.createWriteStream(path.join(tmpDir, 'update'));
                 http.get('https://www.eclipse.org/downloads/download.php?file=/theia/update&r=1', response => {

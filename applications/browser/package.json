@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "theia-blueprint-browser",
+  "name": "blueprint-browser-app",
   "description": "Eclipse Theia blueprint browser product",
   "productName": "Theia Blueprint",
   "version": "1.40.0",
@@ -85,37 +85,18 @@
     "@theia/vsx-registry": "1.40.0",
     "@theia/workspace": "1.40.0",
     "fs-extra": "^9.0.1",
-    "theia-blueprint-product": "1.40.0"
+    "blueprint-product-ext": "1.40.0"
   },
   "devDependencies": {
     "@theia/cli": "1.40.0"
   },
   "scripts": {
-    "prepare": "yarn build",
     "clean": "theia clean && rimraf node_modules",
-    "build": "yarn -s compile && yarn -s bundle",
-    "bundle": "yarn -s rebuild && theia build",
-    "compile": "tsc -b",
-    "rebuild": "theia rebuild:browser --cacheRoot ../..",
-    "start": "theia start --plugins=local-dir:./plugins",
-    "watch": "concurrently --kill-others -n tsc,bundle -c red,yellow \"tsc -b -w --preserveWatchOutput\" \"yarn -s watch:bundle\"",
-    "download:plugins": "theia download:plugins --rate-limit=15",
+    "build": "yarn -s rebuild && theia build --app-target=\"browser\" --mode development",
+    "build:prod": "theia  build --app-target=\"browser\"",
+    "rebuild": "theia rebuild:browser --cacheRoot .",
+    "start": "theia start --plugins=local-dir:../../plugins",
+    "watch": "concurrently --kill-others -n tsc,build -c red,yellow \"tsc -b -w --preserveWatchOutput\" \"yarn -s watch:bundle\"",
     "update:next": "ts-node ../../scripts/update-theia-to-next.ts"
-  },
-  "theiaPluginsDir": "plugins",
-  "theiaPlugins": {
-    "vscode-builtin-extensions-pack": "https://open-vsx.org/api/eclipse-theia/builtin-extension-pack/1.77.0/file/eclipse-theia.builtin-extension-pack-1.77.0.vsix",
-    "vscjava.vscode-java-pack": "https://open-vsx.org/api/vscjava/vscode-java-pack/0.25.11/file/vscjava.vscode-java-pack-0.25.11.vsix",
-    "vscjava.vscode-java-dependency": "https://open-vsx.org/api/vscjava/vscode-java-dependency/0.21.2/file/vscjava.vscode-java-dependency-0.21.2.vsix"
-  },
-  "theiaPluginsExcludeIds": [
-    "ms-vscode.js-debug-companion",
-    "VisualStudioExptTeam.vscodeintellicode",
-    "vscode.builtin-notebook-renderers",
-    "vscode.extension-editing",
-    "vscode.github",
-    "vscode.github-authentication",
-    "vscode.ipynb",
-    "vscode.microsoft-authentication"
-  ]
+  }
 }

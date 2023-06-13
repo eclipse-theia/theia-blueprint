@@ -33,18 +33,40 @@
     "yargs": "17.2.1"
   },
   "scripts": {
-    "prepare": "lerna run prepare --concurrency 1",
-    "lint": "lerna run lint",
-    "lint:fix": "lerna run lint:fix",
     "clean": "lerna run clean && rimraf node_modules",
-    "build": "lerna run build",
-    "bundle": "lerna run bundle",
+    "build": "yarn build:extensions && yarn build:applications",
+    "build:dev": "yarn build:extensions && yarn build:applications:dev",
+    "build:applications": "yarn build:extensions && lerna run --scope=\"blueprint*app\" build:prod --concurrency 1",
+    "build:applications:dev": "yarn build:extensions && lerna run --scope=\"blueprint*app\" build --concurrency 1",
+    "build:extensions": "lerna run --scope=\"blueprint*ext\" build",
+    "download:plugins": "theia download:plugins --rate-limit=15 --parallel=false --ignore-errors",
+    "package:applications": "lerna run --scope=\"blueprint*app\" package --concurrency 1",
+    "package:applications:preview": "lerna run --scope=\"blueprint*app\" package:preview --concurrency 1",
+    "package:applications:prod": "lerna run --scope=\"blueprint*app\" package:prod --concurrency 1",
     "watch": "lerna run --parallel watch",
     "test": "lerna run test",
     "electron": "yarn --cwd applications/electron",
     "browser": "yarn --cwd applications/browser",
-    "update:next": "ts-node scripts/update-theia-to-next.ts && lerna run update:next"
+    "update:next": "ts-node scripts/update-theia-to-next.ts && lerna run update:next",
+    "lint": "eslint --ext js,jsx,ts,tsx scripts && lerna run lint",
+    "lint:fix": "eslint --ext js,jsx,ts,tsx scripts --fix && lerna run lint:fix"
   },
+  "theiaPluginsDir": "plugins",
+  "theiaPlugins": {
+    "vscode-builtin-extensions-pack": "https://open-vsx.org/api/eclipse-theia/builtin-extension-pack/1.77.0/file/eclipse-theia.builtin-extension-pack-1.77.0.vsix",
+    "vscjava.vscode-java-pack": "https://open-vsx.org/api/vscjava/vscode-java-pack/0.25.11/file/vscjava.vscode-java-pack-0.25.11.vsix",
+    "vscjava.vscode-java-dependency": "https://open-vsx.org/api/vscjava/vscode-java-dependency/0.21.2/file/vscjava.vscode-java-dependency-0.21.2.vsix"
+  },
+  "theiaPluginsExcludeIds": [
+    "ms-vscode.js-debug-companion",
+    "VisualStudioExptTeam.vscodeintellicode",
+    "vscode.builtin-notebook-renderers",
+    "vscode.extension-editing",
+    "vscode.github",
+    "vscode.github-authentication",
+    "vscode.ipynb",
+    "vscode.microsoft-authentication"
+  ],
   "workspaces": [
     "applications/*",
     "theia-extensions/*"

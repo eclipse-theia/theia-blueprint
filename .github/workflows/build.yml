@@ -46,7 +46,9 @@ jobs:
         shell: bash
         run: |
           yarn --skip-integrity-check --network-timeout 100000
-          yarn electron package
+          yarn build:dev
+          yarn download:plugins
+          yarn package:applications:preview
         env:
           NODE_OPTIONS: --max_old_space_size=4096
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # https://github.com/microsoft/vscode-ripgrep/issues/9
@@ -62,7 +64,7 @@ jobs:
         shell: bash
         run: |
           yarn electron test
-
+          
       - name: Test (macOS)
         if: matrix.tests != 'skip' && runner.os == 'macOS'
         shell: bash

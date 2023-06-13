@@ -1,0 +1,25 @@
+{
+  "extends": "./configs/base.tsconfig.json",
+  "include": [],
+  "compilerOptions": {
+    "composite": true,
+    "allowJs": true
+  },
+  "references": [
+    {
+      "path": "theia-extensions/launcher"
+    },
+    {
+      "path": "theia-extensions/product"
+    },
+    {
+      "path": "theia-extensions/updater"
+    },
+    {
+      "path": "applications/electron"
+    },
+    {
+      "path": "applications/browser"
+    },
+  ]
+}

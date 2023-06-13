@@ -35,6 +35,7 @@ export class CreateLauncherCommandContribution implements FrontendApplicationCon
         this.launcherService.isInitialized().then(async initialized => {
             if (!initialized) {
                 const messageContainer = document.createElement('div');
+                // eslint-disable-next-line max-len
                 messageContainer.textContent = nls.localizeByDefault("Would you like to install a shell command that launches the application?\nYou will be able to run Theia Blueprint from the command line by typing 'theia'.");
                 messageContainer.setAttribute('style', 'white-space: pre-line');
                 const details = document.createElement('p');

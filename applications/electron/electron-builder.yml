@@ -22,7 +22,7 @@ files:
   - scripts
   - "!**node_modules/**"
 extraResources:
-  - from: plugins
+  - from: ../../plugins
     to: app/plugins
 
 win:
