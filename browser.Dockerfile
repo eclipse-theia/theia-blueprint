@@ -21,7 +21,7 @@ RUN yarn --pure-lockfile && \
     echo *.spec.* >> .yarnclean && \
     yarn autoclean --force && \
     yarn cache clean && \
-    rm -rf .git applications/electron theia-extensions/theia-blueprint-launcher theia-extensions/theia-blueprint-updater
+    rm -rf .git applications/electron theia-extensions/theia-blueprint-launcher theia-extensions/theia-blueprint-updater node_modules
 
 # Production stage uses a small base image
 FROM node:16-bullseye-slim as production-stage
@@ -64,7 +64,7 @@ USER theia
 WORKDIR /home/theia/applications/browser
 
 # Launch the backend application via node
-ENTRYPOINT [ "node", "/home/theia/applications/browser/src-gen/backend/main.js" ]
+ENTRYPOINT [ "node", "/home/theia/applications/browser/lib/backend/main.js" ]
 
 # Arguments passed to the application
 CMD [ "/home/project", "--hostname=0.0.0.0" ]
