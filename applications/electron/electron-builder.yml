@@ -15,13 +15,12 @@ directories:
   buildResources: resources
 
 # node_modules and package.json are copied automatically
-# Copying node_modules must be automatic for correct resolvement of binaries.
-# Furthermore, This reduces bundle sizes significantly because it avoids duplicates of the electron runtime.
+# Exclude node_modules manually because electron is copied by electron-builder and we are using a bundled backend
 files:
   - src-gen
   - lib
   - scripts
-  - "!**node_modules/electron/**"
+  - "!**node_modules/**"
 extraResources:
   - from: plugins
     to: app/plugins
