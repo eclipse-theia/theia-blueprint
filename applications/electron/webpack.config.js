@@ -4,6 +4,7 @@
  */
 // @ts-check
 const config = require('./gen-webpack.config.js');
+const backend = require('./gen-webpack.node.config.js');
 
 /**
  * Expose bundled modules on window.theia.moduleName namespace, e.g.
@@ -14,4 +15,13 @@ config.module.rules.push({
     loader: require.resolve('@theia/application-manager/lib/expose-loader')
 }); */
 
-module.exports = config;
+if (process.platform !== 'win32') {
+    // For some reason, blueprint wants to bundle the `.node` files directly without going through `@vscode/windows-ca-certs`
+    backend.ignoredResources.add('@vscode/windows-ca-certs/build/Release/crypt32.node');
+}
+
+
+module.exports = [
+    ...config,
+    backend.config
+];
