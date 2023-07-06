@@ -226,15 +226,17 @@ spec:
                     steps {
                         unstash 'win'
                         container('theia-dev') {
-                            script {
-                                signInstaller('exe', 'windows')
-                                updateMetadata('TheiaBlueprint.exe', 'latest.yml', 'windows', 1200)
+                            withCredentials([string(credentialsId: "github-bot-token", variable: 'GITHUB_TOKEN')]) {
+                                script {
+                                    signInstaller('exe', 'windows')
+                                    updateMetadata('TheiaBlueprint.exe', 'latest.yml', 'windows', 1200)
+                                }
                             }
                         }
                         container('jnlp') {
                             script {
                                 uploadInstaller('windows')
-                                copyInstallerAndUpdateLatestYml('windows', 'TheiaBlueprint', 'exe', 'latest.yml', '1.36.0,1.37.0')
+                                copyInstallerAndUpdateLatestYml('windows', 'TheiaBlueprint', 'exe', 'latest.yml', '1.36.0,1.37.0,1.38.0')
                             }
                         }
                     }
