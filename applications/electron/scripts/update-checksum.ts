@@ -22,9 +22,9 @@ import yargs from 'yargs/yargs';
 
 
 const argv = yargs(hideBin(process.argv))
-    .option('executable', { alias: 'e', type: 'string', default: 'TheiaBlueprint.AppImage', desription: 'The executable for which the checksum needs to be updated' })
-    .option('yaml', { alias: 'y', type: 'string', default: 'latest-linux.yml', desription: 'The yaml file where the checksum needs to be updated' })
-    .option('platform', { alias: 'p', type: 'string', default: 'linux', desription: 'The OS platform' })
+    .option('executable', { alias: 'e', type: 'string', default: 'TheiaBlueprint.AppImage', description: 'The executable for which the checksum needs to be updated' })
+    .option('yaml', { alias: 'y', type: 'string', default: 'latest-linux.yml', description: 'The yaml file where the checksum needs to be updated' })
+    .option('platform', { alias: 'p', type: 'string', default: 'linux', description: 'The OS platform' })
     .version(false)
     .wrap(120)
     .parseSync();
