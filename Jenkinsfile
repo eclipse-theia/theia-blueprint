@@ -236,7 +236,7 @@ spec:
                         container('jnlp') {
                             script {
                                 uploadInstaller('windows')
-                                copyInstallerAndUpdateLatestYml('windows', 'TheiaBlueprint', 'exe', 'latest.yml', '1.36.0,1.37.0,1.38.0')
+                                copyInstallerAndUpdateLatestYml('windows', 'TheiaBlueprint', 'exe', 'latest.yml', '1.37.0,1.38.0,1.39.0')
                             }
                         }
                     }
@@ -328,6 +328,7 @@ def updateMetadata(String executable, String yaml, String platform, int sleepBet
     int MAX_RETRY = 4
     try {
         sh "export NODE_OPTIONS=--max_old_space_size=4096"
+        sh "rm -rf node_modules"
         sh "yarn install --force"
         sh "yarn electron update:blockmap -e ${executable}"
         sh "yarn electron update:checksum -e ${executable} -y ${yaml} -p ${platform}"
