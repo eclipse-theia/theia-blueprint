@@ -111,6 +111,9 @@ describe("Theia App", function() {
 
     // Expand builtin extensions
     const builtinHeader = await builtinContainer.$(".theia-header.header");
+    await builtinHeader.moveTo({ xOffset: 1, yOffset: 1 })
+    await builtinHeader.waitForDisplayed();
+    await builtinHeader.waitForClickable();
     await builtinHeader.click();
 
     // Wait for expansion to finish
