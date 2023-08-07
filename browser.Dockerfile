@@ -13,6 +13,7 @@ COPY . .
 # Download plugins and build application production mode
 # Use yarn autoclean to remove unnecessary files from package dependencies
 RUN yarn --pure-lockfile && \
+    yarn build:extensions && \
     yarn download:plugins && \
     yarn browser build && \
     yarn --production && \
