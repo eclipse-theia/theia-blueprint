@@ -72,7 +72,6 @@
     "@theia/process": "1.40.0",
     "@theia/property-view": "1.40.0",
     "@theia/scm": "1.40.0",
-    "@theia/scm-extra": "1.40.0",
     "@theia/search-in-workspace": "1.40.0",
     "@theia/secondary-window": "1.40.0",
     "@theia/task": "1.40.0",
