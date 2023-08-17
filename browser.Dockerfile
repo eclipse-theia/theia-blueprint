@@ -13,7 +13,9 @@ COPY . .
 # Download plugins and build application production mode
 # Use yarn autoclean to remove unnecessary files from package dependencies
 RUN yarn --pure-lockfile && \
-    yarn browser download:plugins && \
+    yarn build:extensions && \
+    yarn download:plugins && \
+    yarn browser build && \
     yarn --production && \
     yarn autoclean --init && \
     echo *.ts >> .yarnclean && \
@@ -54,7 +56,7 @@ EXPOSE 3000
 
 # Specify default shell for Theia and the Built-In plugins directory
 ENV SHELL=/bin/bash \
-    THEIA_DEFAULT_PLUGINS=local-dir:/home/theia/applications/browser/plugins
+    THEIA_DEFAULT_PLUGINS=local-dir:/home/theia/plugins
 
 # Use installed git instead of dugite
 ENV USE_LOCAL_GIT true

@@ -25,32 +25,32 @@ async function execute(): Promise<void> {
         'package.json'
     );
 
-    console.log(`Updating ${packageJsonPath}...`)
+    console.log(`Updating ${packageJsonPath}...`);
 
-    const packageJsonContents: string = fs.readFileSync(packageJsonPath, { encoding: 'utf8' })
+    const packageJsonContents: string = fs.readFileSync(packageJsonPath, { encoding: 'utf8' });
     const packageJson: PackageJson = JSON.parse(packageJsonContents);
 
-
-    console.log('...dependencies...')
+    console.log('...dependencies...');
     if (packageJson.dependencies) {
-        updateTheiaVersions(packageJson.dependencies)
+        updateTheiaVersions(packageJson.dependencies);
     }
-    console.log('...done...')
+    console.log('...done...');
 
-
-    console.log('...devDependencies...')
+    console.log('...devDependencies...');
     if (packageJson.devDependencies) {
-        updateTheiaVersions(packageJson.devDependencies)
+        updateTheiaVersions(packageJson.devDependencies);
     }
-    console.log('...done.')
+    console.log('...done.');
 
+    // note: "null" is valid as per `stringify()` signature
+    // eslint-disable-next-line no-null/no-null
     fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
 }
 
-function updateTheiaVersions(dependencies: PackageJson.Dependency) {
+function updateTheiaVersions(dependencies: PackageJson.Dependency): void {
     for (const dependency in dependencies) {
         if (dependency.startsWith('@theia/')) {
-            console.log(`...setting ${dependency} from ${dependencies[dependency]} to next...`)
+            console.log(`...setting ${dependency} from ${dependencies[dependency]} to next...`);
             dependencies[dependency] = 'next';
         }
     }

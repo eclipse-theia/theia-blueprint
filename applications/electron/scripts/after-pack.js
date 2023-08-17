@@ -6,7 +6,7 @@ const util = require('util');
 const child_process = require('child_process');
 const rimraf = require('rimraf');
 const sign_util = require('app-builder-lib/electron-osx-sign/util');
-const asynfRimraf = util.promisify(rimraf);
+const asyncRimraf = util.promisify(rimraf);
 
 const DELETE_PATHS = [
     'Contents/Resources/app/node_modules/unzip-stream/aa.zip',
@@ -39,26 +39,29 @@ const signFile = file => {
     }
 };
 
-exports.default = async function(context) {
-    const running_ci = process.env.BLUEPRINT_JENKINS_CI == 'true';
-    const running_on_mac = context.packager.platform.name == 'mac';
+exports.default = async function (context) {
+    const running_ci = process.env.BLUEPRINT_JENKINS_CI === 'true';
+    const releaseDryRun = process.env.BLUEPRINT_JENKINS_RELEASE_DRYRUN === 'true';
+    const branch = process.env.BRANCH_NAME;
+    const running_on_mac = context.packager.platform.name === 'mac';
     const appPath = path.resolve(context.appOutDir, `${context.packager.appInfo.productFilename}.app`);
 
     // Remove anything we don't want in the final package
     for (const deletePath of DELETE_PATHS) {
         const resolvedPath = path.resolve(appPath, deletePath);
         console.log(`Deleting ${resolvedPath}...`);
-        await asynfRimraf(resolvedPath);
+        await asyncRimraf(resolvedPath);
     }
 
     // Only continue for macOS during CI
-    if (running_ci && running_on_mac) {
-        console.log("Detected Blueprint Jenkins CI on Mac - proceed with signing");
+    if ((( branch === 'master' || releaseDryRun)  && running_ci && running_on_mac)) {
+        console.log('Detected Blueprint Release on Mac ' + releaseDryRun ? ' (dry-run)' : ''
+            + ' - proceeding with signing and notarizing');
     } else {
         if (running_on_mac) {
-            console.log("Skip Mac CI signing");
+            console.log('Not a release or dry-run requiring signing/notarizing - skipping');
         }
-        return
+        return;
     }
 
     // Use app-builder-lib to find all binaries to sign, at this level it will include the final .app
@@ -86,4 +89,4 @@ exports.default = async function(context) {
         stdio: 'inherit',
         encoding: 'utf-8'
     });
-}
+};

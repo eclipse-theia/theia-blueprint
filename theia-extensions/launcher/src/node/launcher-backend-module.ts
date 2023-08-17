@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2021 EclipseSource and others.
+ * Copyright (C) 2022 EclipseSource and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -13,19 +13,12 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
-import * as fs from 'fs';
-import * as path from 'path';
 
-execute();
+import { ContainerModule } from '@theia/core/shared/inversify';
+import { TheiaLauncherServiceEndpoint } from './launcher-endpoint';
+import { BackendApplicationContribution } from '@theia/core/lib/node/backend-application';
 
-async function execute(): Promise<void> {
-    const packageJsonPath = path.resolve(
-        './',
-        'package.json'
-    );
-
-    const packageJsonContents: string = fs.readFileSync(packageJsonPath, { encoding: 'utf8' })
-    const withoutBrowserApp = packageJsonContents.replace('applications/*', 'applications/electron');
-
-    fs.writeFileSync(packageJsonPath, withoutBrowserApp);
-}
+export default new ContainerModule(bind => {
+    bind(TheiaLauncherServiceEndpoint).toSelf().inSingletonScope();
+    bind(BackendApplicationContribution).toService(TheiaLauncherServiceEndpoint);
+});

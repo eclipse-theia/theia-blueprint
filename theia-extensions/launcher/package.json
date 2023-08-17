@@ -1,6 +1,6 @@
 {
-  "name": "theia-blueprint-launcher",
-  "version": "1.39.0",
+  "name": "blueprint-launcher-ext",
+  "version": "1.40.0",
   "keywords": [
     "theia-extension"
   ],
@@ -18,7 +18,9 @@
     "src"
   ],
   "dependencies": {
-    "@theia/core": "1.39.0",
+    "@theia/core": "1.40.0",
+    "body-parser": "^1.17.2",
+    "fs-extra": "^4.0.2",
     "@vscode/sudo-prompt": "9.3.1"
   },
   "devDependencies": {
@@ -26,9 +28,10 @@
     "typescript": "^4.5.5"
   },
   "scripts": {
-    "prepare": "yarn run clean && yarn run build",
     "clean": "rimraf lib *.tsbuildinfo",
-    "build": "tsc",
+    "build": "tsc -b",
+    "lint": "eslint --ext js,jsx,ts,tsx src",
+    "lint:fix": "eslint --ext js,jsx,ts,tsx src --fix",
     "watch": "tsc -w",
     "update:next": "ts-node ../../scripts/update-theia-to-next.ts"
   },

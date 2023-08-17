@@ -167,6 +167,7 @@ def buildNext(boolean runTests, int sleepBetweenRetries) {
 
     echo "Upgrading versions"
     sh "yarn upgrade"
+    sh "git clean -xfd"
     try {
         sh(script: 'yarn --force')
     } catch(error) {

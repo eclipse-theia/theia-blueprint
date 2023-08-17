@@ -36,7 +36,7 @@ export class LauncherService {
         });
     }
 
-    protected endpoint() {
+    protected endpoint(): string {
         const url = new Endpoint({ path: 'launcher' }).getRestUrl().toString();
         return url.endsWith('/') ? url.slice(0, -1) : url;
     }

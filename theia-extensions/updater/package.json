@@ -1,12 +1,12 @@
 {
   "private": true,
-  "name": "theia-blueprint-updater",
-  "version": "1.39.0",
+  "name": "blueprint-updater-ext",
+  "version": "1.40.0",
   "description": "Eclipse Theia Blueprint Updater",
   "dependencies": {
-    "@theia/core": "1.39.0",
-    "@theia/output": "1.39.0",
-    "@theia/preferences": "1.39.0",
+    "@theia/core": "1.40.0",
+    "@theia/output": "1.40.0",
+    "@theia/preferences": "1.40.0",
     "electron-log": "^4.3.0",
     "electron-updater": "5.3.0",
     "fs-extra": "^10.0.0",
@@ -40,7 +40,6 @@
     "src"
   ],
   "scripts": {
-    "prepare": "yarn clean && yarn build",
     "clean": "rimraf lib *.tsbuildinfo",
     "build": "tsc -b",
     "lint": "eslint --ext js,jsx,ts,tsx src",

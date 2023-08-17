@@ -1,13 +1,13 @@
 {
   "private": true,
-  "name": "theia-blueprint-product",
-  "version": "1.39.0",
+  "name": "blueprint-product-ext",
+  "version": "1.40.0",
   "description": "Eclipse Theia Blueprint Product Branding",
   "dependencies": {
-    "@theia/core": "1.39.0",
-    "@theia/getting-started": "1.39.0",
-    "@theia/vsx-registry": "1.39.0",
-    "@theia/workspace": "1.39.0",
+    "@theia/core": "1.40.0",
+    "@theia/getting-started": "1.40.0",
+    "@theia/vsx-registry": "1.40.0",
+    "@theia/workspace": "1.40.0",
     "inversify": "^6.0.1"
   },
   "devDependencies": {
@@ -39,7 +39,6 @@
     "src"
   ],
   "scripts": {
-    "prepare": "yarn clean && yarn build",
     "clean": "rimraf lib *.tsbuildinfo",
     "build": "tsc -b",
     "lint": "eslint --ext js,jsx,ts,tsx src",

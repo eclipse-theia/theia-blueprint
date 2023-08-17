@@ -30,7 +30,6 @@ import { TheiaUpdater, TheiaUpdaterClient, UpdaterError } from '../../common/upd
 import { inject, injectable, postConstruct } from '@theia/core/shared/inversify';
 import { CommonMenus, OpenerService } from '@theia/core/lib/browser';
 import { ElectronMainMenuFactory } from '@theia/core/lib/electron-browser/menu/electron-main-menu-factory';
-import { setInterval, clearInterval } from 'timers';
 import URI from '@theia/core/lib/common/uri';
 import { URI as VSCodeURI } from 'vscode-uri';
 
