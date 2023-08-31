@@ -19,6 +19,7 @@ directories:
 files:
   - src-gen
   - lib
+  - resources/icons/WindowIcon/512-512.png
   - scripts
   - "!**node_modules/**"
 extraResources:
