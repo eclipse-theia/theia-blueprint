@@ -46,12 +46,6 @@
     padding: 20px;
 }
 
-.gs-preference {
-    margin-top: 20px;
-    align-items: center;
-    display: flex;
-}
-
 .ad-logo {
     background-image: var(--theia-branding-logo);
     background-position: center center;

@@ -79,7 +79,7 @@ export function renderSupport(windowService: WindowService): React.ReactNode {
         <div >
             Professional support, implementation services, consulting and training for building tools like this instance of Theia Blueprint and for
             building other tools based on Eclipse Theia is available by selected companies as listed on the
-            <ExternalBrowserLink text="Theia support page" url="https://theia-ide.org/support/" windowService={windowService} ></ExternalBrowserLink>.
+            <ExternalBrowserLink text=" Theia support page" url="https://theia-ide.org/support/" windowService={windowService} ></ExternalBrowserLink>.
         </div>
     </div>;
 }
@@ -138,7 +138,7 @@ export function renderDownloads(): React.ReactNode {
         </h3>
         <div className='gs-action-container'>
             You can update Eclipse Theia Blueprint directly in this application by navigating to
-            File {'>'} Settings {'>'} Check for Updates… Moreover the application will check for Updates
+            File {'>'} Settings {'>'} Check for Updates… Moreover the application will check for updates
             after each launch automatically.
         </div>
         <div className='gs-action-container'>

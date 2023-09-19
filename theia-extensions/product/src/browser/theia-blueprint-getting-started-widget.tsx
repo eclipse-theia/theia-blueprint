@@ -98,11 +98,9 @@ export class TheiaBlueprintGettingStartedWidget extends GettingStartedWidget {
                         {renderDownloads()}
                     </div>
                 </div>
-                <div className='flex-grid'>
-                    <div className='col'>
-                        {this.renderPreferences()}
-                    </div>
-                </div>
+            </div>
+            <div className='gs-preference-container'>
+                {this.renderPreferences()}
             </div>
         </div>;
     }
