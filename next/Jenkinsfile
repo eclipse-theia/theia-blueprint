@@ -179,6 +179,8 @@ def buildNext(boolean runTests, int sleepBetweenRetries) {
     }
 
     sh "rm -rf ./${distFolder}"
+    sh "yarn build"
+    sh "yarn download:plugins"
     sshagent(['projects-storage.eclipse.org-bot-ssh']) {
         sh "yarn electron package:preview"
     }
