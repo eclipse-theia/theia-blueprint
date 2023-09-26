@@ -1,0 +1,52 @@
+#!/bin/sh
+set -e
+
+BUILD_THEIA=0
+ADD_USER=0
+
+if [ -n "$1" ]; then
+    if [ "$1" = "--buildTheia" ]; then
+        BUILD_THEIA=1
+    elif [ "$1" = "--addUser" ]; then
+        ADD_USER=1
+    fi
+fi
+
+if [ -n "$2" ]; then
+    if [ "$2" = "--buildTheia" ]; then
+        BUILD_THEIA=1
+    elif [ "$2" = "--addUser" ]; then
+        ADD_USER=1
+    fi
+fi
+
+REGISTRY=http://localhost:4873/
+echo "Launching Verdaccio..."
+verdaccio --listen http://0.0.0.0:4873 &
+VERDACCIO_PID=$!
+while ! nc -z localhost 4873; do   
+sleep 1
+done
+
+if [ "$ADD_USER" -eq 1 ]; then
+    echo "Adding User..."
+    expect -f /tmp/adduser
+fi
+
+echo "Log in User..."
+expect -f /tmp/loginuser
+
+if [ "$BUILD_THEIA" -eq 1 ]; then
+    echo "Building Theia..."
+    cd /tmp/theia
+    npm config set registry $REGISTRY
+    yarn config set registry $REGISTRY
+    yarn
+    yarn build
+
+    echo "Publishing Theia..."
+    yarn lerna publish preminor --exact --canary --preid next --dist-tag next --no-git-reset --no-git-tag-version --no-push --yes --registry $REGISTRY || true
+fi
+
+echo "Wait while Verdaccio is running..."
+wait $VERDACCIO_PID

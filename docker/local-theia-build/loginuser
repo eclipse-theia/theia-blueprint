@@ -1,0 +1,13 @@
+#!/usr/bin/expect -f
+set timeout 10
+
+spawn npm login --registry http://localhost:4873/
+match_max 100000
+
+expect "Username"
+send "theia-build\r"
+
+expect "Password"
+send "The14-8uiLd\r"
+
+expect "Logged in on http://localhost:4873/."

@@ -129,7 +129,7 @@
     "package:preview": "yarn clean:dist && yarn rebuild && electron-builder -c.mac.identity=null --dir",
     "update:checksum": "ts-node scripts/update-checksum.ts",
     "update:blockmap": "ts-node scripts/update-blockmap.ts",
-    "update:next": "ts-node ../../scripts/update-theia-to-next.ts",
+    "update:next": "ts-node ../../scripts/update-theia-to-next.ts && ts-node ../../scripts/update-application-to-preview.ts && ts-node ../../scripts/update-builder-config-to-preview.ts",
     "test": "mocha --timeout 60000 \"./test/*.spec.js\"",
     "lint": "eslint --ext js,jsx,ts,tsx scripts && eslint --ext js,jsx,ts,tsx test",
     "lint:fix": "eslint --ext js,jsx,ts,tsx scripts --fix && eslint --ext js,jsx,ts,tsx test -fix"
