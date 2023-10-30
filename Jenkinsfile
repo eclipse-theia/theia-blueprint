@@ -139,7 +139,7 @@ spec:
                     steps {
                         script {
                             sh "npm config set msvs_version 2017"
-                            sh "npx node-gyp install 14.20.0"
+                            sh "npx node-gyp@9.4.0 install 14.20.0"
 
                             // analyze memory usage
                             bat "wmic ComputerSystem get TotalPhysicalMemory"
