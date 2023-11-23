@@ -95,13 +95,15 @@ describe('Theia App', function () {
   });
 
   it('Correct window title', async function () {
+    // Wait a bit to make sure workspace is set and title got updated
+    await new Promise(r => setTimeout(r, 2000));
     const windowTitle = await this.browser.getTitle();
     expect(windowTitle).to.include('workspace');
   });
 
   it('Builtin extensions', async function () {
     // Wait a bit to make sure key handlers are registered.
-    await new Promise(r => setTimeout(r, 2000));
+    await new Promise(r => setTimeout(r, 5000));
 
     // Open extensions view
     await this.browser.keys(macSafeKeyCombo(['Control', 'Shift', 'x']));
