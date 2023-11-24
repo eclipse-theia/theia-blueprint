@@ -16,6 +16,7 @@
 
 import * as os from 'os';
 import * as path from 'path';
+import { pathExists, mkdir } from 'fs-extra';
 import { injectable } from '@theia/core/shared/inversify';
 import { FileUri } from '@theia/core/lib/node/file-uri';
 import { EnvVariablesServerImpl } from '@theia/core/lib/node/env-variables';
@@ -23,7 +24,27 @@ import { EnvVariablesServerImpl } from '@theia/core/lib/node/env-variables';
 @injectable()
 export class TheiaBlueprintEnvVariableServer extends EnvVariablesServerImpl {
 
-    protected readonly _configDirUri: string = FileUri.create(path.join(os.homedir(), '.theia-blueprint')).toString(true);
+    protected readonly pathExistenceCache: { [key: string]: boolean } = {};
+    protected readonly _configDirUri: Promise<string> = this.createConfigDirUri();
+
+    protected async createConfigDirUri(): Promise<string> {
+        const dataFolderPath = path.join(process.cwd(), 'data');
+        const userDataPath = path.join(dataFolderPath, 'user-data');
+
+        const dataFolderExists = this.pathExistenceCache[dataFolderPath] ??= await pathExists(dataFolderPath);
+        if (dataFolderExists) {
+            const userDataExists = this.pathExistenceCache[userDataPath] ??= await pathExists(userDataPath);
+            if (userDataExists) {
+                return FileUri.create(userDataPath).toString(true);
+            } else {
+                await mkdir(userDataPath);
+                this.pathExistenceCache[userDataPath] = true;
+                return FileUri.create(userDataPath).toString(true);
+            }
+        } else {
+            return FileUri.create(path.join(os.homedir(), '.theia-blueprint')).toString(true);
+        }
+    }
 
     async getConfigDirUri(): Promise<string> {
         return this._configDirUri;
