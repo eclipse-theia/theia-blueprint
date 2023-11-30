@@ -29,7 +29,7 @@ export class CreateLauncherCommandContribution implements FrontendApplicationCon
             if (!initialized) {
                 const messageContainer = document.createElement('div');
                 // eslint-disable-next-line max-len
-                messageContainer.textContent = nls.localizeByDefault("Would you like to install a shell command that launches the application?\nYou will be able to run Theia Blueprint from the command line by typing 'theia'.");
+                messageContainer.textContent = nls.localizeByDefault("Would you like to install a shell command that launches the application?\nYou will be able to run the Theia IDE from the command line by typing 'theia'.");
                 messageContainer.setAttribute('style', 'white-space: pre-line');
                 const details = document.createElement('p');
                 details.textContent = 'Administrator privileges are required, you will need to enter your password next.';

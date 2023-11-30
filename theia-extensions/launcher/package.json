@@ -1,5 +1,5 @@
 {
-  "name": "blueprint-launcher-ext",
+  "name": "theia-ide-launcher-ext",
   "version": "1.44.0",
   "keywords": [
     "theia-extension"

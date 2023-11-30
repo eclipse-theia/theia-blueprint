@@ -12,22 +12,22 @@ function getBinaryPath() {
       return path.join(
         distFolder,
         'linux-unpacked',
-        'blueprint-electron-app'
+        'theia-ide-electron-app'
       );
     case 'win32':
       return path.join(
         distFolder,
         'win-unpacked',
-        'TheiaBlueprint.exe'
+        'TheiaIDE.exe'
       );
     case 'darwin':
       return path.join(
         distFolder,
         'mac',
-        'TheiaBlueprint.app',
+        'TheiaIDE.app',
         'Contents',
         'MacOS',
-        'TheiaBlueprint'
+        'TheiaIDE'
       );
     default:
       return undefined;

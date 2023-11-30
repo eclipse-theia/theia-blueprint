@@ -9,7 +9,7 @@ process.env.THEIA_DEFAULT_PLUGINS = `local-dir:${path.resolve(__dirname, '../', 
 
 // Lookup inside the user's home folder for more plugins, and accept user-defined paths.
 process.env.THEIA_PLUGINS = [
-    process.env.THEIA_PLUGINS, `local-dir:${path.resolve(os.homedir(), '.theia-blueprint', 'plugins')}`,
+    process.env.THEIA_PLUGINS, `local-dir:${path.resolve(os.homedir(), '.theia-ide', 'plugins')}`,
 ].filter(Boolean).join(',');
 
 // Handover to the auto-generated electron application handler.

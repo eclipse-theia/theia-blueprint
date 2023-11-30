@@ -1,8 +1,8 @@
 {
   "private": true,
-  "name": "blueprint-browser-app",
-  "description": "Eclipse Theia blueprint browser product",
-  "productName": "Theia Blueprint",
+  "name": "theia-ide-browser-app",
+  "description": "Eclipse Theia IDE browser product",
+  "productName": "Theia IDE",
   "version": "1.44.0",
   "license": "MIT",
   "author": "Eclipse Theia <theia-dev@eclipse.org>",
@@ -21,7 +21,7 @@
   "theia": {
     "frontend": {
       "config": {
-        "applicationName": "Theia Blueprint",
+        "applicationName": "Theia IDE",
         "warnOnPotentiallyInsecureHostPattern": false,
         "preferences": {
           "toolbar.showToolbar": true,
@@ -84,7 +84,7 @@
     "@theia/vsx-registry": "1.44.0",
     "@theia/workspace": "1.44.0",
     "fs-extra": "^9.0.1",
-    "blueprint-product-ext": "1.44.0"
+    "theia-ide-product-ext": "1.44.0"
   },
   "devDependencies": {
     "@theia/cli": "1.44.0"

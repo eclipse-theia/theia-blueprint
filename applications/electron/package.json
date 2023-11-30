@@ -1,8 +1,8 @@
 {
   "private": true,
-  "name": "blueprint-electron-app",
-  "description": "Eclipse Theia blueprint product",
-  "productName": "Theia Blueprint",
+  "name": "theia-ide-electron-app",
+  "description": "Eclipse Theia IDE product",
+  "productName": "Theia IDE",
   "version": "1.44.0",
   "main": "scripts/theia-electron-main.js",
   "license": "MIT",
@@ -23,7 +23,7 @@
     "target": "electron",
     "frontend": {
       "config": {
-        "applicationName": "Theia Blueprint",
+        "applicationName": "Theia IDE",
         "preferences": {
           "toolbar.showToolbar": true,
           "security.workspace.trust.enabled": false
@@ -87,9 +87,9 @@
     "@theia/vsx-registry": "1.44.0",
     "@theia/workspace": "1.44.0",
     "fs-extra": "^9.0.1",
-    "blueprint-updater-ext": "1.44.0",
-    "blueprint-product-ext": "1.44.0",
-    "blueprint-launcher-ext": "1.44.0"
+    "theia-ide-updater-ext": "1.44.0",
+    "theia-ide-product-ext": "1.44.0",
+    "theia-ide-launcher-ext": "1.44.0"
   },
   "devDependencies": {
     "@theia/cli": "1.44.0",

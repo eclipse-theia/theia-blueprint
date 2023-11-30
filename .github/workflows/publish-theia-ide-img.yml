@@ -1,4 +1,4 @@
-name: Publish Blueprint Docker Image
+name: Publish Theia IDE Docker Image
 
 on:
   workflow_dispatch:
@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    name: Build and push blueprint image to Docker Hub
+    name: Build and push Theia IDE image to Github Packages
     runs-on: ubuntu-latest
 
     steps:
@@ -37,8 +37,5 @@ jobs:
           file: browser.Dockerfile
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}/blueprint:${{ github.event.inputs.tag }}
-            ghcr.io/${{ github.repository }}/blueprint:latest
-# Add below after repository was created
-            # eclipsetheia/blueprint:${{ github.event.inputs.tag }}
-            # eclipsetheia/blueprint:latest
+            ghcr.io/${{ github.repository }}/theia-ide:${{ github.event.inputs.tag }}
+            ghcr.io/${{ github.repository }}/theia-ide:latest

@@ -8,7 +8,7 @@
  ********************************************************************************/
 
 :root {
-    --theia-branding-logo: url(../icons/TheiaBlueprintLogo-blue.png);
+    --theia-branding-logo: url(../icons/TheiaIDE.png);
 }
 
 .gs-blue-header {
