@@ -40,8 +40,8 @@ const signFile = file => {
 };
 
 exports.default = async function (context) {
-    const running_ci = process.env.BLUEPRINT_JENKINS_CI === 'true';
-    const releaseDryRun = process.env.BLUEPRINT_JENKINS_RELEASE_DRYRUN === 'true';
+    const running_ci = process.env.THEIA_IDE_JENKINS_CI === 'true';
+    const releaseDryRun = process.env.THEIA_IDE_JENKINS_RELEASE_DRYRUN === 'true';
     const branch = process.env.BRANCH_NAME;
     const running_on_mac = context.packager.platform.name === 'mac';
     const appPath = path.resolve(context.appOutDir, `${context.packager.appInfo.productFilename}.app`);
@@ -55,7 +55,7 @@ exports.default = async function (context) {
 
     // Only continue for macOS during CI
     if ((( branch === 'master' || releaseDryRun)  && running_ci && running_on_mac)) {
-        console.log('Detected Blueprint Release on Mac ' + releaseDryRun ? ' (dry-run)' : ''
+        console.log('Detected Theia IDE Release on Mac ' + releaseDryRun ? ' (dry-run)' : ''
             + ' - proceeding with signing and notarizing');
     } else {
         if (running_on_mac) {

@@ -15,24 +15,24 @@ import { CommandContribution } from '@theia/core/lib/common/command';
 import { ContainerModule } from '@theia/core/shared/inversify';
 import { GettingStartedWidget } from '@theia/getting-started/lib/browser/getting-started-widget';
 import { MenuContribution } from '@theia/core/lib/common/menu';
-import { TheiaBlueprintAboutDialog } from './theia-blueprint-about-dialog';
-import { TheiaBlueprintContribution } from './theia-blueprint-contribution';
-import { TheiaBlueprintGettingStartedWidget } from './theia-blueprint-getting-started-widget';
+import { TheiaIDEAboutDialog } from './theia-ide-about-dialog';
+import { TheiaIDEContribution } from './theia-ide-contribution';
+import { TheiaIDEGettingStartedWidget } from './theia-ide-getting-started-widget';
 
 export default new ContainerModule((bind, _unbind, isBound, rebind) => {
-    bind(TheiaBlueprintGettingStartedWidget).toSelf();
+    bind(TheiaIDEGettingStartedWidget).toSelf();
     bind(WidgetFactory).toDynamicValue(context => ({
         id: GettingStartedWidget.ID,
-        createWidget: () => context.container.get<TheiaBlueprintGettingStartedWidget>(TheiaBlueprintGettingStartedWidget),
+        createWidget: () => context.container.get<TheiaIDEGettingStartedWidget>(TheiaIDEGettingStartedWidget),
     })).inSingletonScope();
     if (isBound(AboutDialog)) {
-        rebind(AboutDialog).to(TheiaBlueprintAboutDialog).inSingletonScope();
+        rebind(AboutDialog).to(TheiaIDEAboutDialog).inSingletonScope();
     } else {
-        bind(AboutDialog).to(TheiaBlueprintAboutDialog).inSingletonScope();
+        bind(AboutDialog).to(TheiaIDEAboutDialog).inSingletonScope();
     }
 
-    bind(TheiaBlueprintContribution).toSelf().inSingletonScope();
+    bind(TheiaIDEContribution).toSelf().inSingletonScope();
     [CommandContribution, MenuContribution].forEach(serviceIdentifier =>
-        bind(serviceIdentifier).toService(TheiaBlueprintContribution)
+        bind(serviceIdentifier).toService(TheiaIDEContribution)
     );
 });

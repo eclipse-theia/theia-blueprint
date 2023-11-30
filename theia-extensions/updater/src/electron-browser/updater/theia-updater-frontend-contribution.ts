@@ -186,7 +186,7 @@ export class TheiaUpdaterFrontendContribution implements CommandContribution, Me
         if (answer === 'Yes') {
             this.stopProgress();
             this.progress = await this.messageService.showProgress({
-                text: 'Blueprint Update'
+                text: 'Theia IDE Update'
             });
             let dots = 0;
             this.intervalId = setInterval(() => {

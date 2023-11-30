@@ -1,8 +1,8 @@
 {
   "private": true,
-  "name": "blueprint-updater-ext",
+  "name": "theia-ide-updater-ext",
   "version": "1.44.0",
-  "description": "Eclipse Theia Blueprint Updater",
+  "description": "Eclipse Theia IDE Updater",
   "dependencies": {
     "@theia/core": "1.44.0",
     "@theia/output": "1.44.0",
