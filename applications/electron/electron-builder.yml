@@ -1,5 +1,5 @@
 appId: eclipse.theia
-productName: TheiaBlueprint
+productName: TheiaIDE
 copyright: Copyright © 2020-2023 Eclipse Foundation, Inc
 electronDist: ../../node_modules/electron/dist
 electronVersion: 23.3.13
@@ -27,7 +27,7 @@ extraResources:
     to: app/plugins
 
 win:
-  icon: resources/icons/WindowsLauncherIcon/TheiaBluePrint.ico
+  icon: resources/icons/WindowsLauncherIcon/TheiaIDE.ico
   target:
     - nsis
   publish:
@@ -59,9 +59,9 @@ nsis:
   menuCategory: true
   oneClick: false
   perMachine: false
-  installerHeaderIcon: resources/icons/WindowsLauncherIcon/TheiaBluePrint.ico
-  installerIcon: resources/icons/WindowsLauncherIcon/TheiaBluePrint.ico
-  uninstallerIcon: resources/icons/WindowsLauncherIcon/TheiaBluePrint.ico
+  installerHeaderIcon: resources/icons/WindowsLauncherIcon/TheiaIDE.ico
+  installerIcon: resources/icons/WindowsLauncherIcon/TheiaIDE.ico
+  uninstallerIcon: resources/icons/WindowsLauncherIcon/TheiaIDE.ico
   installerSidebar: resources/icons/InstallerSidebarImage/164-314Windows.bmp
   uninstallerSidebar: resources/icons/InstallerSidebarImage/164-314Windows.bmp
   allowToChangeInstallationDirectory: true

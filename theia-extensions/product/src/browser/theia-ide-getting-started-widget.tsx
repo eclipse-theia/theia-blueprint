@@ -11,14 +11,14 @@ import * as React from 'react';
 
 import { Message, PreferenceService } from '@theia/core/lib/browser';
 import { inject, injectable } from '@theia/core/shared/inversify';
-import { renderDocumentation, renderDownloads, renderSourceCode, renderSupport, renderTickets, renderWhatIs, renderWhatIsNot } from './branding-util';
+import { renderDocumentation, renderDownloads, renderExtendingCustomizing, renderSourceCode, renderSupport, renderTickets, renderWhatIs } from './branding-util';
 
 import { GettingStartedWidget } from '@theia/getting-started/lib/browser/getting-started-widget';
 import { VSXEnvironment } from '@theia/vsx-registry/lib/common/vsx-environment';
 import { WindowService } from '@theia/core/lib/browser/window/window-service';
 
 @injectable()
-export class TheiaBlueprintGettingStartedWidget extends GettingStartedWidget {
+export class TheiaIDEGettingStartedWidget extends GettingStartedWidget {
 
     @inject(VSXEnvironment)
     protected readonly environment: VSXEnvironment;
@@ -63,7 +63,7 @@ export class TheiaBlueprintGettingStartedWidget extends GettingStartedWidget {
                 </div>
                 <div className='flex-grid'>
                     <div className='col'>
-                        {renderWhatIsNot()}
+                        {renderExtendingCustomizing(this.windowService)}
                     </div>
                 </div>
                 <div className='flex-grid'>
@@ -125,7 +125,7 @@ export class TheiaBlueprintGettingStartedWidget extends GettingStartedWidget {
 
     protected renderHeader(): React.ReactNode {
         return <div className='gs-header'>
-            <h1>Eclipse Theia <span className='gs-blue-header'>Blueprint</span></h1>
+            <h1>Eclipse Theia <span className='gs-blue-header'>IDE</span></h1>
             {this.renderVersion()}
         </div>;
     }

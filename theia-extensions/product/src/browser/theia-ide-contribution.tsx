@@ -13,50 +13,50 @@ import { Command, CommandContribution, CommandRegistry } from '@theia/core/lib/c
 import { MenuContribution, MenuModelRegistry, MenuPath } from '@theia/core/lib/common/menu';
 import { WindowService } from '@theia/core/lib/browser/window/window-service';
 
-export namespace BlueprintMenus {
-    export const BLUEPRINT_HELP: MenuPath = [...CommonMenus.HELP, 'blueprint'];
+export namespace TheiaIDEMenus {
+    export const THEIA_IDE_HELP: MenuPath = [...CommonMenus.HELP, 'theia-ide'];
 }
-export namespace BlueprintCommands {
-    export const CATEGORY = 'Blueprint';
+export namespace TheiaIDECommands {
+    export const CATEGORY = 'TheiaIDE';
     export const REPORT_ISSUE: Command = {
-        id: 'blueprint:report-issue',
+        id: 'theia-ide:report-issue',
         category: CATEGORY,
         label: 'Report Issue'
     };
     export const DOCUMENTATION: Command = {
-        id: 'blueprint:documentation',
+        id: 'theia-ide:documentation',
         category: CATEGORY,
         label: 'Documentation'
     };
 }
 
 @injectable()
-export class TheiaBlueprintContribution implements CommandContribution, MenuContribution {
+export class TheiaIDEContribution implements CommandContribution, MenuContribution {
 
     @inject(WindowService)
     protected readonly windowService: WindowService;
 
     static REPORT_ISSUE_URL = 'https://github.com/eclipse-theia/theia-blueprint/issues/new?assignees=&labels=&template=bug_report.md';
-    static DOCUMENTATION_URL = 'https://theia-ide.org/docs/blueprint_documentation';
+    static DOCUMENTATION_URL = 'https://theia-ide.org/docs/user_getting_started/';
 
     registerCommands(commandRegistry: CommandRegistry): void {
-        commandRegistry.registerCommand(BlueprintCommands.REPORT_ISSUE, {
-            execute: () => this.windowService.openNewWindow(TheiaBlueprintContribution.REPORT_ISSUE_URL, { external: true })
+        commandRegistry.registerCommand(TheiaIDECommands.REPORT_ISSUE, {
+            execute: () => this.windowService.openNewWindow(TheiaIDEContribution.REPORT_ISSUE_URL, { external: true })
         });
-        commandRegistry.registerCommand(BlueprintCommands.DOCUMENTATION, {
-            execute: () => this.windowService.openNewWindow(TheiaBlueprintContribution.DOCUMENTATION_URL, { external: true })
+        commandRegistry.registerCommand(TheiaIDECommands.DOCUMENTATION, {
+            execute: () => this.windowService.openNewWindow(TheiaIDEContribution.DOCUMENTATION_URL, { external: true })
         });
     }
 
     registerMenus(menus: MenuModelRegistry): void {
-        menus.registerMenuAction(BlueprintMenus.BLUEPRINT_HELP, {
-            commandId: BlueprintCommands.REPORT_ISSUE.id,
-            label: BlueprintCommands.REPORT_ISSUE.label,
+        menus.registerMenuAction(TheiaIDEMenus.THEIA_IDE_HELP, {
+            commandId: TheiaIDECommands.REPORT_ISSUE.id,
+            label: TheiaIDECommands.REPORT_ISSUE.label,
             order: '1'
         });
-        menus.registerMenuAction(BlueprintMenus.BLUEPRINT_HELP, {
-            commandId: BlueprintCommands.DOCUMENTATION.id,
-            label: BlueprintCommands.DOCUMENTATION.label,
+        menus.registerMenuAction(TheiaIDEMenus.THEIA_IDE_HELP, {
+            commandId: TheiaIDECommands.DOCUMENTATION.id,
+            label: TheiaIDECommands.DOCUMENTATION.label,
             order: '2'
         });
     }

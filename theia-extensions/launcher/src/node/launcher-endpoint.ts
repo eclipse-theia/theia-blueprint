@@ -62,7 +62,7 @@ export class TheiaLauncherServiceEndpoint implements BackendApplicationContribut
 
     private async getStorageFilePath(): Promise<string> {
         const configDirUri = await this.envServer.getConfigDirUri();
-        const globalStorageFolderUri = new URI(configDirUri).resolve('globalStorage/blueprint-launcher/paths.json');
+        const globalStorageFolderUri = new URI(configDirUri).resolve('globalStorage/theia-ide-launcher/paths.json');
         const globalStorageFolderFsPath = globalStorageFolderUri.path.fsPath();
         return globalStorageFolderFsPath;
     }
@@ -96,7 +96,7 @@ export class TheiaLauncherServiceEndpoint implements BackendApplicationContribut
             if (!targetExists) {
                 throw new Error('Could not find application to launch');
             }
-            sudo.exec(command, { name: 'Theia Blueprint' });
+            sudo.exec(command, { name: 'Theia IDE' });
         }
 
         const storageFile = await this.getStorageFilePath();

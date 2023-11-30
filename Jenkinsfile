@@ -25,15 +25,15 @@ pipeline {
         disableConcurrentBuilds()
     }
     environment {
-        BLUEPRINT_JENKINS_CI = 'true'
+        THEIA_IDE_JENKINS_CI = 'true'
 
         // to save time and resources, we skip some release-related steps
         // when not in the process of releasing. e.g. signing/notarizing the
         // installers. It can sometimes be necessary to run these steps, e.g.
         // when troubleshooting. Set the variable below to 'true' to do so.
         // We will still stop short of publishing anything.
-        BLUEPRINT_JENKINS_RELEASE_DRYRUN = 'false'
-        // BLUEPRINT_JENKINS_RELEASE_DRYRUN = 'true'
+        THEIA_IDE_JENKINS_RELEASE_DRYRUN = 'false'
+        // THEIA_IDE_JENKINS_RELEASE_DRYRUN = 'true'
     }
     stages {
         stage('Build') {
@@ -53,7 +53,7 @@ pipeline {
                         env.BRANCH_NAME ==~ /PR-(\d)+/
                     }
                     expression {
-                        env.BLUEPRINT_JENKINS_RELEASE_DRYRUN == 'true'
+                        env.THEIA_IDE_JENKINS_RELEASE_DRYRUN == 'true'
                     }
                 }
             }
@@ -174,7 +174,7 @@ spec:
                         env.CHANGE_TITLE ==~ /$jenkinsRelatedRegex/
                     }
                     expression {
-                        env.BLUEPRINT_JENKINS_RELEASE_DRYRUN == 'true'
+                        env.THEIA_IDE_JENKINS_RELEASE_DRYRUN == 'true'
                     }
                 }
             }
@@ -254,14 +254,14 @@ spec:
                             withCredentials([string(credentialsId: "github-bot-token", variable: 'GITHUB_TOKEN')]) {
                                 script {
                                     signInstaller('exe', 'windows')
-                                    updateMetadata('TheiaBlueprint.exe', 'latest.yml', 'windows', 1200)
+                                    updateMetadata('TheiaIDE.exe', 'latest.yml', 'windows', 1200)
                                 }
                             }
                         }
                         container('jnlp') {
                             script {
                                 uploadInstaller('windows')
-                                copyInstallerAndUpdateLatestYml('windows', 'TheiaBlueprint', 'exe', 'latest.yml', '1.41.0,1.42.1,1.43.0')
+                                copyInstallerAndUpdateLatestYml('windows', 'TheiaIDE', 'exe', 'latest.yml', '1.41.0,1.42.1,1.43.0')
                             }
                         }
                     }
@@ -446,7 +446,7 @@ def isReleaseBranch() {
 }
 
 def isDryRunRelease() {
-    return env.BLUEPRINT_JENKINS_RELEASE_DRYRUN == 'true'
+    return env.THEIA_IDE_JENKINS_RELEASE_DRYRUN == 'true'
 }
 
 def isRelease() {

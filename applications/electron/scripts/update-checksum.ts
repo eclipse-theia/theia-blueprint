@@ -14,7 +14,7 @@ import { hideBin } from 'yargs/helpers';
 import yargs from 'yargs/yargs';
 
 const argv = yargs(hideBin(process.argv))
-    .option('executable', { alias: 'e', type: 'string', default: 'TheiaBlueprint.AppImage', description: 'The executable for which the checksum needs to be updated' })
+    .option('executable', { alias: 'e', type: 'string', default: 'TheiaIDE.AppImage', description: 'The executable for which the checksum needs to be updated' })
     .option('yaml', { alias: 'y', type: 'string', default: 'latest-linux.yml', description: 'The yaml file where the checksum needs to be updated' })
     .option('platform', { alias: 'p', type: 'string', default: 'linux', description: 'The OS platform' })
     .version(false)

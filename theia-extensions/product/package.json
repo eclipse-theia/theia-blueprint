@@ -1,8 +1,8 @@
 {
   "private": true,
-  "name": "blueprint-product-ext",
+  "name": "theia-ide-product-ext",
   "version": "1.44.0",
-  "description": "Eclipse Theia Blueprint Product Branding",
+  "description": "Eclipse Theia IDE Product Branding",
   "dependencies": {
     "@theia/core": "1.44.0",
     "@theia/getting-started": "1.44.0",
@@ -17,9 +17,9 @@
   },
   "theiaExtensions": [
     {
-      "frontend": "lib/browser/theia-blueprint-frontend-module",
-      "electronMain": "lib/electron-main/theia-blueprint-main-module",
-      "backend": "lib/node/theia-blueprint-backend-module"
+      "frontend": "lib/browser/theia-ide-frontend-module",
+      "electronMain": "lib/electron-main/theia-ide-main-module",
+      "backend": "lib/node/theia-ide-backend-module"
     }
   ],
   "keywords": [
