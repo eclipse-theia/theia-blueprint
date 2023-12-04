@@ -4,7 +4,7 @@
   "keywords": [
     "theia-extension"
   ],
-  "license": "EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/eclipse-theia/theia-blueprint.git"
