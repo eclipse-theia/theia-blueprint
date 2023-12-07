@@ -11,6 +11,13 @@
     --theia-branding-logo: url(../icons/TheiaIDE.png);
 }
 
+.theia-icon {
+    background-image: url("../icons/512-512.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+
 .gs-blue-header {
     color: #5088e7;
     text-transform: capitalize;
