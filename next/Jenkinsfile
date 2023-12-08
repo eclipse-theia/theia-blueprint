@@ -15,7 +15,7 @@ pipeline {
     stages {
         stage('Build') {
             parallel {
-                stage('Test Linux Theia@Next') {
+                stage('Linux Theia@Next') {
                     agent {
                         kubernetes {
                             yaml """
@@ -61,7 +61,8 @@ spec:
                         container('theia-dev') {
                             withCredentials([string(credentialsId: "github-bot-token", variable: 'GITHUB_TOKEN')]) {
                                 script {
-                                    buildNext(false, 1200)
+                                    /* we have a fresh pod so npm registry is set as expected */
+                                    buildNext('linux')
                                 }
                             }
                         }
@@ -72,35 +73,47 @@ spec:
                         }
                     }
                 }
-                stage('Test Mac Theia@Next') {
+                stage('Mac Theia@Next') {
                     agent {
                         label 'macos'
                     }
                     steps {
                         script {
-                            buildNext(false, 60)
+                            /* make sure that registry.npmjs.org is the default registry before and after the usage of the local registry */
+                            sh "npm config set registry https://registry.npmjs.org/"
+                            buildNext('mac')
                         }
                     }
                     post {
                         failure {
+                            sh "npm config set registry https://registry.npmjs.org/"
                             error("Mac installer creation failed, aborting...")
+                        }
+                        always {
+                            sh "npm config set registry https://registry.npmjs.org/"
                         }
                     }
                 }
-                stage('Test Windows Theia@Next') {
+                stage('Windows Theia@Next') {
                     agent {
                         label 'windows'
                     }
                     steps {
                         script {
+                            /* make sure that registry.npmjs.org is the default registry before and after the usage of the local registry */
+                            sh "npm config set registry https://registry.npmjs.org/"
                             sh "npm config set msvs_version 2017"
-                            sh "npx node-gyp install 14.20.0"
-                            buildNext(true, 60)
+                            sh "npx node-gyp@9.4.0 install 14.20.0"
+                            buildNext('windows')
                         }
                     }
                     post {
                         failure {
+                            sh "npm config set registry https://registry.npmjs.org/"
                             error("Windows installer creation failed, aborting...")
+                        }
+                        always {
+                            sh "npm config set registry https://registry.npmjs.org/"
                         }
                     }
                 }
@@ -123,70 +136,94 @@ spec:
     }
 }
 
-def buildNext(boolean runTests, int sleepBetweenRetries) {
-    int MAX_RETRY = 3
+def buildNext(String os) {
+    def VERDACCIO_CONFIG = ""
+    def VERDACCIO_UPDATE_CONFIG_SCRIPT  = ""
+    def VERDACCIO_STOP_SCRIPT = ""
 
-    checkout scm
+    if (os == 'mac') {
+        echo "mac"
+        VERDACCIO_CONFIG = """/Users/genie.theia/.config/verdaccio/config.yaml"""
+        VERDACCIO_UPDATE_CONFIG_SCRIPT = """sed -i -e s/\\\$authenticated/\\\$anonymous/g /Users/genie.theia/.config/verdaccio/config.yaml"""
+        VERDACCIO_STOP_SCRIPT = """pkill -x Verdaccio"""
+    } 
+    else if (os == 'windows') {
+        VERDACCIO_CONFIG = """C:\\Users\\genie.theia\\AppData\\Roaming\\verdaccio\\config.yaml"""
+        VERDACCIO_UPDATE_CONFIG_SCRIPT = """sed -i -e s/\\\$authenticated/\\\$anonymous/g C:\\Users\\genie.theia\\AppData\\Roaming\\verdaccio\\config.yaml"""
+        // VERDACCIO_STOP_SCRIPT = """cmd /c taskkill /F /IM Verdaccio"""
+        VERDACCIO_STOP_SCRIPT = """cmd /c tasklist"""
+    } 
+    else {
+        echo "else"
+        VERDACCIO_CONFIG = """${env.WORKSPACE}/verdaccio/verdaccio/config.yaml"""
+        VERDACCIO_UPDATE_CONFIG_SCRIPT = """sed -i -e s/\\\$authenticated/\\\$anonymous/g ${env.WORKSPACE}/verdaccio/verdaccio/config.yaml"""
+        VERDACCIO_STOP_SCRIPT = """pkill -x Verdaccio"""
+    }
 
-    // merge next branch into master to get any known fixes for next version
-    // TODO there might be a more elegant way to merge a branch into this one 
-    // using a jenkings plugin from here
     sh "git config user.email \"not@real.user\""
     sh "git config user.name \"Not a real user\""
-    sh "git fetch origin next"
-    sh "git merge FETCH_HEAD"
     sh "node --version"
 
-    sh "export NODE_OPTIONS=--max_old_space_size=4096"
+    cleanWs()
+    checkout scm
+    sh "git clone https://github.com/eclipse-theia/theia.git"
 
-    // regular build
-    sh "printenv && yarn cache dir"
+    sh """
+        # print used cerdaccio paths
+        echo VERDACCIO_UPDATE_CONFIG_SCRIPT: ${VERDACCIO_UPDATE_CONFIG_SCRIPT}
+        echo VERDACCIO_CONFIG: ${VERDACCIO_CONFIG}
+        echo VERDACCIO_STOP_SCRIPT: ${VERDACCIO_STOP_SCRIPT}
 
-    sh "yarn cache clean"
-    try {
-        sh(script: 'yarn --frozen-lockfile --force')
-    } catch(error) {
-        retry(MAX_RETRY) {
-            sleep(sleepBetweenRetries)
-            echo "yarn failed - Retrying"
-            sh(script: 'yarn --frozen-lockfile --force')        
-        }
-    }
+        # prepare cache location in workspace that can be cleared
+        mkdir cache
+        export LOCAL_CACHE_PATH=\${PWD}/cache
+        export npm_config_cache=\$LOCAL_CACHE_PATH
+        echo \$LOCAL_CACHE_PATH
 
-    echo "Updating theia versions to next"
-    sh "yarn update:next"
-    try {
-        sh(script: 'yarn --force')
-    } catch(error) {
-        retry(MAX_RETRY) {
-            sleep(sleepBetweenRetries)
-            echo "yarn failed - Retrying"
-            sh(script: 'yarn --force')        
-        }
-    }
+        # install verdaccio and prepare env
+        mkdir verdaccio
+        export VERDACCIO_STORAGE_PATH=\${PWD}/verdaccio
+        echo \$VERDACCIO_STORAGE_PATH
+        cd verdaccio
+        touch .npmrc
+        # create a local node_modules directory where we can install verdaccio non-globally
+        mkdir node_modules
+        npm install verdaccio
+        REGISTRY=http://localhost:4873/
 
-    echo "Upgrading versions"
-    sh "yarn upgrade"
-    sh "git clean -xfd"
-    try {
-        sh(script: 'yarn --force')
-    } catch(error) {
-        retry(MAX_RETRY) {
-            sleep(sleepBetweenRetries)
-            echo "yarn failed - Retrying"
-            sh(script: 'yarn --force')        
-        }
-    }
+        # Kill any remaining Verdaccio executables and start verdaccio
+        ${VERDACCIO_STOP_SCRIPT} || true
+        node_modules/.bin/verdaccio &
 
-    sh "rm -rf ./${distFolder}"
-    sh "yarn build"
-    sh "yarn download:plugins"
-    sshagent(['projects-storage.eclipse.org-bot-ssh']) {
-        sh "yarn electron package:preview"
-    }
-    if (runTests) {
-        wrap([$class: 'Xvnc', takeScreenshot: false, useXauthority: true]) {
-            sh 'yarn electron test'
-        }
-    } 
+        # Stop verdaccio again and patch the default config that was created by the initial start
+        # We want to allow anonymous pushes to our local registry
+        sleep 20 && ${VERDACCIO_STOP_SCRIPT} && sleep 20
+        ${VERDACCIO_UPDATE_CONFIG_SCRIPT}
+        cat ${VERDACCIO_CONFIG}
+
+        # Start verdaccio again
+        node_modules/.bin/verdaccio &
+
+        # Build theia. Local verdaccio registry is acting a proxy to the main npm registry
+        cd ../theia
+        touch .npmrc
+        echo "registry=http://localhost:4873/" >> .npmrc
+        yarn
+        yarn build
+
+        # Publish next version of Theia to verdaccio
+        yarn lerna publish preminor --exact --canary --preid next --dist-tag next --no-git-reset --no-git-tag-version --no-push --yes --registry \$REGISTRY
+
+        # Build Blueprint Next with verdaccio registry
+        cd ..
+        yarn && yarn update:next
+        yarn --registry http://localhost:4873/
+        yarn build && yarn download:plugins && yarn electron package
+
+        # Stop verdaccio after successful build
+        pkill -x Verdaccio
+
+        # print contents of verdaccio storage path to verify this path was honoured by verdaccio
+        ls -al \$VERDACCIO_STORAGE_PATH
+    """
 }
