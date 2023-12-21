@@ -133,7 +133,7 @@ export class TheiaIDEGettingStartedWidget extends GettingStartedWidget {
     protected renderVersion(): React.ReactNode {
         return <div>
             <p className='gs-sub-header' >
-                {this.applicationInfo ? 'Version ' + this.applicationInfo.version + ' (Beta)' : '(Beta)'}
+                {this.applicationInfo ? 'Version ' + this.applicationInfo.version : '-'}
             </p>
 
             <p className='gs-sub-header' >

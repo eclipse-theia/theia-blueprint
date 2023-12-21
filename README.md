@@ -19,7 +19,7 @@ Eclipse Theia IDE/Blueprint also serves as a template for building desktop-based
 
 [Main Theia Repository](https://github.com/eclipse-theia/theia)
 
-[Visit the Theia website](http://www.theia-ide.org) for more [documentation](https://theia-ide.org/docs/blueprint_documentation/).
+[Visit the Theia website](http://www.theia-ide.org) for more documentation: [Using the Theia IDE](https://theia-ide.org/docs/user_getting_started/), [Packaging Theia as a Desktop Product](https://theia-ide.org/docs/blueprint_documentation/).
 
 ## License
 
