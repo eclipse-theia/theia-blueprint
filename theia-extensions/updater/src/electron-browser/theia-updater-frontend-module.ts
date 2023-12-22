@@ -11,7 +11,7 @@ import { CommandContribution, MenuContribution } from '@theia/core/lib/common';
 import { ElectronMenuUpdater, TheiaUpdaterClientImpl, TheiaUpdaterFrontendContribution } from './updater/theia-updater-frontend-contribution';
 import { TheiaUpdater, TheiaUpdaterClient, TheiaUpdaterPath } from '../common/updater/theia-updater';
 import { ContainerModule } from '@theia/core/shared/inversify';
-import { ElectronIpcConnectionProvider } from '@theia/core/lib/electron-browser/messaging/electron-ipc-connection-provider';
+import { ElectronIpcConnectionProvider } from '@theia/core/lib/electron-browser/messaging/electron-ipc-connection-source';
 import { PreferenceContribution } from '@theia/core/lib/browser';
 import { theiaUpdaterPreferenceSchema } from './updater/theia-updater-preferences';
 
