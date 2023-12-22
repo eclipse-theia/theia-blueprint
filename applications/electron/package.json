@@ -24,6 +24,7 @@
     "frontend": {
       "config": {
         "applicationName": "Theia IDE",
+        "reloadOnReconnect": true,
         "preferences": {
           "toolbar.showToolbar": true,
           "security.workspace.trust.enabled": false
@@ -35,6 +36,7 @@
     },
     "backend": {
       "config": {
+        "frontendConnectionTimeout": -1,
         "startupTimeout": -1,
         "resolveSystemPlugins": false
       }
