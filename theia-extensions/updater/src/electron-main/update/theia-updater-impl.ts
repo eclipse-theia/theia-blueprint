@@ -14,6 +14,15 @@ import * as path from 'path';
 import { ElectronMainApplication, ElectronMainApplicationContribution } from '@theia/core/lib/electron-main/electron-main-application';
 import { TheiaUpdater, TheiaUpdaterClient } from '../../common/updater/theia-updater';
 import { injectable } from '@theia/core/shared/inversify';
+import { isOSX, isWindows } from '@theia/core';
+
+const STABLE_CHANNEL_WINDOWS = 'https://download.eclipse.org/theia/ide/version/windows';
+const STABLE_CHANNEL_MACOS = 'https://download.eclipse.org/theia/ide/latest/macos';
+const STABLE_CHANNEL_LINUX = 'https://download.eclipse.org/theia/ide/latest/linux';
+
+const PREVIEW_CHANNEL_WINDOWS = 'https://download.eclipse.org/theia/ide-preview/version/windows';
+const PREVIEW_CHANNEL_MACOS = 'https://download.eclipse.org/theia/ide-preview/latest/macos';
+const PREVIEW_CHANNEL_LINUX = 'https://download.eclipse.org/theia/ide-preview/latest/linux';
 
 const { autoUpdater } = require('electron-updater');
 
@@ -26,27 +35,32 @@ export class TheiaUpdaterImpl implements TheiaUpdater, ElectronMainApplicationCo
     protected clients: Array<TheiaUpdaterClient> = [];
 
     private initialCheck: boolean = true;
+    private updateChannelReported: boolean = false;
     private reportOnFirstRegistration: boolean = false;
 
     constructor() {
         autoUpdater.autoDownload = false;
         autoUpdater.on('update-available', () => {
-            const startupCheck = this.initialCheck;
-            if (this.initialCheck) {
-                this.initialCheck = false;
-                if (this.clients.length === 0) {
-                    this.reportOnFirstRegistration = true;
+            if (this.updateChannelReported) {
+                const startupCheck = this.initialCheck;
+                if (this.initialCheck) {
+                    this.initialCheck = false;
+                    if (this.clients.length === 0) {
+                        this.reportOnFirstRegistration = true;
+                    }
                 }
+                this.clients.forEach(c => c.updateAvailable(true, startupCheck));
             }
-            this.clients.forEach(c => c.updateAvailable(true, startupCheck));
         });
         autoUpdater.on('update-not-available', () => {
-            if (this.initialCheck) {
-                this.initialCheck = false;
-                /* do not report that no update is available on start up */
-                return;
+            if (this.updateChannelReported) {
+                if (this.initialCheck) {
+                    this.initialCheck = false;
+                    /* do not report that no update is available on start up */
+                    return;
+                }
+                this.clients.forEach(c => c.updateAvailable(false, false));
             }
-            this.clients.forEach(c => c.updateAvailable(false, false));
         });
 
         autoUpdater.on('update-downloaded', () => {
@@ -99,6 +113,26 @@ export class TheiaUpdaterImpl implements TheiaUpdater, ElectronMainApplicationCo
                 this.reportOnFirstRegistration = false;
                 this.clients.forEach(c => c.updateAvailable(true, true));
             }
+        }
+    }
+
+    setUpdateChannel(channel: string): void {
+        const feedURL = this.getFeedURL(channel);
+        autoUpdater.setFeedURL(feedURL);
+        if (!this.updateChannelReported) {
+            this.updateChannelReported = true;
+            this.checkForUpdates();
+        }
+    }
+
+    protected getFeedURL(channel: string): string {
+        if (isWindows) {
+            const curVersion = autoUpdater.currentVersion.toString();
+            return (channel === 'preview') ? PREVIEW_CHANNEL_WINDOWS.replace('version', curVersion) : STABLE_CHANNEL_WINDOWS.replace('version', curVersion);
+        } else if (isOSX) {
+            return (channel === 'preview') ? PREVIEW_CHANNEL_MACOS : STABLE_CHANNEL_MACOS;
+        } else {
+            return (channel === 'preview') ? PREVIEW_CHANNEL_LINUX : STABLE_CHANNEL_LINUX;
         }
     }
 
