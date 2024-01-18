@@ -136,6 +136,13 @@ export class TheiaUpdaterFrontendContribution implements CommandContribution, Me
 
     @postConstruct()
     protected init(): void {
+        this.preferenceService.ready.then(() => this.updater.setUpdateChannel(this.preferenceService.get('updates.channel', 'stable')));
+        this.preferenceService.onPreferenceChanged(e => {
+            if (e.preferenceName === 'updates.channel') {
+                this.updater.setUpdateChannel(this.preferenceService.get('updates.channel', 'stable'));
+            }
+        });
+
         this.updaterClient.onUpdateAvailable(available => {
             if (available) {
                 this.handleDownloadUpdate();
