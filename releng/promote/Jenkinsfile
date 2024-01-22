@@ -11,8 +11,6 @@ pipeline {
         timeout(time: 3, unit: 'HOURS')
         disableConcurrentBuilds()
     }
-    environment {
-    }
     stages {
 
        stage('Setup parameters') {
