@@ -24,7 +24,7 @@ pipeline {
                                 trim: true
                             ),
                             string(
-                                defaultValue: '1.41.0,1.42.1,1.43.0', 
+                                defaultValue: '1.44.0,1.45.0', 
                                 name: 'TOUPDATE', 
                                 trim: true
                             )
@@ -54,14 +54,15 @@ def promote(String platform, String version) {
     sshagent(['projects-storage.eclipse.org-bot-ssh']) {
         sh "ssh genie.theia@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/theia/ide/${version}/${platform}"
         sh "ssh genie.theia@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/theia/ide/${version}/${platform}"
-        sh "scp genie.theia@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/theia/ide-preview/${version}/${platform}/*.* genie.theia@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/theia/ide/${version}/${platform}"
+        sh "ssh genie.theia@projects-storage.eclipse.org cp -a /home/data/httpd/download.eclipse.org/theia/ide-preview/${version}/${platform}/. /home/data/httpd/download.eclipse.org/theia/ide/${version}/${platform}/"
 
         sh "ssh genie.theia@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/theia/ide/latest/${platform}"
         sh "ssh genie.theia@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/theia/ide/latest/${platform}"
-        sh "scp genie.theia@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/theia/ide-preview/${version}/${platform}/*.* genie.theia@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/theia/ide/latest/${platform}"
+        sh "ssh genie.theia@projects-storage.eclipse.org cp -a /home/data/httpd/download.eclipse.org/theia/ide-preview/${version}/${platform}/. /home/data/httpd/download.eclipse.org/theia/ide/latest/${platform}/"
     }
 }
 
+// copies updated (checksum, link to latest version) metadata yaml to older versions
 def updateLatestYaml(String platform, String version, String installer, String extension, String yaml, String UPDATABLE_VERSIONS) {
     if (UPDATABLE_VERSIONS.length() != 0) {
         for (oldVersion in UPDATABLE_VERSIONS.split(",")) {
