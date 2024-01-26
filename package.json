@@ -1,6 +1,6 @@
 {
   "private": true,
-  "version": "1.45.0",
+  "version": "1.46.0",
   "license": "MIT",
   "author": "Rob Moran <github@thegecko.org>",
   "homepage": "https://github.com/eclipse-theia/theia-blueprint#readme",
@@ -16,7 +16,7 @@
     "node": ">=12.14.1"
   },
   "devDependencies": {
-    "@theia/cli": "1.45.0",
+    "@theia/cli": "1.46.0",
     "@typescript-eslint/eslint-plugin": "^4.25.0",
     "@typescript-eslint/eslint-plugin-tslint": "^4.25.0",
     "@typescript-eslint/parser": "^4.25.0",
@@ -53,8 +53,8 @@
   },
   "theiaPluginsDir": "plugins",
   "theiaPlugins": {
-    "vscode-builtin-extensions-pack": "https://open-vsx.org/api/eclipse-theia/builtin-extension-pack/1.79.0/file/eclipse-theia.builtin-extension-pack-1.79.0.vsix",
-    "ms-vscode.js-debug": "https://open-vsx.org/api/ms-vscode/js-debug/1.78.0/file/ms-vscode.js-debug-1.78.0.vsix",
+    "eclipse-theia.builtin-extension-pack": "https://open-vsx.org/api/eclipse-theia/builtin-extension-pack/1.83.1/file/eclipse-theia.builtin-extension-pack-1.83.1.vsix",
+    "ms-vscode.js-debug": "https://open-vsx.org/api/ms-vscode/js-debug/1.83.1/file/ms-vscode.js-debug-1.83.1.vsix",
     "ms-vscode.js-debug-companion": "https://open-vsx.org/api/ms-vscode/js-debug-companion/1.1.2/file/ms-vscode.js-debug-companion-1.1.2.vsix",
     "vscjava.vscode-java-pack": "https://open-vsx.org/api/vscjava/vscode-java-pack/0.25.11/file/vscjava.vscode-java-pack-0.25.11.vsix",
     "vscjava.vscode-java-dependency": "https://open-vsx.org/api/vscjava/vscode-java-dependency/0.21.2/file/vscjava.vscode-java-dependency-0.21.2.vsix"
