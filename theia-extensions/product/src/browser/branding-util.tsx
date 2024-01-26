@@ -137,7 +137,7 @@ export function renderDownloads(): React.ReactNode {
         </h3>
         <div className='gs-action-container'>
             You can update Eclipse Theia IDE directly in this application by navigating to
-            File {'>'} Settings {'>'} Check for Updates… Moreover the application will check for updates
+            File {'>'} Preferences {'>'} Check for Updates… Moreover the application will check for updates
             after each launch automatically.
         </div>
         <div className='gs-action-container'>
