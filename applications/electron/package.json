@@ -101,7 +101,7 @@
     "@wdio/local-runner": "^6.10.2",
     "@wdio/mocha-framework": "^6.8.0",
     "@wdio/spec-reporter": "^6.8.1",
-    "app-builder-lib": "22.10.5",
+    "app-builder-lib": "24.13.2",
     "chai": "^4.3.10",
     "electron": "^23.2.4",
     "electron-builder": "23.6.0",
