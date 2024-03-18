@@ -5,7 +5,7 @@ const path = require('path');
 const util = require('util');
 const child_process = require('child_process');
 const rimraf = require('rimraf');
-const sign_util = require('app-builder-lib/electron-osx-sign/util');
+const sign_util = require('electron-osx-sign/util');
 const asyncRimraf = util.promisify(rimraf);
 
 const DELETE_PATHS = [
