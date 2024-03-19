@@ -12,7 +12,8 @@ COPY . .
 # Remove unnecesarry files for the browser application
 # Download plugins and build application production mode
 # Use yarn autoclean to remove unnecessary files from package dependencies
-RUN yarn --pure-lockfile && \
+RUN yarn config set network-timeout 600000 -g && \
+    yarn --pure-lockfile && \
     yarn build:extensions && \
     yarn download:plugins && \
     yarn browser build && \
