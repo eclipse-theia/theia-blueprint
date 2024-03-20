@@ -16,6 +16,7 @@
     "node": ">=12.14.1"
   },
   "devDependencies": {
+    "@eclipse-dash/nodejs-wrapper": "^0.0.1",
     "@theia/cli": "1.47.1",
     "@typescript-eslint/eslint-plugin": "^4.25.0",
     "@typescript-eslint/eslint-plugin-tslint": "^4.25.0",
@@ -49,7 +50,9 @@
     "browser": "yarn --cwd applications/browser",
     "update:next": "ts-node scripts/update-theia-to-next.ts && lerna run update:next",
     "lint": "eslint --ext js,jsx,ts,tsx scripts && lerna run lint",
-    "lint:fix": "eslint --ext js,jsx,ts,tsx scripts --fix && lerna run lint:fix"
+    "lint:fix": "eslint --ext js,jsx,ts,tsx scripts --fix && lerna run lint:fix",
+    "license:check": "npx dash-licenses-wrapper  --configFile=./configs/license-check-config.json",
+    "license:check:review": "npx dash-licenses-wrapper  --configFile=./configs/license-check-config.json --review"
   },
   "theiaPluginsDir": "plugins",
   "theiaPlugins": {
