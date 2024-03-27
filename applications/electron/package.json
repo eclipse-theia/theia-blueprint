@@ -104,7 +104,7 @@
     "app-builder-lib": "24.13.2",
     "chai": "^4.3.10",
     "electron": "^23.2.4",
-    "electron-builder": "23.6.0",
+    "electron-builder": "24.13.2",
     "electron-chromedriver": "^23.2.4",
     "electron-mocha": "^9.3.2",
     "electron-osx-sign": "^0.6.0",
