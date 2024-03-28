@@ -33,10 +33,9 @@ Eclipse Theia IDE/Blueprint also serves as a template for building desktop-based
 
 ## What is this?
 
-The Eclipse IDE is a modern and open IDE for cloud and desktop. The Theia IDE is based on the [Theia platform](https://theia-ide.org).
-The Theia IDE is available as a [downloadable desktop application](https://theia-ide.org//#theiaidedownload). You can also try the latest version of the Theia IDE online. The online test version is limited to 30 minutes per session and hosted via Theia.cloud.
+The Eclipse Theia IDE is a **_minimum viable product_** based on the Eclipse [Theia platform](https://theia-ide.org), which can be used out-of-the-box either on desktop or in the browser. You can [download the desktop application](https://theia-ide.org//#theiaidedownload) or [build the browser application](https://github.com/eclipse-theia/theia-blueprint#docker-build). You can also [try the latest version of the Theia IDE online](https://try.theia-cloud.io/) via Theia.cloud for up to 30 minutes per session.
 
-The Eclipse Theia IDE also serves as a **template** for building desktop-based products based on the Eclipse Theia platform, as well as to showcase Eclipse Theia capabilities. It is made up of a subset of existing Eclipse Theia features and extensions. [Documentation is available](https://theia-ide.org/docs/composing_applications/) to help you customize and build your own Eclipse Theia-based product.
+The Theia IDE also serves as a **_template_** for building custom desktop products or browser products based on the Theia platform, as well as to showcasing the Theia platform's capabilities. It is made up of a subset of existing Eclipse Theia features and extensions. [Documentation is available](https://theia-ide.org/docs/composing_applications/) to help you customize and build your own Eclipse Theia-based product.
 
 ## Theia IDE vs Theia Blueprint
 
