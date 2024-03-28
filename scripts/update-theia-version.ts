@@ -13,6 +13,7 @@ import { PackageJson } from 'type-fest';
 execute();
 
 async function execute(): Promise<void> {
+    const theiaVersion = process.argv[2];
     const packageJsonPath = path.resolve(
         './',
         'package.json'
@@ -25,13 +26,13 @@ async function execute(): Promise<void> {
 
     console.log('...dependencies...');
     if (packageJson.dependencies) {
-        updateTheiaVersions(packageJson.dependencies);
+        updateTheiaVersions(packageJson.dependencies, theiaVersion);
     }
     console.log('...done...');
 
     console.log('...devDependencies...');
     if (packageJson.devDependencies) {
-        updateTheiaVersions(packageJson.devDependencies);
+        updateTheiaVersions(packageJson.devDependencies, theiaVersion);
     }
     console.log('...done.');
 
@@ -40,11 +41,11 @@ async function execute(): Promise<void> {
     fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
 }
 
-function updateTheiaVersions(dependencies: PackageJson.Dependency): void {
+function updateTheiaVersions(dependencies: PackageJson.Dependency, theiaVersion: string): void {
     for (const dependency in dependencies) {
         if (dependency.startsWith('@theia/')) {
             console.log(`...setting ${dependency} from ${dependencies[dependency]} to next...`);
-            dependencies[dependency] = 'next';
+            dependencies[dependency] = theiaVersion;
         }
     }
 }

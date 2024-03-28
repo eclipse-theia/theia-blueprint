@@ -1,12 +1,12 @@
 {
   "private": true,
   "name": "theia-ide-updater-ext",
-  "version": "1.47.100",
+  "version": "1.48.0",
   "description": "Eclipse Theia IDE Updater",
   "dependencies": {
-    "@theia/core": "1.47.1",
-    "@theia/output": "1.47.1",
-    "@theia/preferences": "1.47.1",
+    "@theia/core": "1.48.0",
+    "@theia/output": "1.48.0",
+    "@theia/preferences": "1.48.0",
     "electron-log": "^4.3.0",
     "electron-updater": "5.3.0",
     "fs-extra": "^10.0.0",
@@ -44,6 +44,7 @@
     "build": "tsc -b",
     "lint": "eslint --ext js,jsx,ts,tsx src",
     "lint:fix": "eslint --ext js,jsx,ts,tsx src --fix",
-    "update:next": "ts-node ../../scripts/update-theia-to-next.ts"
+    "update:theia": "ts-node ../../scripts/update-theia-version.ts",
+    "update:next": "ts-node ../../scripts/update-theia-version.ts next"
   }
 }
