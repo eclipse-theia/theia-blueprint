@@ -16,7 +16,7 @@ RUN yarn --pure-lockfile && \
     yarn build:extensions && \
     yarn download:plugins && \
     yarn browser build && \
-    yarn --production && \
+    yarn && \
     yarn autoclean --init && \
     echo *.ts >> .yarnclean && \
     echo *.ts.map >> .yarnclean && \
