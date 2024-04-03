@@ -1,12 +1,12 @@
 {
   "private": true,
   "name": "theia-ide-updater-ext",
-  "version": "1.48.0",
+  "version": "1.48.200",
   "description": "Eclipse Theia IDE Updater",
   "dependencies": {
-    "@theia/core": "1.48.0",
-    "@theia/output": "1.48.0",
-    "@theia/preferences": "1.48.0",
+    "@theia/core": "1.48.2",
+    "@theia/output": "1.48.2",
+    "@theia/preferences": "1.48.2",
     "electron-log": "^4.3.0",
     "electron-updater": "5.3.0",
     "fs-extra": "^10.0.0",
