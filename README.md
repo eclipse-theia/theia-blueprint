@@ -129,9 +129,11 @@ and connect to <http://localhost:3000/>
 The features in the Eclipse Theia IDE are based on Theia and the included extensions/plugins. For bugs in Theia please consider opening an issue in the [Theia project on Github](https://github.com/eclipse-theia/theia/issues/new/choose).
 The Eclipse Theia IDE only packages existing functionality into a product and installers for the product. If you believe there is a mistake in packaging, something needs to be added to the packaging or the installers do not work properly, please [open an issue on Github](https://github.com/eclipse-theia/theia-blueprint/issues/new/choose) to let us know.
 
-### Docker Build
+### Docker
 
-You can create a Docker Image for the Eclipse Theia IDE based on the browser app with the following build command:
+We offer a prebuilt Docker image of the IDE [here](https://github.com/eclipse-theia/theia-blueprint/pkgs/container/theia-blueprint%2Ftheia-ide).
+
+You can also create the Docker image for the Eclipse Theia IDE based on the browser app with the following build command:
 
 ```sh
 docker build -t theia-ide -f browser.Dockerfile .

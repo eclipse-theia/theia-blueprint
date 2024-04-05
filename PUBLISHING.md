@@ -31,6 +31,7 @@ If there was a Theia Release
 
 * check if there are any breaking changes
 * check if new built-ins are available
+* check if any changes were made to the sample applications (e.g. new packages or additional configuration)
 
 and adapt the code/built-ins accordingly.
 
