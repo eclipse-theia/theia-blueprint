@@ -1,6 +1,6 @@
 # Publishing
 
-This guide contains the steps to publish a new version of the Theia IDE.
+This guide contains the steps to publish a new version of the Theia IDE. The preview, testing and release process is described in [this section](#preview-testing-and-release-process-for-the-theia-ide)
 
 Every commit to master will be published as a preview version.
 Updates will only work when there was a version change.
@@ -67,3 +67,23 @@ E.g. `1.45.0,1.46.100,1.47.100`.\
 ## Publish Docker Image
 
 Run this [workflow](https://github.com/eclipse-theia/theia-blueprint/actions/workflows/publish-theia-ide-img.yml) from the master branch.
+
+## Preview, Testing and Release Process for the Theia IDE
+
+Once a new Theia Platform release is available, the Theia IDE is updated to the new version. This automatically makes a new preview build available (see above). Once the preview build is successfully tested by the preview testers, it is published as a new official version, also available for automatic update. The detailed steps for this process are described in the following:
+
+1. Create a new preview version of the Theia IDE as decribed above (do not publish as stable yet)
+2. Create a new discussion [here](https://github.com/eclipse-theia/theia/discussions) based on the following template:
+>Theia IDE 1.xz preview testing</br></br>
+>The new version 1.XZ.0 of the Theia IDE is available on the preview channel now, please join the preview testing! You can download it here: {link to the download}. You can update your existing installation by setting the preference *updates.channel* to *preview*. 
+Please respond here when you were able to test the preview without finding blockers, by commenting with a :heavy_check_mark:. If you find any issues, please mention them in this thread and report them as an issue once confirmed by other testers.
+
+3. Announce availability of the preview release on theia-dev@eclipse.org based on the following template:
+>Theia IDE 1.xz preview</br></br>
+>Hi,</br></br>The new version 1.XZ.0 of the Theia IDE is available on the preview channel now. Please join the preview test and help us stabilizing the release. Please visit this discussion for more information and for coordination: {link to the Github discussion created above}</br></br>best regards,
+
+4. Fix reported blockers and create patch releases (This is a community effort and typically takes 1-2 weeks)
+5. Once no blockers are left, declare the release final (see publishing above).
+6. Post official release announcement
+
+**If too many issues are found, fixes take too long or no corresponding ressources are available to fix things, a Theia IDE release might be skipped. This means, it will not update to a new Theia version, but wait for the next version.**
