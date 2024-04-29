@@ -15,7 +15,7 @@ If there was a new Theia *patch* release, e.g. 1.48.1, we use Theia's patch vers
 
 ```sh
 # Update mono repo version
-yarn version
+yarn version --no-git-tag-version
 
 # Update version of all packages
 yarn lerna version --exact --no-push --no-git-tag-version
