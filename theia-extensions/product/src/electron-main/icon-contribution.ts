@@ -13,6 +13,7 @@ import * as path from 'path';
 import { ElectronMainApplication, ElectronMainApplicationContribution } from '@theia/core/lib/electron-main/electron-main-application';
 
 import { injectable } from '@theia/core/shared/inversify';
+import { BrowserWindow } from '@theia/core/electron-shared/electron';
 
 @injectable()
 export class IconContribution implements ElectronMainApplicationContribution {
@@ -24,7 +25,12 @@ export class IconContribution implements ElectronMainApplicationContribution {
                 // The window image is undefined. If the executable has an image set, this is used as a fallback.
                 // Since AppImage does not support this anymore via electron-builder, set an image for the linux platform.
                 windowOptions.icon = path.join(__dirname, '../../resources/icons/WindowIcon/512-512.png');
+                // also update any existing windows, e.g. the splashscreen
+                for (const window of BrowserWindow.getAllWindows()) {
+                    window.setIcon(path.join(__dirname, '../../resources/icons/WindowIcon/512-512.png'));
+                }
             }
+
         }
     }
 }
