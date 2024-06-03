@@ -34,6 +34,8 @@ pipeline {
         // We will still stop short of publishing anything.
         THEIA_IDE_JENKINS_RELEASE_DRYRUN = 'false'
         // THEIA_IDE_JENKINS_RELEASE_DRYRUN = 'true'
+        msvs_version = '2019'
+        GYP_MSVS_VERSION = '2019'
     }
     stages {
         stage('Build') {
@@ -261,7 +263,7 @@ spec:
                         container('jnlp') {
                             script {
                                 uploadInstaller('windows')
-                                copyInstallerAndUpdateLatestYml('windows', 'TheiaIDESetup', 'exe', 'latest.yml', '1.46.0,1.46.100,1.47.0,1.47.100,1.48.0,1.48.300,1.49.100')
+                                copyInstallerAndUpdateLatestYml('windows', 'TheiaIDESetup', 'exe', 'latest.yml', '1.46.0,1.46.100,1.47.0,1.47.100,1.48.0,1.48.300,1.49.100,1.49.101')
                             }
                         }
                     }
@@ -272,11 +274,11 @@ spec:
 }
 
 def buildInstaller(int sleepBetweenRetries) {
-    int maxRetry = 3
+    int maxRetry = 1
     String buildPackageCmd
 
     checkout scm
-    
+
     // only build the Electron app for now
     buildPackageCmd = 'yarn --frozen-lockfile --force && \
         yarn build:extensions && yarn electron build'
