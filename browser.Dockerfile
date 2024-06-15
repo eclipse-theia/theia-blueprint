@@ -23,7 +23,7 @@ RUN yarn --pure-lockfile && \
     echo *.spec.* >> .yarnclean && \
     yarn autoclean --force && \
     yarn cache clean && \
-    rm -r .git applications/electron theia-extensions/launcher theia-extensions/updater node_modules
+    rm -rf .git applications/electron theia-extensions/launcher theia-extensions/updater node_modules
 
 # Production stage uses a small base image
 FROM node:18-bullseye-slim as production-stage
