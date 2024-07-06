@@ -48,6 +48,8 @@ mac:
 linux:
   icon: resources/icons/LinuxLauncherIcon/512-512.png
   category: Development
+  mimeTypes:
+    - inode/directory
   vendor: Eclipse Foundation, Inc
   target:
     - deb
