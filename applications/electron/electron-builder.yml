@@ -52,6 +52,8 @@ mac:
 linux:
   icon: resources/icons/LinuxLauncherIcons
   category: Development
+  mimeTypes:
+    - inode/directory
   vendor: Eclipse Foundation, Inc
   target:
     - deb
