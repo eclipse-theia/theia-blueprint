@@ -50,7 +50,7 @@ mac:
     provider: generic
     url: "https://download.eclipse.org/theia/ide/latest/macos"
 linux:
-  icon: resources/icons/LinuxLauncherIcon/512-512.png
+  icon: resources/icons/LinuxLauncherIcons
   category: Development
   vendor: Eclipse Foundation, Inc
   target:
