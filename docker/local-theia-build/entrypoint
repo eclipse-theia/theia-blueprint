@@ -45,7 +45,7 @@ if [ "$BUILD_THEIA" -eq 1 ]; then
     yarn build
 
     echo "Publishing Theia..."
-    yarn lerna publish preminor --exact --canary --preid next --dist-tag next --no-git-reset --no-git-tag-version --no-push --yes --registry $REGISTRY || true
+    npx lerna publish from-package --no-git-reset --no-git-tag-version --no-push --dist-tag next --yes --registry $REGISTRY || true
 fi
 
 echo "Wait while Verdaccio is running..."
