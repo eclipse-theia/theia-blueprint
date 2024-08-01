@@ -19,7 +19,7 @@ Eclipse Theia IDE/Blueprint also serves as a template for building desktop-based
 
 [Main Theia Repository](https://github.com/eclipse-theia/theia)
 
-[Visit the Theia website](http://www.theia-ide.org) for more [documentation](https://theia-ide.org/docs/blueprint_documentation/).
+[Visit the Theia website](http://www.theia-ide.org) for more documentation: [Using the Theia IDE](https://theia-ide.org/docs/user_getting_started/), [Packaging Theia as a Desktop Product](https://theia-ide.org/docs/blueprint_documentation/).
 
 ## License
 
@@ -34,7 +34,7 @@ Eclipse Theia IDE/Blueprint also serves as a template for building desktop-based
 ## What is this?
 
 The Eclipse IDE is a modern and open IDE for cloud and desktop. The Theia IDE is based on the [Theia platform](https://theia-ide.org).
-The Theia IDE is available as a [downloadable desktop application](https://theia-ide.org//#theiaidedownload). You can also try the latest version of the Theia IDE online. The online test version is limited to 30 minutes per session and hosted via Theia.cloud.
+The Theia IDE is available as a [downloadable desktop application](https://theia-ide.org//#theiaidedownload). You can also try the latest version of the Theia IDE online. The online test version is limited to 30 minutes per session and hosted via Theia.cloud. Finally, we provide an [experimental Docker image](#docker) for hosting the Theia IDE online.
 
 The Eclipse Theia IDE also serves as a **template** for building desktop-based products based on the Eclipse Theia platform, as well as to showcase Eclipse Theia capabilities. It is made up of a subset of existing Eclipse Theia features and extensions. [Documentation is available](https://theia-ide.org/docs/composing_applications/) to help you customize and build your own Eclipse Theia-based product.
 
@@ -129,9 +129,12 @@ and connect to <http://localhost:3000/>
 The features in the Eclipse Theia IDE are based on Theia and the included extensions/plugins. For bugs in Theia please consider opening an issue in the [Theia project on Github](https://github.com/eclipse-theia/theia/issues/new/choose).
 The Eclipse Theia IDE only packages existing functionality into a product and installers for the product. If you believe there is a mistake in packaging, something needs to be added to the packaging or the installers do not work properly, please [open an issue on Github](https://github.com/eclipse-theia/theia-blueprint/issues/new/choose) to let us know.
 
-### Docker Build
+### Docker
 
-You can create a Docker Image for the Eclipse Theia IDE based on the browser app with the following build command:
+The Docker image of the Theia IDE is currently in *experimental state*. It is built from the same sources and packages as the desktop version, but it is not part of the [preview test](https://github.com/eclipse-theia/theia-blueprint/blob/master/PUBLISHING.md#preview-testing-and-release-process-for-the-theia-ide).
+You can find a prebuilt Docker image of the IDE [here](https://github.com/eclipse-theia/theia-blueprint/pkgs/container/theia-blueprint%2Ftheia-ide).
+
+You can also create the Docker image for the Eclipse Theia IDE based on the browser app with the following build command:
 
 ```sh
 docker build -t theia-ide -f browser.Dockerfile .

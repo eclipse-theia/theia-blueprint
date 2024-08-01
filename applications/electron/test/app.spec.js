@@ -1,9 +1,82 @@
 const os = require('os');
 const path = require('path');
+const fs = require('fs');
 const { remote } = require('webdriverio');
 const { expect } = require('chai');
 
 const THEIA_LOAD_TIMEOUT = 15000; // 15 seconds
+
+function getElectronMainJS() {
+    const distFolder = path.join(__dirname, '..', 'dist');
+    switch (os.platform()) {
+    case 'linux':
+        return path.join(
+        distFolder,
+        'linux-unpacked',
+        'resources',
+        'app',
+        'lib',
+        'backend',
+        'electron-main.js'
+        );
+    case 'win32':
+        return path.join(
+        distFolder,
+        'win-unpacked',
+        'resources',
+        'app',
+        'lib',
+        'backend',
+        'electron-main.js'
+        );
+    case 'darwin':
+        return path.join(
+        distFolder,
+        'mac',
+        'TheiaIDE.app',
+        'Contents',
+        'Resources',
+        'app',
+        'lib',
+        'backend',
+        'electron-main.js'
+        );
+    default:
+        return undefined;
+    }
+}
+
+function disableSplashScreen() {
+    const filePath = getElectronMainJS();
+    if (fs.existsSync(filePath)) {
+        fs.readFile(filePath, 'utf8', (err, data) => {
+            if (err) {
+                console.error(err);
+                return;
+            }
+            let regex = /,splashScreenOptions:\{[^}]*\}/;
+            if (regex.test(data)) {
+                const updatedData = data.replace(regex, '');
+                fs.writeFile(filePath, updatedData, 'utf8', e => {
+                    if (e) {
+                        console.error(e);
+                    }
+                });
+            } else {
+                // check non minified as well
+                regex = /,(\s+)"splashScreenOptions":\s*\{[^}]*\}/s;
+                if (regex.test(data)) {
+                    const updatedData = data.replace(regex, '');
+                    fs.writeFile(filePath, updatedData, 'utf8', e => {
+                        if (e) {
+                            console.error(e);
+                        }
+                    });
+                }
+            }
+        });
+    }
+}
 
 function getBinaryPath() {
   const distFolder = path.join(__dirname, '..', 'dist');
@@ -49,7 +122,14 @@ function macSafeKeyCombo(keys) {
 describe('Theia App', function () {
   // In mocha, 'this' is a common context between sibling beforeEach, afterEach, it, etc methods within the same describe.
   // Each describe has its own context.
+  before(async function () {
+    // XXX
+    // our current webdriverio version does not seem to be able to handle the window switches
+    // since we should probably switch to playwright tests, we disable the splashscreen for now in the AUT
+    disableSplashScreen();
+  });
   beforeEach(async function () {
+
     const binary = getBinaryPath();
     if (!binary) {
       throw new Error('Tests are not supported for this platform.');

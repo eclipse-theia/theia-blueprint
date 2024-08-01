@@ -16,6 +16,11 @@ export const theiaUpdaterPreferenceSchema: PreferenceSchema = {
             type: 'boolean',
             description: 'Report available updates after application start.',
             default: true
-        }
+        },
+        'updates.channel': {
+            type: 'string',
+            enum: ['stable', 'preview'], // once we have a nightly/next build, we can add a third channel
+            default: 'stable'
+        },
     }
 };

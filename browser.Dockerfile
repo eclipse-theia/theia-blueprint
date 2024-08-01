@@ -1,5 +1,5 @@
 # Builder stage
-FROM node:16-bullseye as build-stage
+FROM node:18-bullseye as build-stage
 
 # install required tools to build the application
 RUN apt-get update && apt-get install -y libxkbfile-dev libsecret-1-dev
@@ -16,17 +16,17 @@ RUN yarn --pure-lockfile && \
     yarn build:extensions && \
     yarn download:plugins && \
     yarn browser build && \
-    yarn --production && \
+    yarn && \
     yarn autoclean --init && \
     echo *.ts >> .yarnclean && \
     echo *.ts.map >> .yarnclean && \
     echo *.spec.* >> .yarnclean && \
     yarn autoclean --force && \
     yarn cache clean && \
-    rm -r .git applications/electron theia-extensions/launcher theia-extensions/updater node_modules
+    rm -rf .git applications/electron theia-extensions/launcher theia-extensions/updater node_modules
 
 # Production stage uses a small base image
-FROM node:16-bullseye-slim as production-stage
+FROM node:18-bullseye-slim as production-stage
 
 # Create theia user and directories
 # Application will be copied to /home/theia

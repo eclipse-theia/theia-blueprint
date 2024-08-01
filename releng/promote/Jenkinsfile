@@ -1,0 +1,77 @@
+/**
+ * This Jenkinsfile promotes a given version of the Theia IDE from /theia/ide-preview to /theia/ide
+ */
+
+/* groovylint-disable NestedBlockDepth */
+import groovy.json.JsonSlurper
+
+pipeline {
+    agent none
+    options {
+        timeout(time: 3, unit: 'HOURS')
+        disableConcurrentBuilds()
+    }
+    stages {
+
+       stage('Setup parameters') {
+            steps {
+                script { 
+                    properties([
+                        parameters([
+                            string(
+                                defaultValue: 'latest', 
+                                name: 'VERSION', 
+                                trim: true
+                            ),
+                            string(
+                                defaultValue: '1.44.0,1.45.0', 
+                                name: 'TOUPDATE', 
+                                trim: true
+                            )
+                        ])
+                    ])
+                }
+            }
+       }
+
+        stage('Promote') {
+            agent any
+            steps {
+                script {
+                    promote('linux', params.VERSION)
+                    promote('macos', params.VERSION)
+                    promote('windows', params.VERSION)
+
+                    // update latest.yaml on windows for differential updater
+                    updateLatestYaml('windows', params.VERSION, 'TheiaIDESetup', 'exe', 'latest.yml', params.TOUPDATE)
+                }
+            }
+        }
+    }
+}
+
+def promote(String platform, String version) {
+    sshagent(['projects-storage.eclipse.org-bot-ssh']) {
+        sh "ssh genie.theia@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/theia/ide/${version}/${platform}"
+        sh "ssh genie.theia@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/theia/ide/${version}/${platform}"
+        sh "ssh genie.theia@projects-storage.eclipse.org cp -a /home/data/httpd/download.eclipse.org/theia/ide-preview/${version}/${platform}/. /home/data/httpd/download.eclipse.org/theia/ide/${version}/${platform}/"
+
+        sh "ssh genie.theia@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/theia/ide/latest/${platform}"
+        sh "ssh genie.theia@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/theia/ide/latest/${platform}"
+        sh "ssh genie.theia@projects-storage.eclipse.org cp -a /home/data/httpd/download.eclipse.org/theia/ide-preview/${version}/${platform}/. /home/data/httpd/download.eclipse.org/theia/ide/latest/${platform}/"
+    }
+}
+
+// copies updated (checksum, link to latest version) metadata yaml to older versions
+def updateLatestYaml(String platform, String version, String installer, String extension, String yaml, String UPDATABLE_VERSIONS) {
+    if (UPDATABLE_VERSIONS.length() != 0) {
+        for (oldVersion in UPDATABLE_VERSIONS.split(",")) {
+            sshagent(['projects-storage.eclipse.org-bot-ssh']) {
+                sh "ssh genie.theia@projects-storage.eclipse.org rm -f /home/data/httpd/download.eclipse.org/theia/ide/${oldVersion}/${platform}/${yaml}"
+                sh "ssh genie.theia@projects-storage.eclipse.org cp /home/data/httpd/download.eclipse.org/theia/ide/${version}/${platform}/${yaml} /home/data/httpd/download.eclipse.org/theia/ide/${oldVersion}/${platform}/${yaml}"
+            }
+        }
+    } else {
+        echo "No updateable versions"
+    }
+}

@@ -2,7 +2,7 @@ appId: eclipse.theia
 productName: TheiaIDE
 copyright: Copyright © 2020-2023 Eclipse Foundation, Inc
 electronDist: ../../node_modules/electron/dist
-electronVersion: 23.3.13
+electronVersion: 28.3.3
 # Although it is generally not recommended to disable asar, it is required for Theia.
 # Enabling this leads to: process ERROR Error: spawn ENOTDIR
 # because binaries can not be executed from the asar archive.
@@ -20,6 +20,7 @@ files:
   - src-gen
   - lib
   - resources/icons/WindowIcon/512-512.png
+  - resources/TheiaIDESplash.svg
   - scripts
   - "!**node_modules/**"
 extraResources:
@@ -32,7 +33,7 @@ win:
     - nsis
   publish:
     provider: generic
-    url: "https://download.eclipse.org/theia/${version}/windows"
+    url: "https://download.eclipse.org/theia/ide/${version}/windows"
     useMultipleRangeRequest: false
 mac:
   icon: resources/icons/MacLauncherIcon/512-512-2.icns
@@ -43,7 +44,7 @@ mac:
     - zip
   publish:
     provider: generic
-    url: "https://download.eclipse.org/theia/latest/macos"
+    url: "https://download.eclipse.org/theia/ide/latest/macos"
 linux:
   icon: resources/icons/LinuxLauncherIcon/512-512.png
   category: Development
@@ -53,7 +54,7 @@ linux:
     - AppImage
   publish:
     provider: generic
-    url: "https://download.eclipse.org/theia/latest/linux"
+    url: "https://download.eclipse.org/theia/ide/latest/linux"
 
 nsis:
   menuCategory: true

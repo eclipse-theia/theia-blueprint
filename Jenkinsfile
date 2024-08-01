@@ -34,6 +34,8 @@ pipeline {
         // We will still stop short of publishing anything.
         THEIA_IDE_JENKINS_RELEASE_DRYRUN = 'false'
         // THEIA_IDE_JENKINS_RELEASE_DRYRUN = 'true'
+        msvs_version = '2019'
+        GYP_MSVS_VERSION = '2019'
     }
     stages {
         stage('Build') {
@@ -136,10 +138,10 @@ spec:
                     agent {
                         label 'windows'
                     }
-                    steps {
-                        script {
-                            sh "npm config set msvs_version 2017"
-                            sh "npx node-gyp@9.4.0 install 14.20.0"
+                    steps {                 
+                        nodejs(nodeJSInstallationName: 'node_20.x') {
+                            sh "node --version"
+                            sh "npx node-gyp@9.4.1 install 20.11.1"
 
                             // analyze memory usage
                             bat "wmic ComputerSystem get TotalPhysicalMemory"
@@ -261,7 +263,7 @@ spec:
                         container('jnlp') {
                             script {
                                 uploadInstaller('windows')
-                                copyInstallerAndUpdateLatestYml('windows', 'TheiaIDESetup', 'exe', 'latest.yml', '1.41.0,1.42.1,1.43.0')
+                                copyInstallerAndUpdateLatestYml('windows', 'TheiaIDESetup', 'exe', 'latest.yml', '1.46.0,1.46.100,1.47.0,1.47.100,1.48.0,1.48.300,1.49.100,1.49.101,1.50.0,1.50.100,1.51.0')
                             }
                         }
                     }
@@ -272,11 +274,11 @@ spec:
 }
 
 def buildInstaller(int sleepBetweenRetries) {
-    int maxRetry = 3
+    int maxRetry = 1
     String buildPackageCmd
 
     checkout scm
-    
+
     // only build the Electron app for now
     buildPackageCmd = 'yarn --frozen-lockfile --force && \
         yarn build:extensions && yarn electron build'
@@ -399,12 +401,12 @@ def uploadInstaller(String platform) {
         def packageJSON = readJSON file: "package.json"
         String version = "${packageJSON.version}"
         sshagent(['projects-storage.eclipse.org-bot-ssh']) {
-            sh "ssh genie.theia@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/theia/${version}/${platform}"
-            sh "ssh genie.theia@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/theia/${version}/${platform}"
-            sh "scp ${distFolder}/*.* genie.theia@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/theia/${version}/${platform}"
-            sh "ssh genie.theia@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/theia/latest/${platform}"
-            sh "ssh genie.theia@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/theia/latest/${platform}"
-            sh "scp ${distFolder}/*.* genie.theia@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/theia/latest/${platform}"
+            sh "ssh genie.theia@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/theia/ide-preview/${version}/${platform}"
+            sh "ssh genie.theia@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/theia/ide-preview/${version}/${platform}"
+            sh "scp ${distFolder}/*.* genie.theia@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/theia/ide-preview/${version}/${platform}"
+            sh "ssh genie.theia@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/theia/ide-preview/latest/${platform}"
+            sh "ssh genie.theia@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/theia/ide-preview/latest/${platform}"
+            sh "scp ${distFolder}/*.* genie.theia@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/theia/ide-preview/latest/${platform}"
         }
     } else {
         echo "Skipped upload for branch ${env.BRANCH_NAME}"
@@ -421,16 +423,16 @@ def copyInstallerAndUpdateLatestYml(String platform, String installer, String ex
         def packageJSON = readJSON file: "package.json"
         String version = "${packageJSON.version}"
         sshagent(['projects-storage.eclipse.org-bot-ssh']) {
-            sh "ssh genie.theia@projects-storage.eclipse.org cp /home/data/httpd/download.eclipse.org/theia/latest/${platform}/${installer}.${extension} /home/data/httpd/download.eclipse.org/theia/latest/${platform}/${installer}-${version}.${extension}"
-            sh "ssh genie.theia@projects-storage.eclipse.org cp /home/data/httpd/download.eclipse.org/theia/${version}/${platform}/${installer}.${extension} /home/data/httpd/download.eclipse.org/theia/${version}/${platform}/${installer}-${version}.${extension}"
-            sh "ssh genie.theia@projects-storage.eclipse.org cp /home/data/httpd/download.eclipse.org/theia/latest/${platform}/${installer}.${extension}.blockmap /home/data/httpd/download.eclipse.org/theia/latest/${platform}/${installer}-${version}.${extension}.blockmap"
-            sh "ssh genie.theia@projects-storage.eclipse.org cp /home/data/httpd/download.eclipse.org/theia/${version}/${platform}/${installer}.${extension}.blockmap /home/data/httpd/download.eclipse.org/theia/${version}/${platform}/${installer}-${version}.${extension}.blockmap"
+            sh "ssh genie.theia@projects-storage.eclipse.org cp /home/data/httpd/download.eclipse.org/theia/ide-preview/latest/${platform}/${installer}.${extension} /home/data/httpd/download.eclipse.org/theia/ide-preview/latest/${platform}/${installer}-${version}.${extension}"
+            sh "ssh genie.theia@projects-storage.eclipse.org cp /home/data/httpd/download.eclipse.org/theia/ide-preview/${version}/${platform}/${installer}.${extension} /home/data/httpd/download.eclipse.org/theia/ide-preview/${version}/${platform}/${installer}-${version}.${extension}"
+            sh "ssh genie.theia@projects-storage.eclipse.org cp /home/data/httpd/download.eclipse.org/theia/ide-preview/latest/${platform}/${installer}.${extension}.blockmap /home/data/httpd/download.eclipse.org/theia/ide-preview/latest/${platform}/${installer}-${version}.${extension}.blockmap"
+            sh "ssh genie.theia@projects-storage.eclipse.org cp /home/data/httpd/download.eclipse.org/theia/ide-preview/${version}/${platform}/${installer}.${extension}.blockmap /home/data/httpd/download.eclipse.org/theia/ide-preview/${version}/${platform}/${installer}-${version}.${extension}.blockmap"
         }
         if (UPDATABLE_VERSIONS.length() != 0) {
             for (oldVersion in UPDATABLE_VERSIONS.split(",")) {
                 sshagent(['projects-storage.eclipse.org-bot-ssh']) {
-                    sh "ssh genie.theia@projects-storage.eclipse.org rm -f /home/data/httpd/download.eclipse.org/theia/${oldVersion}/${platform}/${yaml}"
-                    sh "ssh genie.theia@projects-storage.eclipse.org cp /home/data/httpd/download.eclipse.org/theia/${version}/${platform}/${yaml} /home/data/httpd/download.eclipse.org/theia/${oldVersion}/${platform}/${yaml}"
+                    sh "ssh genie.theia@projects-storage.eclipse.org rm -f /home/data/httpd/download.eclipse.org/theia/ide-preview/${oldVersion}/${platform}/${yaml}"
+                    sh "ssh genie.theia@projects-storage.eclipse.org cp /home/data/httpd/download.eclipse.org/theia/ide-preview/${version}/${platform}/${yaml} /home/data/httpd/download.eclipse.org/theia/ide-preview/${oldVersion}/${platform}/${yaml}"
                 }
             }
         } else {

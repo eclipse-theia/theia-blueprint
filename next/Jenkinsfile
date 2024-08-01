@@ -189,7 +189,7 @@ def buildNext(String os) {
         # create a local node_modules directory where we can install verdaccio non-globally
         mkdir node_modules
         npm install verdaccio
-        REGISTRY=http://localhost:4873/
+        REGISTRY=http://0.0.0.0:4873/
 
         # Kill any remaining Verdaccio executables and start verdaccio
         ${VERDACCIO_STOP_SCRIPT} || true
@@ -207,7 +207,7 @@ def buildNext(String os) {
         # Build theia. Local verdaccio registry is acting a proxy to the main npm registry
         cd ../theia
         touch .npmrc
-        echo "registry=http://localhost:4873/" >> .npmrc
+        echo "registry=http://0.0.0.0:4873/" >> .npmrc
         yarn
         yarn build
 
@@ -217,7 +217,7 @@ def buildNext(String os) {
         # Build Blueprint Next with verdaccio registry
         cd ..
         yarn && yarn update:next
-        yarn --registry http://localhost:4873/
+        yarn --registry http://0.0.0.0:4873/
         yarn build && yarn download:plugins && yarn electron package
 
         # Stop verdaccio after successful build

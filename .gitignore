@@ -9,3 +9,4 @@
 **/plugins
 **/tsconfig.tsbuildinfo
 *.log
+license-check-summary.txt*

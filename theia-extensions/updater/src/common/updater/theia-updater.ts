@@ -16,6 +16,7 @@ export interface TheiaUpdater extends JsonRpcServer<TheiaUpdaterClient> {
     downloadUpdate(): void;
     onRestartToUpdateRequested(): void;
     disconnectClient(client: TheiaUpdaterClient): void;
+    setUpdateChannel(channel: string): void;
 }
 
 export const TheiaUpdaterClient = Symbol('TheiaUpdaterClient');

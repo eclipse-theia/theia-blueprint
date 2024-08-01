@@ -20,7 +20,7 @@ if [ -n "$2" ]; then
     fi
 fi
 
-REGISTRY=http://localhost:4873/
+REGISTRY=http://0.0.0.0:4873/
 echo "Launching Verdaccio..."
 verdaccio --listen http://0.0.0.0:4873 &
 VERDACCIO_PID=$!

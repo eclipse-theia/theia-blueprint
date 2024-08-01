@@ -1,7 +1,7 @@
 #!/usr/bin/expect -f
 set timeout 10
 
-spawn npm adduser --registry http://localhost:4873/
+spawn npm adduser --registry http://0.0.0.0:4873/
 match_max 100000
 
 expect "Username"
@@ -13,4 +13,4 @@ send "The14-8uiLd\r"
 expect "Email: (this IS public)"
 send "theia@eclipse.org\r"
 
-expect "Logged in on http://localhost:4873/."
+expect "Logged in on http://0.0.0.0:4873/."
