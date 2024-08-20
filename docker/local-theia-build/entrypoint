@@ -45,6 +45,12 @@ if [ "$BUILD_THEIA" -eq 1 ]; then
     yarn build
 
     echo "Publishing Theia..."
+
+    npx lerna version patch --yes --no-push --no-git-tag-version
+    git config --global user.email "jdoe@theia-ide.org"
+    git config --global user.name "J Doe"
+    git add -A
+    git commit -m "chore: bump versions"
     npx lerna publish from-package --no-git-reset --no-git-tag-version --no-push --dist-tag next --yes --registry $REGISTRY || true
 fi
 

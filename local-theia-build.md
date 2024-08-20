@@ -41,13 +41,13 @@ docker run --rm \
 # in a new shell, open theia blueprint
 cd ~/git/theia-blueprint
 
-# update theia version to @next
-yarn && yarn update:next
+# Update versions accordingly
+yarn update:theia 1.52.1 && yarn update:theia:children 1.52.1
 
 # run yarn with verdaccio registry to update yarn.lock
 yarn --registry http://localhost:4873/
 
 # build theia blueprint
-yarn build && yarn electron package
+yarn && yarn build && yarn download:plugins && yarn electron package
 
 ```
