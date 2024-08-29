@@ -12,6 +12,9 @@ pipeline {
         timeout(time: 5, unit: 'HOURS')
         disableConcurrentBuilds()
     }
+    environment {
+        NODE_OPTIONS = '--max_old_space_size=4096'
+    }
     stages {
         stage('Build') {
             parallel {
@@ -136,8 +139,6 @@ def buildNext(boolean runTests, int sleepBetweenRetries) {
     sh "git fetch origin next"
     sh "git merge FETCH_HEAD"
     sh "node --version"
-
-    sh "export NODE_OPTIONS=--max_old_space_size=4096"
 
     // regular build
     sh "printenv && yarn cache dir"
