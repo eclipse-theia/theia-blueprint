@@ -38,6 +38,10 @@ win:
 mac:
   icon: resources/icons/MacLauncherIcon/512-512-2.icns
   category: public.app-category.developer-tools
+  protocols:
+    - name: theia
+      schemes: 
+        - theia
   darkModeSupport: true
   target:
     - dmg
@@ -52,6 +56,8 @@ linux:
   target:
     - deb
     - AppImage
+  desktop:
+    MimeType: "x-scheme-handler/theia;"
   publish:
     provider: generic
     url: "https://download.eclipse.org/theia/ide/latest/linux"

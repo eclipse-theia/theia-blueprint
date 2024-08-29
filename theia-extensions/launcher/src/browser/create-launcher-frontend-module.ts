@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2022 EclipseSource and others.
+ * Copyright (C) 2022-2024 EclipseSource and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the MIT License, which is available in the project root.
@@ -10,8 +10,10 @@ import { CreateLauncherCommandContribution } from './create-launcher-contributio
 import { ContainerModule } from '@theia/core/shared/inversify';
 import { LauncherService } from './launcher-service';
 import { FrontendApplicationContribution } from '@theia/core/lib/browser';
+import { DesktopFileService } from './desktopfile-service';
 
 export default new ContainerModule(bind => {
     bind(FrontendApplicationContribution).to(CreateLauncherCommandContribution);
     bind(LauncherService).toSelf().inSingletonScope();
+    bind(DesktopFileService).toSelf().inSingletonScope();
 });
