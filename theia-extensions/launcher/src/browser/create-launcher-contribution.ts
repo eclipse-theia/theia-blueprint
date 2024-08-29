@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2022 EclipseSource and others.
+ * Copyright (C) 2022-2024 EclipseSource and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the MIT License, which is available in the project root.
@@ -12,6 +12,7 @@ import { ILogger, MaybePromise } from '@theia/core/lib/common';
 import { nls } from '@theia/core/lib/common/nls';
 import { inject, injectable } from '@theia/core/shared/inversify';
 import { LauncherService } from './launcher-service';
+import { DesktopFileService } from './desktopfile-service';
 
 @injectable()
 export class CreateLauncherCommandContribution implements FrontendApplicationContribution {
@@ -24,7 +25,9 @@ export class CreateLauncherCommandContribution implements FrontendApplicationCon
 
     @inject(LauncherService) private readonly launcherService: LauncherService;
 
-    onStart(app: FrontendApplication): MaybePromise<void> {
+    @inject(DesktopFileService) private readonly desktopFileService: DesktopFileService;
+
+    onStart(_app: FrontendApplication): MaybePromise<void> {
         this.launcherService.isInitialized().then(async initialized => {
             if (!initialized) {
                 const messageContainer = document.createElement('div');
@@ -45,6 +48,26 @@ export class CreateLauncherCommandContribution implements FrontendApplicationCon
                 this.logger.info('Initialized application launcher.');
             } else {
                 this.logger.info('Application launcher was already initialized.');
+            }
+        });
+
+        this.desktopFileService.isInitialized().then(async initialized => {
+            if (!initialized) {
+                const messageContainer = document.createElement('div');
+                // eslint-disable-next-line max-len
+                messageContainer.textContent = nls.localizeByDefault('Would you like to create a .desktop file for the Theia IDE?\nThis will make it easier to open the Theia IDE directly\nfrom your applications menu and enables further features.');
+                messageContainer.setAttribute('style', 'white-space: pre-line');
+                const dialog = new ConfirmDialog({
+                    title: nls.localizeByDefault('Create .desktop file'),
+                    msg: messageContainer,
+                    ok: Dialog.YES,
+                    cancel: Dialog.NO
+                });
+                const install = await dialog.open();
+                this.desktopFileService.createOrUpdateDesktopfile(!!install);
+                this.logger.info('Created or updated .desktop file.');
+            } else {
+                this.logger.info('Desktop file was not updated or created.');
             }
         });
     }
