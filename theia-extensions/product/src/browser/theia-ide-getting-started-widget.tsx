@@ -11,7 +11,9 @@ import * as React from 'react';
 
 import { Message, PreferenceService } from '@theia/core/lib/browser';
 import { inject, injectable } from '@theia/core/shared/inversify';
-import { renderDocumentation, renderDownloads, renderExtendingCustomizing, renderSourceCode, renderSupport, renderTickets, renderWhatIs } from './branding-util';
+import {
+    renderDocumentation, renderDownloads, renderExtendingCustomizing, renderSourceCode, renderSupport, renderTickets, renderWhatIs, renderCollaboration
+} from './branding-util';
 
 import { GettingStartedWidget } from '@theia/getting-started/lib/browser/getting-started-widget';
 import { VSXEnvironment } from '@theia/vsx-registry/lib/common/vsx-environment';
@@ -84,6 +86,11 @@ export class TheiaIDEGettingStartedWidget extends GettingStartedWidget {
                 <div className='flex-grid'>
                     <div className='col'>
                         {renderDocumentation(this.windowService)}
+                    </div>
+                </div>
+                <div className='flex-grid'>
+                    <div className='col'>
+                        {renderCollaboration(this.windowService)}
                     </div>
                 </div>
                 <div className='flex-grid'>
