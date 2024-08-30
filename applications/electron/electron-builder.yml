@@ -56,8 +56,6 @@ linux:
   target:
     - deb
     - AppImage
-  desktop:
-    MimeType: "x-scheme-handler/theia;"
   publish:
     provider: generic
     url: "https://download.eclipse.org/theia/ide/latest/linux"
