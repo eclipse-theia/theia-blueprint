@@ -130,8 +130,8 @@ export function renderCollaboration(windowService: WindowService): React.ReactNo
         <div >
             The IDE features a built-in collaboration feature.
             You can share your workspace with others and work together in real-time by clicking on the <i>Collaborate</i> item in the status bar.
-            The collaboration feature is powered by the
-            <BrowserLink text="Open Collaboration Tools" url="https://www.open-collab.tools/" windowService={windowService} /> project
+            The collaboration feature is powered by
+            the <BrowserLink text="Open Collaboration Tools" url="https://www.open-collab.tools/" windowService={windowService} /> project
             and uses their public server infrastructure.
         </div>
     </div>;
