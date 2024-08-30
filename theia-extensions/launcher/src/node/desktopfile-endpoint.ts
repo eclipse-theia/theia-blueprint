@@ -111,6 +111,9 @@ export class TheiaDesktopFileServiceEndpoint implements BackendApplicationContri
             const desktopFilePath = path.join(process.env.HOME!, '.local', 'share', 'applications', 'theia-ide-launcher.desktop');
             fs.outputFileSync(desktopFilePath, this.getDesktopFileContents(process.env.APPIMAGE!, imagePath));
 
+            const desktopURLFilePath = path.join(process.env.HOME!, '.local', 'share', 'applications', 'theia-ide-launcher-url.desktop');
+            fs.outputFileSync(desktopURLFilePath, this.getDesktopURLFileContents(process.env.APPIMAGE!, imagePath));
+
             appImageInformation.appImage = process.env.APPIMAGE!;
             fs.outputJSONSync(storageFile, appImageInformation);
         } else {
@@ -129,6 +132,18 @@ Terminal=false
 Type=Application
 Icon=${imagePath}
 StartupWMClass=TheiaIDE
+Comment=Eclipse Theia IDE product
+Categories=Development;`;
+    }
+
+    protected getDesktopURLFileContents(appImagePath: string, imagePath: string): string {
+        return `[Desktop Entry]
+Name=TheiaIDE - URL Handler
+Exec=${appImagePath} --open-url %U
+Terminal=false
+Type=Application
+NoDisplay=true
+Icon=${imagePath}
 MimeType=x-scheme-handler/theia;
 Comment=Eclipse Theia IDE product
 Categories=Development;`;
