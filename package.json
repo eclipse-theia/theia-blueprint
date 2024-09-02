@@ -1,6 +1,6 @@
 {
   "private": true,
-  "version": "1.53.0",
+  "version": "1.53.100",
   "license": "MIT",
   "author": "Rob Moran <github@thegecko.org>",
   "homepage": "https://github.com/eclipse-theia/theia-blueprint#readme",
@@ -17,7 +17,7 @@
   },
   "devDependencies": {
     "@eclipse-dash/nodejs-wrapper": "^0.0.1",
-    "@theia/cli": "1.53.0",
+    "@theia/cli": "1.53.1",
     "@typescript-eslint/eslint-plugin": "^4.25.0",
     "@typescript-eslint/eslint-plugin-tslint": "^4.25.0",
     "@typescript-eslint/parser": "^4.25.0",
@@ -40,7 +40,7 @@
     "build:applications": "yarn build:extensions && lerna run --scope=\"theia-ide*app\" build:prod --concurrency 1",
     "build:applications:dev": "yarn build:extensions && lerna run --scope=\"theia-ide*app\" build --concurrency 1",
     "build:extensions": "lerna run --scope=\"theia-ide*ext\" build",
-    "download:plugins": "theia download:plugins --rate-limit=15 --parallel=false --ignore-errors",
+    "download:plugins": "theia download:plugins --rate-limit=15 --parallel=false",
     "package:applications": "lerna run --scope=\"theia-ide*app\" package --concurrency 1",
     "package:applications:preview": "lerna run --scope=\"theia-ide*app\" package:preview --concurrency 1",
     "package:applications:prod": "lerna run --scope=\"theia-ide*app\" package:prod --concurrency 1",
