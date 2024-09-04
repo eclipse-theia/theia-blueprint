@@ -79,9 +79,8 @@
   ],
   "resolutions": {
     "@types/puppeteer": "^5.4.0",
-    "@yarnpkg/parsers": "3.0.0-rc.44",
+    "@yarnpkg/parsers": "3.0.2",
     "**/multer": "1.4.4-lts.1",
-    "**/nan": "2.20.0",
-    "**/cpu-features": "0.0.9"
+    "**/nan": "2.20.0"
   }
 }
