@@ -126,19 +126,19 @@ export class TheiaDesktopFileServiceEndpoint implements BackendApplicationContri
 
     protected getDesktopFileContents(appImagePath: string, imagePath: string): string {
         return `[Desktop Entry]
-Name=TheiaIDE
+Name=Theia IDE
 Exec=${appImagePath} %U
 Terminal=false
 Type=Application
 Icon=${imagePath}
-StartupWMClass=TheiaIDE
+StartupWMClass=Theia IDE
 Comment=Eclipse Theia IDE product
 Categories=Development;`;
     }
 
     protected getDesktopURLFileContents(appImagePath: string, imagePath: string): string {
         return `[Desktop Entry]
-Name=TheiaIDE - URL Handler
+Name=Theia IDE - URL Handler
 Exec=${appImagePath} --open-url %U
 Terminal=false
 Type=Application
