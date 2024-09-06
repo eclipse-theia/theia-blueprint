@@ -265,7 +265,7 @@ spec:
                         container('jnlp') {
                             script {
                                 uploadInstaller('windows')
-                                copyInstallerAndUpdateLatestYml('windows', 'TheiaIDESetup', 'exe', 'latest.yml', '1.46.0,1.46.100,1.47.0,1.47.100,1.48.0,1.48.300,1.49.100,1.49.101,1.50.0,1.50.100,1.51.0,1.52.0')
+                                copyInstallerAndUpdateLatestYml('windows', 'TheiaIDESetup', 'exe', 'latest.yml', '1.46.0,1.46.100,1.47.0,1.47.100,1.48.0,1.48.300,1.49.100,1.49.101,1.50.0,1.50.100,1.51.0,1.52.0,1.53.100')
                             }
                         }
                     }
