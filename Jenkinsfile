@@ -36,6 +36,8 @@ pipeline {
         // THEIA_IDE_JENKINS_RELEASE_DRYRUN = 'true'
         msvs_version = '2019'
         GYP_MSVS_VERSION = '2019'
+
+        NODE_OPTIONS = '--max_old_space_size=4096'
     }
     stages {
         stage('Build') {
@@ -263,7 +265,7 @@ spec:
                         container('jnlp') {
                             script {
                                 uploadInstaller('windows')
-                                copyInstallerAndUpdateLatestYml('windows', 'TheiaIDESetup', 'exe', 'latest.yml', '1.46.0,1.46.100,1.47.0,1.47.100,1.48.0,1.48.300,1.49.100,1.49.101,1.50.0,1.50.100,1.51.0')
+                                copyInstallerAndUpdateLatestYml('windows', 'TheiaIDESetup', 'exe', 'latest.yml', '1.46.0,1.46.100,1.47.0,1.47.100,1.48.0,1.48.300,1.49.100,1.49.101,1.50.0,1.50.100,1.51.0,1.52.0,1.53.100,1.53.200')
                             }
                         }
                     }
@@ -289,7 +291,6 @@ def buildInstaller(int sleepBetweenRetries) {
     }
 
     sh 'node --version'
-    sh 'export NODE_OPTIONS=--max_old_space_size=4096'
     sh 'printenv && yarn cache dir'
     try {
         sh(script: buildPackageCmd)
@@ -380,7 +381,6 @@ def updateMetadata(String executable, String yaml, String platform, int sleepBet
 
     int maxRetry = 4
     try {
-        sh "export NODE_OPTIONS=--max_old_space_size=4096"
         // make sure the npm dependencies are available to the update scripts
         sh "yarn install --force"
         sh "yarn electron update:blockmap -e ${executable}"

@@ -11,7 +11,9 @@ import * as React from 'react';
 
 import { Message, PreferenceService } from '@theia/core/lib/browser';
 import { inject, injectable } from '@theia/core/shared/inversify';
-import { renderDocumentation, renderDownloads, renderExtendingCustomizing, renderSourceCode, renderSupport, renderTickets, renderWhatIs } from './branding-util';
+import {
+    renderDocumentation, renderDownloads, renderExtendingCustomizing, renderSourceCode, renderSupport, renderTickets, renderWhatIs, renderCollaboration
+} from './branding-util';
 
 import { GettingStartedWidget } from '@theia/getting-started/lib/browser/getting-started-widget';
 import { VSXEnvironment } from '@theia/vsx-registry/lib/common/vsx-environment';
@@ -88,6 +90,16 @@ export class TheiaIDEGettingStartedWidget extends GettingStartedWidget {
                 </div>
                 <div className='flex-grid'>
                     <div className='col'>
+                        {this.renderAIBanner()}
+                    </div>
+                </div>
+                <div className='flex-grid'>
+                    <div className='col'>
+                        {renderCollaboration(this.windowService)}
+                    </div>
+                </div>
+                <div className='flex-grid'>
+                    <div className='col'>
                         {renderDownloads()}
                     </div>
                 </div>
@@ -139,6 +151,55 @@ export class TheiaIDEGettingStartedWidget extends GettingStartedWidget {
             <p className='gs-sub-header' >
                 {'VS Code API Version: ' + this.vscodeApiVersion}
             </p>
+        </div>;
+    }
+
+    protected renderAIBanner(): React.ReactNode {
+        return <div className='gs-section'>
+            <div className='flex-grid'>
+                <div className='col'>
+                    <h3 className='gs-section-header'> 🚀 AI Support in the Theia IDE is available! [Experimental] ✨</h3>
+
+                    <div className='gs-action-container'>
+                        Theia IDE now contains experimental AI support, which offers early access to cutting-edge AI capabilities within your IDE.
+                        <br />
+                        Please note that these features are disabled by default, ensuring that users can opt-in at their discretion.
+                        For those who choose to enable AI support, it is important to be aware that these experimental features may generate continuous
+                        requests to the language models (LLMs) you provide access to. This might incur costs that you need to monitor closely.
+                        <br />
+                        For more details, please visit &nbsp;
+                        <a
+                            role={'button'}
+                            tabIndex={0}
+                            onClick={() => this.doOpenExternalLink(this.theiaAIDocUrl)}
+                            onKeyDown={(e: React.KeyboardEvent) => this.doOpenExternalLinkEnter(e, this.theiaAIDocUrl)}>
+                            {'the documentation'}
+                        </a>.
+                        <br />
+                        <br />
+                        🚧 Please note that this feature is currently in development and may undergo frequent changes.
+                        We welcome your feedback, contributions, and sponsorship! To support the ongoing development of the AI capabilities please visit the&nbsp;
+                        <a
+                            role={'button'}
+                            tabIndex={0}
+                            onClick={() => this.doOpenExternalLink(this.ghProjectUrl)}
+                            onKeyDown={(e: React.KeyboardEvent) => this.doOpenExternalLinkEnter(e, this.ghProjectUrl)}>
+                            {'Github Project'}
+                        </a>.
+                        &nbsp;Thank you for being part of our community!
+                    </div>
+                    <div className='gs-action-container'>
+                        <a
+                            role={'button'}
+                            style={{ fontSize: 'var(--theia-ui-font-size2)' }}
+                            tabIndex={0}
+                            onClick={() => this.doOpenAIChatView()}
+                            onKeyDown={(e: React.KeyboardEvent) => this.doOpenAIChatViewEnter(e)}>
+                            {'Open the AI Chat View now to learn how to start! ✨'}
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>;
     }
 }

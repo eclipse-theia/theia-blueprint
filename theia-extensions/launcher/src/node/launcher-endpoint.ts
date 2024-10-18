@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2022 EclipseSource and others.
+ * Copyright (C) 2022-2024 EclipseSource and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the MIT License, which is available in the project root.
@@ -16,6 +16,7 @@ import { EnvVariablesServer } from '@theia/core/lib/common/env-variables';
 import * as sudo from '@vscode/sudo-prompt';
 import * as fs from 'fs-extra';
 import URI from '@theia/core/lib/common/uri';
+import { getStorageFilePath } from './launcher-util';
 
 interface PathEntry {
     source: string;
@@ -25,6 +26,7 @@ interface PathEntry {
 @injectable()
 export class TheiaLauncherServiceEndpoint implements BackendApplicationContribution {
     protected static PATH = '/launcher';
+    protected static STORAGE_FILE_NAME = 'paths.json';
     private LAUNCHER_LINK_SOURCE = '/usr/local/bin/theia';
 
     @inject(ILogger)
@@ -47,7 +49,7 @@ export class TheiaLauncherServiceEndpoint implements BackendApplicationContribut
             // return true
             response.json({ initialized: true });
         }
-        const storageFile = await this.getStorageFilePath();
+        const storageFile = await getStorageFilePath(this.envServer, TheiaLauncherServiceEndpoint.STORAGE_FILE_NAME);
         if (!storageFile) {
             throw new Error('Could not resolve path to storage file.');
         }
@@ -58,13 +60,6 @@ export class TheiaLauncherServiceEndpoint implements BackendApplicationContribut
         const data = await this.readLauncherPathsFromStorage(storageFile);
         const initialized = !!data.find(entry => entry.source === this.LAUNCHER_LINK_SOURCE);
         response.json({ initialized });
-    }
-
-    private async getStorageFilePath(): Promise<string> {
-        const configDirUri = await this.envServer.getConfigDirUri();
-        const globalStorageFolderUri = new URI(configDirUri).resolve('globalStorage/theia-ide-launcher/paths.json');
-        const globalStorageFolderFsPath = globalStorageFolderUri.path.fsPath();
-        return globalStorageFolderFsPath;
     }
 
     private async readLauncherPathsFromStorage(storageFile: string): Promise<PathEntry[]> {
@@ -99,7 +94,7 @@ export class TheiaLauncherServiceEndpoint implements BackendApplicationContribut
             sudo.exec(command, { name: 'Theia IDE' });
         }
 
-        const storageFile = await this.getStorageFilePath();
+        const storageFile = await getStorageFilePath(this.envServer, TheiaLauncherServiceEndpoint.STORAGE_FILE_NAME);
         const data = fs.existsSync(storageFile) ? await this.readLauncherPathsFromStorage(storageFile) : [];
         fs.outputJSONSync(storageFile, [...data, { source: launcher, target: shouldCreateLauncher ? target : undefined }]);
 

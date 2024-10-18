@@ -2,7 +2,7 @@ appId: eclipse.theia
 productName: TheiaIDE
 copyright: Copyright © 2020-2023 Eclipse Foundation, Inc
 electronDist: ../../node_modules/electron/dist
-electronVersion: 28.3.3
+electronVersion: 30.4.0
 # Although it is generally not recommended to disable asar, it is required for Theia.
 # Enabling this leads to: process ERROR Error: spawn ENOTDIR
 # because binaries can not be executed from the asar archive.
@@ -38,6 +38,10 @@ win:
 mac:
   icon: resources/icons/MacLauncherIcon/512-512-2.icns
   category: public.app-category.developer-tools
+  protocols:
+    - name: theia
+      schemes: 
+        - theia
   darkModeSupport: true
   target:
     - dmg
@@ -46,8 +50,10 @@ mac:
     provider: generic
     url: "https://download.eclipse.org/theia/ide/latest/macos"
 linux:
-  icon: resources/icons/LinuxLauncherIcon/512-512.png
+  icon: resources/icons/LinuxLauncherIcons
   category: Development
+  mimeTypes:
+    - inode/directory
   vendor: Eclipse Foundation, Inc
   target:
     - deb
