@@ -10,8 +10,13 @@ RUN dpkg --add-architecture i386 \
  && apt-get update \
  && apt-get install -y --no-install-recommends \
       libxkbfile-dev libsecret-1-dev python3 \
+      clang-15 \
       wine wine32 wine64 \
  && rm -rf /var/lib/apt/lists/*
+
+# GCC before 13 (bookworm ships 12) cannot compile the V8 headers of Electron 44
+ENV CC=clang-15 \
+    CXX=clang++-15
 
 # UID-agnostic wine tuning. WINEPREFIX is intentionally NOT set here; callers
 # must provide a writable path owned by the runtime user.
