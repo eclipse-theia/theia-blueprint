@@ -1,6 +1,6 @@
 {
   "private": true,
-  "version": "1.76.0",
+  "version": "1.76.1",
   "license": "MIT",
   "author": "Rob Moran <github@thegecko.org>",
   "homepage": "https://github.com/eclipse-theia/theia-ide#readme",

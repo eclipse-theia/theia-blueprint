@@ -3,7 +3,7 @@
   "name": "theia-ide-browser-app",
   "description": "Eclipse Theia IDE browser product",
   "productName": "Theia IDE",
-  "version": "1.76.0",
+  "version": "1.76.1",
   "license": "MIT",
   "author": "Eclipse Theia <theia-dev@eclipse.org>",
   "homepage": "https://github.com/eclipse-theia/theia-ide#readme",
@@ -119,7 +119,7 @@
     "fs-extra": "^9.1.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
-    "theia-ide-product-ext": "1.76.0"
+    "theia-ide-product-ext": "1.76.1"
   },
   "devDependencies": {
     "@theia/bundle-plugin": "1.76.0",

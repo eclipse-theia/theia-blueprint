@@ -3,7 +3,7 @@
   "name": "theia-ide-next-electron-app",
   "description": "Eclipse Theia IDE Next product",
   "productName": "Theia IDE Next",
-  "version": "1.76.0",
+  "version": "1.76.1",
   "main": "scripts/theia-electron-main.js",
   "license": "MIT",
   "author": "Eclipse Theia <theia-dev@eclipse.org>",
@@ -136,9 +136,9 @@
     "fs-extra": "^9.1.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
-    "theia-ide-launcher-ext": "1.76.0",
-    "theia-ide-product-ext": "1.76.0",
-    "theia-ide-updater-ext": "1.76.0"
+    "theia-ide-launcher-ext": "1.76.1",
+    "theia-ide-product-ext": "1.76.1",
+    "theia-ide-updater-ext": "1.76.1"
   },
   "devDependencies": {
     "@theia/bundle-plugin": "1.76.0",
@@ -154,7 +154,7 @@
     "app-builder-lib": "26.15.3",
     "chai": "^4.5.0",
     "concurrently": "^3.6.1",
-    "electron": "42.8.1",
+    "electron": "42.11.16",
     "electron-builder": "26.15.3",
     "electron-chromedriver": "^28.3.3",
     "electron-mocha": "^13.1.0",

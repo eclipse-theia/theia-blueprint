@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "theia-ide-product-ext",
-  "version": "1.76.0",
+  "version": "1.76.1",
   "description": "Eclipse Theia IDE Product Branding",
   "dependencies": {
     "@theia/ai-registry": "1.76.0",
