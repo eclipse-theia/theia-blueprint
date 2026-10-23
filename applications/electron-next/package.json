@@ -155,7 +155,7 @@
     "app-builder-lib": "26.15.3",
     "chai": "^4.5.0",
     "concurrently": "^3.6.1",
-    "electron": "44.4.5",
+    "electron": "44.9.1",
     "electron-builder": "26.15.3",
     "electron-chromedriver": "^28.3.3",
     "electron-mocha": "^13.1.0",
