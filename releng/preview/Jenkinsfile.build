@@ -81,8 +81,12 @@ spec:
                     steps {
                         container('theia-dev') {
                             withCredentials([string(credentialsId: "github-bot-token", variable: 'GITHUB_TOKEN')]) {
-                                script {
-                                    buildInstaller(120)
+                                // The builder image defaults to Clang 15 for Electron 44, which cannot
+                                // compile the V8 headers of Electron 42. Build with the image's GCC 12.
+                                withEnv(['CC=gcc', 'CXX=g++']) {
+                                    script {
+                                        buildInstaller(120)
+                                    }
                                 }
                             }
                         }
@@ -352,7 +356,6 @@ def buildUnpackedWindows() {
 
 def buildInstaller(int sleepBetweenRetries) {
     int maxRetry = 1
-    String buildPackageCmd
 
     checkout scm
 
@@ -373,7 +376,9 @@ def buildInstaller(int sleepBetweenRetries) {
         retry(maxRetry) {
             sleep(sleepBetweenRetries)
             echo 'yarn failed - Retrying'
-            sh(script: buildPackageCmd)
+            sh 'yarn --network-timeout 100000 --frozen-lockfile --force'
+            sh 'yarn build:extensions'
+            sh 'yarn electron build:prod'
         }
     }
 
